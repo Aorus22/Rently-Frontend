@@ -7,6 +7,8 @@ import DetailKendaraan from '../views/DetailKendaraanView.vue';
 import Pemesanan from '../views/PemesananView.vue';
 import RiwayatPemesanan from '../views/RiwayatPemesananView.vue';
 import DetailPemesanan from '@/views/DetailPemesananView.vue';
+import Pembayaran from '../views/PembayaranView.vue';
+import DetailPembayaran from '@/views/DetailPembayaranView.vue';
 
 const routes = [
   { path: '/', component: Dashboard },
@@ -18,12 +20,8 @@ const routes = [
   { path: '/register', component: Register, meta: { hideHeader: true }, },
   { path: '/riwayat-pemesanan', component: RiwayatPemesanan },
   { path: '/detail-pemesanan/:id', component: DetailPemesanan },
-  {
-    path: "/detail-pemesanan/:id/bayar",
-    name: "Pembayaran",
-    component: () => import("../views/PembayaranView.vue"),
-    props: true,
-  },
+  { path: "/detail-pemesanan/:id/bayar", component: Pembayaran, props: true },
+  { path: '/detail-pembayaran/:id', component: DetailPembayaran, props: true }
 ];
 
 const router = createRouter({

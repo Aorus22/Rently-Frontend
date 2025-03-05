@@ -25,7 +25,7 @@
             <router-link to="/riwayat-pemesanan" class="block px-4 py-2 hover:bg-gray-200">Riwayat Pemesanan</router-link>
             <button @click="logout" class="block w-full text-left px-4 py-2 hover:bg-gray-200">Logout</button>
           </div>
-        </template>
+        </template> 
 
         <template v-else>
           <router-link to="/login" class="hover:text-gray-300">Login</router-link>

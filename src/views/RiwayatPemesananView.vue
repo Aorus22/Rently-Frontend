@@ -51,8 +51,9 @@ export default {
   data() {
     return {
       pemesanan: [],
-      selectedTab: "Menunggu Pembayaran",
+      selectedTab: "Semua",
       tabs: [
+        { label: "Semua", status: "Semua" },
         { label: "Menunggu Pembayaran", status: "Menunggu Pembayaran" },
         { label: "Menunggu Konfirmasi", status: "Menunggu Konfirmasi" },
         { label: "Dikonfirmasi", status: "Dikonfirmasi" },
@@ -64,7 +65,9 @@ export default {
   },
   computed: {
     filteredPemesanan() {
-      return this.pemesanan.filter(item => item.status_pemesanan === this.selectedTab);
+      return this.selectedTab === "Semua"
+        ? this.pemesanan
+        : this.pemesanan.filter(item => item.status_pemesanan === this.selectedTab);
     }
   },
   methods: {

@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import api from '../plugins/axios'
 
 export default {
   data() {
@@ -35,7 +35,7 @@ export default {
   methods: {
     async fetchKendaraan() {
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/kendaraan`);
+        const response = await api.get(`/kendaraan`);
         this.kendaraan = response.data;
       } catch (error) {
         console.error("Gagal mengambil data kendaraan:", error);

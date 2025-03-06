@@ -46,7 +46,8 @@
 </template>
 
 <script>
-import axios from "axios";
+import api from '../plugins/axios'
+
 export default {
   data() {
     return {
@@ -74,7 +75,7 @@ export default {
     async fetchPemesanan() {
       try {
         const token = localStorage.getItem("access_token");
-        const response = await axios.get("http://127.0.0.1:8000/api/pemesanan", {
+        const response = await api.get("/pemesanan", {
           headers: { Authorization: `Bearer ${token}` }
         });
         this.pemesanan = response.data;

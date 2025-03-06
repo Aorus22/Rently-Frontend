@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import api from '../plugins/axios'
 
 export default {
   data() {
@@ -48,7 +48,7 @@ export default {
   methods: {
     async fetchKendaraan() {
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/kendaraan/${this.$route.params.id}`);
+        const response = await api.get(`/kendaraan/${this.$route.params.id}`);
         this.kendaraan = response.data;
       } catch (error) {
         console.error("Gagal mengambil data kendaraan:", error);
@@ -58,8 +58,8 @@ export default {
       try {
         const token = localStorage.getItem('access_token');
 
-        await axios.post(
-          'http://127.0.0.1:8000/api/pemesanan',
+        await api.post(
+          '/pemesanan',
           {
             kendaraan_id: this.kendaraan.id,
             tanggal_mulai: this.tanggal_mulai,

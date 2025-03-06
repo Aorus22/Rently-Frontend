@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import api from '../plugins/axios'
 
 export default {
   props: ["id"],
@@ -43,7 +43,7 @@ export default {
     async fetchDetailPemesanan() {
       try {
         const token = localStorage.getItem("access_token");
-        const response = await axios.get(`http://127.0.0.1:8000/api/pemesanan/${this.id}`, {
+        const response = await api.get(`/pemesanan/${this.id}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         this.pemesanan = response.data;
@@ -59,8 +59,8 @@ export default {
 
       try {
         const token = localStorage.getItem("access_token");
-        const response = await axios.post(
-          `http://127.0.0.1:8000/api/pemesanan/${this.id}/bayar`,
+        const response = await api.post(
+          `/pemesanan/${this.id}/bayar`,
           { metode_pembayaran: this.metodePembayaran },
           { headers: { Authorization: `Bearer ${token}` } }
         );

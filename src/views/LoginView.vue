@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import api from '../plugins/axios'
 
 export default {
   data() {
@@ -41,7 +41,7 @@ export default {
   methods: {
     async login() {
       try {
-        const response = await axios.post("http://127.0.0.1:8000/api/login", {
+        const response = await api.post("/login", {
           email: this.email,
           password: this.password,
         });
@@ -49,7 +49,7 @@ export default {
         localStorage.setItem("access_token", response.data.access_token);
         localStorage.setItem("token_type", response.data.token_type);
 
-        const userResponse = await axios.get("http://127.0.0.1:8000/api/me", {
+        const userResponse = await api.get("/me", {
           headers: { Authorization: `Bearer ${response.data.access_token}` },
         });
 

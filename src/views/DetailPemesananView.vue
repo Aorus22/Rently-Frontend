@@ -84,7 +84,8 @@
 </template>
 
 <script>
-import axios from 'axios'
+import api from '../plugins/axios'
+
 export default {
   data() {
     return {
@@ -96,7 +97,7 @@ export default {
     async fetchDetailPemesanan() {
       try {
         const token = localStorage.getItem('access_token')
-        const response = await axios.get(`http://127.0.0.1:8000/api/pemesanan/${this.$route.params.id}`, {
+        const response = await api.get(`/pemesanan/${this.$route.params.id}`, {
           headers: { Authorization: `Bearer ${token}` },
         })
         this.pemesanan = response.data
@@ -108,8 +109,8 @@ export default {
     async fetchPembayaran() {
       try {
         const token = localStorage.getItem('access_token')
-        const response = await axios.get(
-          `http://127.0.0.1:8000/api/pemesanan/${this.$route.params.id}/pembayaran`,
+        const response = await api.get(
+          `/pemesanan/${this.$route.params.id}/pembayaran`,
           {
             headers: { Authorization: `Bearer ${token}` },
           },

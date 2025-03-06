@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import api from '../plugins/axios'
 
 export default {
   data() {
@@ -48,7 +48,7 @@ export default {
   methods: {
     async register() {
       try {
-        await axios.post("http://127.0.0.1:8000/api/register", {
+        await api.post("/register", {
           nama_lengkap: this.nama_lengkap,
           email: this.email,
           password: this.password,

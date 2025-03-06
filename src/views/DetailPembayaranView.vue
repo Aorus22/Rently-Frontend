@@ -66,7 +66,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import api from '../plugins/axios'
 
 export default {
   props: ['id'],
@@ -82,7 +82,7 @@ export default {
     async fetchDetailPembayaran() {
       try {
         const token = localStorage.getItem('access_token')
-        const response = await axios.get(`http://127.0.0.1:8000/api/pembayaran/${this.id}`, {
+        const response = await api.get(`/pembayaran/${this.id}`, {
           headers: { Authorization: `Bearer ${token}` },
         })
         this.pembayaran = response.data.pembayaran
@@ -100,7 +100,7 @@ export default {
 
       try {
         const token = localStorage.getItem('access_token')
-        await axios.post(`http://127.0.0.1:8000/api/pembayaran/${this.id}/upload-bukti`, formData, {
+        await api.post(`/pembayaran/${this.id}/upload-bukti`, formData, {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'multipart/form-data',

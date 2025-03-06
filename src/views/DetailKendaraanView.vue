@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import api from '../plugins/axios'
 
 export default {
   data() {
@@ -43,7 +43,7 @@ export default {
     async fetchDetail() {
       const id = this.$route.params.id
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/kendaraan/${id}`)
+        const response = await api.get(`/kendaraan/${id}`)
         this.kendaraan = response.data
       } catch (error) {
         console.error('Gagal mengambil detail kendaraan:', error)

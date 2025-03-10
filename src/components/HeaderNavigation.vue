@@ -84,9 +84,15 @@
 
     <DisclosurePanel class="sm:hidden">
       <div class="space-y-1 px-2 pt-2 pb-3">
-        <DisclosureButton v-for="item in navigation" :key="item.name" as="a" :href="item.href"
-          :class="[item.current ? 'bg-gray-900 text-white' : 'hover:bg-gray-700 hover:text-white', 'block rounded-md px-3 py-2 text-base font-medium']"
-          :aria-current="item.current ? 'page' : undefined">{{ item.name }}</DisclosureButton>
+        <router-link
+          v-for="item in navigation"
+          :key="item.name"
+          :to="item.href"
+          class="block rounded-md px-3 py-2 text-base font-medium"
+          :class="[item.current ? 'bg-gray-900 text-white' : 'hover:bg-gray-700 hover:text-white']"
+          :aria-current="item.current ? 'page' : undefined">
+          {{ item.name }}
+        </router-link>
       </div>
     </DisclosurePanel>
   </Disclosure>

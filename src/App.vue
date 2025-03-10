@@ -2,7 +2,7 @@
   <div class="flex flex-col min-h-screen bg-gray-900">
     <HeaderNavigation v-if="!$route.meta.hideHeader" />
 
-    <main class="flex-1 flex overflow-auto p-6">
+    <main class="flex-1 flex overflow-auto">
       <router-view />
     </main>
   </div>

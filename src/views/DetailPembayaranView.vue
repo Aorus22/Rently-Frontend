@@ -1,81 +1,175 @@
 <template>
-  <div class="w-full mx-auto p-6 bg-white shadow-lg rounded-lg">
-    <h1 class="text-2xl font-bold mb-4">Detail Pembayaran</h1>
+  <div class="w-full max-w-3xl mx-auto p-6 bg-white rounded-xl shadow-lg">
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-8">
+      <h1 class="text-2xl font-medium text-gray-800 flex items-center">
+        <CreditCardIcon class="w-6 h-6 mr-2 text-green-600" />
+        Detail Pembayaran
+      </h1>
+      <span :class="getStatusColor(pembayaran?.status_pembayaran)" class="flex items-center text-sm">
+        <component :is="statusIcons[pembayaran?.status_pembayaran]" class="w-4 h-4 mr-1" />
+        {{ pembayaran?.status_pembayaran }}
+      </span>
+    </div>
 
-    <div v-if="pembayaran && pemesanan">
-      <h2 class="text-lg font-semibold">{{ pemesanan.kendaraan.merek_model }}</h2>
-      <p class="text-gray-600">
-        Total Harga:
-        <span class="text-blue-500 font-bold">{{ formatHarga(pemesanan.total_harga_sewa) }}</span>
-      </p>
-      <p class="text-gray-600">
-        Metode Pembayaran: <span class="font-bold">{{ pembayaran.metode_pembayaran }}</span>
-      </p>
-
-      <!-- Status Pembayaran -->
-      <p class="mt-2 text-lg font-semibold" :class="getStatusColor(pembayaran.status_pembayaran)">
-        Status: {{ pembayaran.status_pembayaran }}
-      </p>
-
-      <!-- Jika Transfer Bank -->
-      <div
-        v-if="pembayaran.metode_pembayaran === 'Transfer Bank'"
-        class="p-4 bg-gray-100 rounded-lg"
-      >
-        <h4 class="text-md font-semibold mb-2">Transfer ke Rekening:</h4>
-        <p class="text-gray-700">Bank: <strong>BNI</strong></p>
-        <p class="text-gray-700">Nomor Rekening: <strong>1234-5678-9101</strong></p>
-        <p class="text-gray-700">Atas Nama: <strong>PT Rental Kendaraan</strong></p>
-
-        <!-- Jika belum ada bukti pembayaran, tampilkan form upload -->
-        <div v-if="!pembayaran.bukti_pembayaran" class="mt-4">
-          <label class="block mb-2 text-gray-700">Upload Bukti Pembayaran:</label>
-          <input type="file" @change="handleFileUpload" class="border rounded-lg p-2 w-full" />
-          <button
-            @click="uploadBukti"
-            class="mt-4 w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600 transition"
-            :disabled="!buktiPembayaran"
-          >
-            Konfirmasi Pembayaran
-          </button>
-        </div>
-
-        <!-- Jika QRIS -->
-        <div
-          v-if="pembayaran.metode_pembayaran === 'E-Wallet'"
-          class="p-4 bg-gray-100 rounded-lg text-center"
-        >
-          <h4 class="text-md font-semibold mb-2">Scan QR Code untuk Pembayaran:</h4>
-          <img :src="qrCodeUrl" alt="QR Code" class="mx-auto w-40 h-40" />
-        </div>
-
-        <!-- Jika bukti pembayaran sudah ada, tampilkan -->
-        <div v-else class="mt-4">
-          <h4 class="text-md font-semibold mb-2">Bukti Pembayaran:</h4>
-          <img
-            :src="pembayaran.bukti_pembayaran"
-            alt="Bukti Pembayaran"
-            class="w-40 h-40 object-cover rounded-lg"
-          />
-        </div>
+    <!-- Loading State -->
+    <div v-if="!pembayaran" class="text-center py-8">
+      <div class="flex flex-col items-center justify-center space-y-2">
+        <ArrowPathIcon class="w-8 h-8 text-green-600 animate-spin" />
+        <span class="text-gray-600">Memuat data pembayaran...</span>
       </div>
     </div>
 
-    <div v-else class="text-center text-gray-500">Memuat data...</div>
+    <div v-else class="space-y-8">
+      <!-- Vehicle Info -->
+      <div class="bg-gray-50 p-6 rounded-xl">
+        <div class="flex items-start gap-4">
+          <img
+            :src="pemesanan.kendaraan.gambar_url"
+            alt="Kendaraan"
+            class="w-24 h-24 object-cover rounded-lg border-2 border-gray-200"
+          />
+          <div class="flex-1">
+            <h2 class="text-lg font-medium text-gray-800">{{ pemesanan.kendaraan.merek_model }}</h2>
+            <div class="grid grid-cols-2 gap-2 mt-2 text-sm text-gray-600">
+              <div class="flex items-center">
+                <TagIcon class="w-4 h-4 mr-2 text-green-600" />
+                {{ pemesanan.kendaraan.kategori_kendaraan }}
+              </div>
+              <div class="flex items-center">
+                <CurrencyDollarIcon class="w-4 h-4 mr-2 text-green-600" />
+                {{ formatHarga(pemesanan.total_harga_sewa) }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Payment Method Details -->
+      <div class="space-y-6">
+        <!-- Bank Transfer Instructions -->
+        <div v-if="pembayaran.metode_pembayaran === 'Transfer Bank'" class="bg-green-50 p-6 rounded-xl">
+          <h3 class="text-lg font-medium text-gray-800 mb-4 flex items-center">
+            <BanknotesIcon class="w-5 h-5 mr-2 text-green-600" />
+            Instruksi Transfer Bank
+          </h3>
+
+          <div class="grid grid-cols-2 gap-4 text-sm">
+            <div class="space-y-2">
+              <div class="flex items-center">
+                <span class="w-24 text-gray-500">Bank Tujuan</span>
+                <span class="font-medium">BNI</span>
+              </div>
+              <div class="flex items-center">
+                <span class="w-24 text-gray-500">Nomor Rekening</span>
+                <span class="font-mono">1234 5678 9012</span>
+              </div>
+              <div class="flex items-center">
+                <span class="w-24 text-gray-500">Atas Nama</span>
+                <span class="font-medium">PT Rental Mobil Jaya</span>
+              </div>
+            </div>
+
+            <div class="border-l pl-4">
+              <p class="text-gray-500 mb-2">Total Transfer:</p>
+              <p class="text-2xl font-bold text-green-600">
+                {{ formatHarga(pembayaran.jumlah_pembayaran) }}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Upload Section -->
+        <div v-if="pembayaran.metode_pembayaran === 'Transfer Bank' && !pembayaran.bukti_pembayaran"
+            class="bg-white p-6 rounded-xl border border-gray-200">
+          <div class="space-y-4">
+            <label class="block text-sm font-medium text-gray-700">
+              <span class="flex items-center">
+                <ArrowUpTrayIcon class="w-4 h-4 mr-1 text-gray-600" />
+                Upload Bukti Transfer
+              </span>
+              <input
+                type="file"
+                @change="handleFileUpload"
+                class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200"
+              />
+            </label>
+            <button
+              @click="uploadBukti"
+              :disabled="!buktiPembayaran"
+              class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-6 rounded-lg flex items-center justify-center transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <CheckCircleIcon class="w-5 h-5 mr-2" />
+              Konfirmasi Pembayaran
+            </button>
+          </div>
+        </div>
+
+        <!-- Uploaded Proof -->
+        <div v-if="pembayaran.bukti_pembayaran" class="bg-white p-6 rounded-xl border border-gray-200">
+          <h4 class="text-sm font-medium text-gray-700 mb-2">Bukti Pembayaran:</h4>
+          <img
+            :src="pembayaran.bukti_pembayaran"
+            alt="Bukti Transfer"
+            class="w-64 h-64 object-contain border-2 border-dashed border-gray-200 rounded-lg p-2"
+          />
+        </div>
+
+        <!-- E-Wallet Section -->
+        <div v-if="pembayaran.metode_pembayaran === 'E-Wallet'" class="bg-green-50 p-6 rounded-xl text-center">
+          <h3 class="text-lg font-medium text-gray-800 mb-4 flex items-center justify-center">
+            <QrCodeIcon class="w-5 h-5 mr-2 text-green-600" />
+            Pembayaran QRIS
+          </h3>
+          <img
+            :src="qrCodeUrl"
+            alt="QR Code"
+            class="mx-auto w-48 h-48 object-contain border-2 border-gray-200 rounded-lg p-4 bg-white"
+          />
+          <p class="mt-4 text-sm text-gray-500">Scan QR code menggunakan aplikasi e-wallet Anda</p>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import api from '../plugins/axios'
+import {
+  CreditCardIcon,
+  BanknotesIcon,
+  ArrowUpTrayIcon,
+  CheckCircleIcon,
+  QrCodeIcon,
+  CurrencyDollarIcon,
+  TagIcon,
+  ArrowPathIcon
+} from '@heroicons/vue/24/outline'
 
 export default {
   props: ['id'],
+  components: {
+    CreditCardIcon,
+    BanknotesIcon,
+    ArrowUpTrayIcon,
+    CheckCircleIcon,
+    QrCodeIcon,
+    CurrencyDollarIcon,
+    TagIcon,
+    ArrowPathIcon
+  },
   data() {
     return {
       pemesanan: null,
       pembayaran: null,
       buktiPembayaran: null,
       qrCodeUrl: 'https://www.berkabarnews.com/foto_berita/3IMG_20210228_175025.jpg',
+      statusIcons: {
+        'Pending': 'ClockIcon',
+        'Menunggu Konfirmasi': 'ShieldCheckIcon',
+        'Dibayar': 'CheckCircleIcon',
+        'Ditolak': 'XCircleIcon'
+      }
     }
   },
   methods: {
@@ -108,7 +202,7 @@ export default {
         })
 
         alert('Bukti pembayaran berhasil diunggah!')
-        this.fetchDetailPembayaran() // Refresh data setelah upload
+        this.fetchDetailPembayaran()
       } catch (error) {
         console.error('Gagal mengunggah bukti pembayaran:', error)
       }

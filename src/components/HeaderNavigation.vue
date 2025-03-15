@@ -1,5 +1,5 @@
 <template>
-  <Disclosure as="nav" class="sticky top-0 bg-white" v-slot="{ open }">
+  <Disclosure as="nav" class="z-10 sticky top-0 bg-white" v-slot="{ open }">
     <div class="mx-auto max-w-7xl px-2 sm:px-6">
       <div class="relative flex h-24 items-center justify-between">
         <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
@@ -99,7 +99,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue'
 import { Bars3Icon, XMarkIcon } from '@heroicons/vue/24/outline'

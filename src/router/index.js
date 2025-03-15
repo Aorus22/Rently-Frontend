@@ -16,6 +16,7 @@ import AdminHome from '../views/Admin/Dashboard.vue';
 import KendaraanTable from '../views/Admin/KendaraanTable.vue';
 import AdminLogin from '../views/Admin/LoginView.vue';
 import PelangganTable from '../views/Admin/ListPelanggan.vue';
+import RiwayatSewa from '../views/Admin/RiwayatSewaTable.vue';
 
 const routes = [
   { path: '/', component: Dashboard },
@@ -31,16 +32,17 @@ const routes = [
   { path: '/detail-pembayaran/:id', component: DetailPembayaran, props: true },
 
    // Admin Routes
-  {
+   {
     path: "/admin",
     component: AdminLayout,
     children: [
       { path: "", redirect: "/admin/dashboard" },
       { path: "dashboard", component: AdminHome },
       { path: "manage_kendaraan", component: KendaraanTable },
-      { path: "manage_pelanggan", component: PelangganTable }
+      { path: "manage_pelanggan", component: PelangganTable },
+      { path: "manage_riwayat_sewa", component: RiwayatSewa }
     ],
-    meta: {requiresAuth: true},
+    meta: { requiresAuth: true },
   },
 
   { path: "/admin/login", component: AdminLogin, meta: { hideHeader: true } },

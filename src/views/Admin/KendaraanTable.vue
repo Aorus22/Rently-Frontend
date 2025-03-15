@@ -29,12 +29,15 @@
           <td class="border p-2">Rp {{ kendaraan.harga_sewa_per_periode }}</td>
           <td class="border p-2">{{ kendaraan.status_ketersediaan }}</td>
           <td class="border p-2">
+            <button class="bg-blue-500 text-white px-2 py-1 rounded mr-2" @click="detailModal.openDetailModal(kendaraan)">Detail</button>
             <button class="bg-green-500 text-white px-2 py-1 rounded mr-2" @click="openModal(kendaraan)">Edit</button>
             <button class="bg-red-500 text-white px-2 py-1 rounded" @click="deleteKendaraan(kendaraan.id)">Hapus</button>
           </td>
         </tr>
       </tbody>
     </table>
+
+    <DetailKendaraanModal ref="detailModal" />
 
     <!-- Modal -->
     <div v-if="modalVisible" class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
@@ -75,6 +78,7 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
+import DetailKendaraanModal from "../Admin/DetailKendaraanModal.vue";
 import api from "@/plugins/axios";
 
 // Data
@@ -83,6 +87,7 @@ const modalVisible = ref(false);
 const isEditing = ref(false);
 const kendaraanData = ref({});
 const errors = ref({});
+const detailModal = ref(null);
 
 // Define fields dynamically
 const formFields = [
@@ -127,13 +132,14 @@ const closeModal = () => {
   modalVisible.value = false;
 };
 
+
 // Add or update kendaraan
 const saveKendaraan = async () => {
   try {
     if (isEditing.value) {
-      await api.put(`/kendaraan/${kendaraanData.value.id}`, kendaraanData.value);
+      await api.put(`/admin/kendaraan/${kendaraanData.value.id}`, kendaraanData.value);
     } else {
-      await api.post("/kendaraan", kendaraanData.value);
+      await api.post("/admin/kendaraan", kendaraanData.value);
     }
     closeModal();
     fetchKendaraan(); // Refresh table data
@@ -150,7 +156,7 @@ const saveKendaraan = async () => {
 const deleteKendaraan = async (id) => {
   if (confirm("Are you sure you want to delete this kendaraan?")) {
     try {
-      await api.delete(`/kendaraan/${id}`);
+      await api.delete(`/admin/kendaraan/${id}`);
       fetchKendaraan();
     } catch (error) {
       console.error("Error deleting kendaraan:", error);

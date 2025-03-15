@@ -15,6 +15,7 @@ import AdminLayout from '../components/AdminLayout.vue';
 import AdminHome from '../views/Admin/Dashboard.vue';
 import KendaraanTable from '../views/Admin/KendaraanTable.vue';
 import AdminLogin from '../views/Admin/LoginView.vue';
+import PelangganTable from '../views/Admin/ListPelanggan.vue';
 
 const routes = [
   { path: '/', component: Dashboard },
@@ -37,6 +38,7 @@ const routes = [
       { path: "", redirect: "/admin/dashboard" },
       { path: "dashboard", component: AdminHome },
       { path: "manage_kendaraan", component: KendaraanTable },
+      { path: "manage_pelanggan", component: PelangganTable }
     ],
     meta: {requiresAuth: true},
   },

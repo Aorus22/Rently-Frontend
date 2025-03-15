@@ -44,8 +44,7 @@ export default {
 
         localStorage.setItem("admin_access_token", response.data.access_token);
         localStorage.setItem("admin_token_type", response.data.token_type);
-
-        const userResponse = await api.get("/akusiapa", {
+        const userResponse = await api.get("/admin/akusiapa", {
           headers: { Authorization: `Bearer ${response.data.access_token}` },
         });
 

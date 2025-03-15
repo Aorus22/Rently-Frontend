@@ -14,6 +14,7 @@
           <th class="border p-2">Transmisi</th>
           <th class="border p-2">Nomor Polisi</th>
           <th class="border p-2">Harga</th>
+          <th class="border p-2">Status</th>
           <th class="border p-2">Aksi</th>
         </tr>
       </thead>
@@ -26,6 +27,7 @@
           <td class="border p-2">{{ kendaraan.jenis_transmisi }}</td>
           <td class="border p-2">{{ kendaraan.nomor_polisi }}</td>
           <td class="border p-2">Rp {{ kendaraan.harga_sewa_per_periode }}</td>
+          <td class="border p-2">{{ kendaraan.status_ketersediaan }}</td>
           <td class="border p-2">
             <button class="bg-green-500 text-white px-2 py-1 rounded mr-2" @click="openModal(kendaraan)">Edit</button>
             <button class="bg-red-500 text-white px-2 py-1 rounded" @click="deleteKendaraan(kendaraan.id)">Hapus</button>

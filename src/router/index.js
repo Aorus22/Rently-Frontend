@@ -10,6 +10,12 @@ import DetailPemesanan from '@/views/DetailPemesananView.vue';
 import Pembayaran from '../views/PembayaranView.vue';
 import DetailPembayaran from '@/views/DetailPembayaranView.vue';
 
+// Import Admin Views
+import AdminLayout from '../components/AdminLayout.vue';
+import AdminHome from '../views/Admin/Dashboard.vue';
+import KendaraanTable from '../views/Admin/KendaraanTable.vue';
+import AdminLogin from '../views/Admin/LoginView.vue';
+
 const routes = [
   { path: '/', component: Dashboard },
   { path: '/kendaraan', component: ListKendaraan },
@@ -21,12 +27,39 @@ const routes = [
   { path: '/riwayat-pemesanan', component: RiwayatPemesanan },
   { path: '/detail-pemesanan/:id', component: DetailPemesanan },
   { path: "/detail-pemesanan/:id/bayar", component: Pembayaran, props: true },
-  { path: '/detail-pembayaran/:id', component: DetailPembayaran, props: true }
+  { path: '/detail-pembayaran/:id', component: DetailPembayaran, props: true },
+
+   // Admin Routes
+  {
+    path: "/admin",
+    component: AdminLayout,
+    children: [
+      { path: "", redirect: "/admin/dashboard" },
+      { path: "dashboard", component: AdminHome },
+      { path: "manage_kendaraan", component: KendaraanTable },
+    ],
+    meta: {requiresAuth: true},
+  },
+
+  { path: "/admin/login", component: AdminLogin, meta: { hideHeader: true } },
 ];
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes
 })
+
+// Check if logged in
+router.beforeEach((to, from, next) => {
+  const isAuthenticated = !!localStorage.getItem('admin_access_token');
+
+  if (to.path === "/admin/login" && isAuthenticated) {
+    next("/admin");
+  } else if (to.meta.requiresAuth && !isAuthenticated) {
+    next("/admin/login");
+  } else {
+    next();
+  }
+});
 
 export default router

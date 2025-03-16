@@ -21,7 +21,7 @@
           <p><strong>Status:</strong> {{ kendaraan.status_ketersediaan }}</p>
           <p><strong>Harga Sewa:</strong> Rp{{ kendaraan.harga_sewa_per_periode.toLocaleString() }}</p>
           <p><strong>Fasilitas:</strong> {{ kendaraan.kondisi_fasilitas }}</p>
-          <p><strong>Lokasi:</strong> {{ kendaraan.lokasi_kendaraan }}</p>
+          <p><strong>Lokasi:</strong> {{ kendaraan.lokasi_garasi.kota }}</p>
         </div>
       </div>
 

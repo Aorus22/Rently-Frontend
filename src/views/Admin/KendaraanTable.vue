@@ -60,7 +60,9 @@
             v-model="kendaraanData[field.key]"
             class="w-full p-2 border rounded"
           >
-            <option v-for="option in field.options" :key="option" :value="option">{{ option }}</option>
+            <option v-for="option in field.options" :key="option" :value="option.value">
+              {{ option.label }}
+            </option>
           </select>
 
           <p v-if="errors[field.key]" class="text-red-500 text-sm">{{ errors[field.key][0] }}</p>
@@ -80,29 +82,42 @@
 import { ref, onMounted } from "vue";
 import DetailKendaraanModal from "../Admin/DetailKendaraanModal.vue";
 import api from "@/plugins/axios";
+import { computed } from "vue";
 
 // Data
 const kendaraanList = ref([]);
+const garasiList = ref([]);
 const modalVisible = ref(false);
 const isEditing = ref(false);
 const kendaraanData = ref({});
 const errors = ref({});
 const detailModal = ref(null);
 
-// Define fields dynamically
-const formFields = [
+const kategoriKendaraanOption = [
+  { value: "Mobil", label: "Mobil" },
+  { value: "Minibus", label: "Minibus" },
+  { value: "Pickup", label: "Pickup" },
+];
+
+const statusketersediaanOption = [
+  { value: "Tersedia", label: "Tersedia" },
+  { value: "Disewa", label: "Disewa" },
+  { value: "Perawatan", label: "Perawatan" },
+];
+
+const formFields = computed(() => [
   { key: "gambar_url", label: "Gambar URL", type: "text" },
-  { key: "kategori_kendaraan", label: "Kategori Kendaraan", type: "select", options: ["Mobil", "Minibus", "Pickup"] },
+  { key: "kategori_kendaraan", label: "Kategori Kendaraan", type: "select", options: kategoriKendaraanOption },
   { key: "merek_model", label: "Merek & Model", type: "text" },
   { key: "kapasitas_kursi", label: "Kapasitas Kursi", type: "number" },
-  { key: "jenis_transmisi", label: "Jenis Transmisi", type: "select", options: ["Manual", "Automatic"] },
+  { key: "jenis_transmisi", label: "Jenis Transmisi", type: "select", options: [{ value: "Manual", label: "Manual" }, { value: "Automatic", label: "Automatic" }] },
   { key: "tahun_produksi", label: "Tahun Produksi", type: "number" },
   { key: "nomor_polisi", label: "Nomor Polisi", type: "text" },
-  { key: "status_ketersediaan", label: "Status Ketersediaan", type: "select", options: ["Tersedia", "Disewa", "Perawatan"] },
+  { key: "status_ketersediaan", label: "Status Ketersediaan", type: "select", options: statusketersediaanOption },
   { key: "harga_sewa_per_periode", label: "Harga Sewa", type: "number" },
   { key: "kondisi_fasilitas", label: "Kondisi Fasilitas", type: "text" },
-  { key: "lokasi_kendaraan", label: "Lokasi Kendaraan", type: "text" },
-];
+  { key: "lokasi_garasi_id", label: "Lokasi Kendaraan", type: "select", options: garasiList.value },
+]);
 
 // Fetch all kendaraan
 const fetchKendaraan = async () => {
@@ -114,13 +129,26 @@ const fetchKendaraan = async () => {
   }
 };
 
+const fetchGarasiList = async () => {
+  try {
+    const response = await api.get("/garasi");
+    garasiList.value = response.data.map(garasi => ({
+      value: garasi.id,
+      label: garasi.kota
+    }));
+  } catch (error) {
+    console.error("Error fetching garasi list:", error);
+  }
+};
+
 // Open modal (Add/Edit)
 const openModal = (kendaraan = null) => {
   if (kendaraan) {
     kendaraanData.value = { ...kendaraan };
+    kendaraanData.value.lokasi_garasi_id = kendaraan.lokasi_garasi?.id || "";
     isEditing.value = true;
   } else {
-    kendaraanData.value = Object.fromEntries(formFields.map((field) => [field.key, ""]));
+    kendaraanData.value = Object.fromEntries(formFields.value.map((field) => [field.key, ""]));
     isEditing.value = false;
   }
   modalVisible.value = true;
@@ -165,5 +193,8 @@ const deleteKendaraan = async (id) => {
 };
 
 // Load data on mount
-onMounted(fetchKendaraan);
+onMounted(() => {
+  fetchKendaraan();
+  fetchGarasiList();
+});
 </script>

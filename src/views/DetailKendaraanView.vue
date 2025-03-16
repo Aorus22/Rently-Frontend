@@ -41,7 +41,7 @@ Copy
               </div>
               <div class="flex items-center">
                 <MapPinIcon class="w-5 h-5 mr-2 text-green-600" />
-                {{ kendaraan.lokasi_kendaraan }}
+                {{ kendaraan.lokasi_garasi.kota }}
               </div>
               <div class="flex items-center">
                 <CalendarIcon class="w-5 h-5 mr-2 text-green-600" />

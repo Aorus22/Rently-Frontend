@@ -36,7 +36,7 @@
             </div>
             <div class="flex items-center">
               <MapPinIcon class="w-4 h-4 mr-2 text-green-600" />
-              {{ pemesanan.kendaraan.lokasi_kendaraan }}
+              {{ pemesanan.kendaraan.lokasi_garasi.kota }}
             </div>
             <div class="flex items-center">
               <Cog6ToothIcon class="w-4 h-4 mr-2 text-green-600" />

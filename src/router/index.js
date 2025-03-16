@@ -1,4 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { useAuthStore } from '@/stores/auth';
+
 import Login from '../views/LoginView.vue';
 import Register from '../views/RegisterView.vue';
 import Dashboard from '../views/DashboardView.vue';
@@ -22,17 +24,18 @@ const routes = [
   { path: '/', component: Dashboard },
   { path: '/kendaraan', component: ListKendaraan },
   { path: '/kendaraan/:id', component: DetailKendaraan },
-  { path: '/kendaraan/:id/pesan', component: Pemesanan },
-  // { path: '/pemesanan/:id', component: Pemesanan },
+  { path: '/kendaraan/:id/pesan', component: Pemesanan, meta: { requiresAuth: true } },
+
   { path: '/login', component: Login, meta: { hideHeader: true },  },
   { path: '/register', component: Register, meta: { hideHeader: true }, },
-  { path: '/riwayat-pemesanan', component: RiwayatPemesanan },
-  { path: '/detail-pemesanan/:id', component: DetailPemesanan },
-  { path: "/detail-pemesanan/:id/bayar", component: Pembayaran, props: true },
-  { path: '/detail-pembayaran/:id', component: DetailPembayaran, props: true },
+
+  { path: '/riwayat-pemesanan', component: RiwayatPemesanan, meta: { requiresAuth: true } },
+  { path: '/detail-pemesanan/:id', component: DetailPemesanan, meta: { requiresAuth: true } },
+  { path: "/detail-pemesanan/:id/bayar", component: Pembayaran, props: true, meta: { requiresAuth: true } },
+  { path: '/detail-pembayaran/:id', component: DetailPembayaran, props: true, meta: { requiresAuth: true } },
 
    // Admin Routes
-   {
+  {
     path: "/admin",
     component: AdminLayout,
     children: [
@@ -54,16 +57,37 @@ const router = createRouter({
 })
 
 // Check if logged in
-router.beforeEach((to, from, next) => {
-  const isAuthenticated = !!localStorage.getItem('admin_access_token');
+router.beforeEach(async (to, from, next) => {
+  const authStore = useAuthStore();
+  const isUserAuthenticated = !!authStore.user || !!localStorage.getItem('access_token');
+  const isAdminAuthenticated = !!localStorage.getItem('admin_access_token');
 
-  if (to.path === "/admin/login" && isAuthenticated) {
-    next("/admin");
-  } else if (to.meta.requiresAuth && !isAuthenticated) {
-    next("/admin/login");
-  } else {
-    next();
+  // Admin Authentication Check
+  if (to.path.startsWith("/admin")) {
+    if (to.path === "/admin/login" && isAdminAuthenticated) {
+      return next("/admin");
+    }
+    if (to.meta.requiresAdminAuth && !isAdminAuthenticated) {
+      return next("/admin/login");
+    }
+    return next();
   }
+
+  // user Authentication Check
+  if (to.meta.requiresAuth && !isUserAuthenticated) {
+    return next({ path: "/login", query: { redirect: to.fullPath } });
+  }
+
+  if (!authStore.user && localStorage.getItem('access_token')) {
+    try {
+      await authStore.checkAuth(localStorage.getItem('access_token'));
+    } catch (error) {
+      console.error("Autentikasi gagal:", error);
+      return next({ path: "/login", query: { redirect: to.fullPath } });
+    }
+  }
+
+  next();
 });
 
 export default router

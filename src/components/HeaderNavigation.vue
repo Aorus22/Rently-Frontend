@@ -19,7 +19,7 @@
           </div>
         </div>
         <div class="flex flex-none sm:flex-1">
-          <a href="#" class="hidden lg:flex items-center inline-block hover:text-gray-500">
+          <a href="#" class="lg:flex items-center inline-block hover:text-gray-500">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-4 mr-2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 0 0 6 3.75v16.5a2.25 2.25 0 0 0 2.25 2.25h7.5A2.25 2.25 0 0 0 18 20.25V3.75a2.25 2.25 0 0 0-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" />
             </svg>
@@ -59,7 +59,7 @@
               <!-- Dropdown Menu -->
               <div v-if="dropdownOpen"
                 class="absolute right-0 mt-2 w-48 bg-white text-black shadow-lg rounded-xl overflow-hidden">
-                <span class="block px-4 py-2 font-semibold">Hai, {{ user.nama_lengkap }}!</span>
+                <span v-if="user" class="block px-4 py-2 font-semibold">Hai, {{ user.nama_lengkap }}!</span>
                 <router-link to="/riwayat-pemesanan" class="block px-4 py-2 hover:bg-gray-200">Riwayat
                   Pemesanan</router-link>
                 <button @click="logout" class="block w-full text-left px-4 py-2 hover:bg-gray-200">Logout</button>
@@ -98,35 +98,36 @@
   </Disclosure>
 </template>
 
-<script setup>
-import { computed } from 'vue'
+<script>
 import { useRoute } from 'vue-router'
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue'
 import { Bars3Icon, XMarkIcon } from '@heroicons/vue/24/outline'
+import { useAuthStore } from '@/stores/auth';
 
-const route = useRoute() // Get current route
-
-const navigation = computed(() =>
-  [
-    { name: 'Home', href: '/', current: route.path === '/' },
-    { name: 'List Kendaraan', href: '/kendaraan', current: route.path.startsWith('/kendaraan') },
-    { name: 'About', href: '$', current: false },
-    { name: 'Contact', href: '$', current: false }
-  ]
-)
-</script>
-
-<script>
 export default {
+  components: { Disclosure, DisclosureButton, DisclosurePanel, Bars3Icon, XMarkIcon },
   data() {
     return {
       dropdownOpen: false,
-      user: JSON.parse(localStorage.getItem('user')) || null
+      authStore: useAuthStore(),
+      route: useRoute(),
+      loading: true
     };
   },
   computed: {
     isLoggedIn() {
-      return !!localStorage.getItem('access_token');
+      return !!this.user;
+    },
+    user() {
+      return this.authStore.user;
+    },
+    navigation() {
+      return [
+        { name: 'Home', href: '/', current: this.$route.path === '/' },
+        { name: 'List Kendaraan', href: '/kendaraan', current: this.$route.path.startsWith('/kendaraan') },
+        { name: 'About', href: '$', current: false },
+        { name: 'Contact', href: '$', current: false }
+      ];
     }
   },
   methods: {
@@ -135,9 +136,19 @@ export default {
     },
     logout() {
       localStorage.removeItem('access_token');
-      localStorage.removeItem('user');
-      this.user = null;
-      this.$router.push('/login');
+      this.authStore.logoutUser();
+      this.$router.push('/');
+    }
+  },
+  async mounted() {
+    const access_token = localStorage.getItem('access_token');
+    if (access_token) {
+      let loader = this.$loading.show({
+        isFullPage: true,
+      });
+      await this.authStore.checkAuth(access_token);
+      loader.hide();
+      this.loading = false;
     }
   }
 };

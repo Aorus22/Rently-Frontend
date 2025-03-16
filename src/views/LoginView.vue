@@ -30,16 +30,27 @@
 
 <script>
 import api from '../plugins/axios'
+import { useAuthStore } from "@/stores/auth";
 
 export default {
   data() {
     return {
       email: "",
       password: "",
+      authStore: useAuthStore(),
     };
+  },
+  computed: {
+    redirect() {
+      return this.$route.query.redirect || '/';
+    }
   },
   methods: {
     async login() {
+      let loader = this.$loading.show({
+        isFullPage: true,
+      });
+
       try {
         const response = await api.post("/login", {
           email: this.email,
@@ -47,19 +58,20 @@ export default {
         });
 
         localStorage.setItem("access_token", response.data.access_token);
-        localStorage.setItem("token_type", response.data.token_type);
 
         const userResponse = await api.get("/me", {
           headers: { Authorization: `Bearer ${response.data.access_token}` },
         });
 
-        localStorage.setItem("user", JSON.stringify(userResponse.data));
+        this.authStore.setUser(userResponse.data);
 
-        alert(JSON.stringify(userResponse.data));
-        this.$router.push("/kendaraan");
+        this.$router.push(this.redirect);
+        
       } catch (error) {
         console.log(error)
         alert("Login gagal! Cek email dan password.");
+      } finally {
+        loader.hide();
       }
     },
   },

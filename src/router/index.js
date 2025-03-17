@@ -15,11 +15,8 @@ import DetailPembayaran from '@/views/DetailPembayaranView.vue';
 // Import Admin Views
 import AdminLayout from '../components/AdminLayout.vue';
 import AdminHome from '../views/Admin/Dashboard.vue';
-import KendaraanTable from '../views/Admin/KendaraanTable.vue';
 import AdminLogin from '../views/Admin/LoginView.vue';
-import PelangganTable from '../views/Admin/ListPelanggan.vue';
 import DynamicCrud from '../views/Admin/DynamicCrud.vue';
-import RiwayatSewa from '../views/Admin/RiwayatSewaTable.vue';
 
 const routes = [
   { path: '/', component: Dashboard },
@@ -42,9 +39,6 @@ const routes = [
     children: [
       { path: "", redirect: "/admin/dashboard" },
       { path: "dashboard", component: AdminHome },
-      { path: "manage_kendaraan", component: KendaraanTable },
-      { path: "manage_pelanggan", component: PelangganTable },
-      { path: "manage_riwayat_sewa", component: RiwayatSewa },
       {
         path: ':table', component: DynamicCrud, props: true
       }

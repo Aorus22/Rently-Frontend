@@ -5,6 +5,9 @@
     <div v-if="loading" class="text-gray-400">Loading...</div>
     <div v-else-if="error" class="text-red-400">{{ error }}</div>
     <nav v-else class="flex-1">
+      <router-link to="/admin/dashboard" class="block py-2 px-4 hover:bg-gray-700 rounded">
+         Dashboard
+      </router-link>
       <router-link
         v-for="(config, table) in tables"
         :key="table"

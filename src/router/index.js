@@ -18,6 +18,7 @@ import AdminHome from '../views/Admin/Dashboard.vue';
 import KendaraanTable from '../views/Admin/KendaraanTable.vue';
 import AdminLogin from '../views/Admin/LoginView.vue';
 import PelangganTable from '../views/Admin/ListPelanggan.vue';
+import DynamicCrud from '../views/Admin/DynamicCrud.vue';
 import RiwayatSewa from '../views/Admin/RiwayatSewaTable.vue';
 
 const routes = [
@@ -43,7 +44,10 @@ const routes = [
       { path: "dashboard", component: AdminHome },
       { path: "manage_kendaraan", component: KendaraanTable },
       { path: "manage_pelanggan", component: PelangganTable },
-      { path: "manage_riwayat_sewa", component: RiwayatSewa }
+      { path: "manage_riwayat_sewa", component: RiwayatSewa },
+      {
+        path: ':table', component: DynamicCrud, props: true
+      }
     ],
     meta: { requiresAuth: true },
   },

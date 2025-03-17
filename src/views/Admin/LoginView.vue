@@ -48,7 +48,7 @@ export default {
           headers: { Authorization: `Bearer ${response.data.access_token}` },
         });
 
-        localStorage.setItem("admin", JSON.stringify(userResponse.data));
+        // auth belum wkwk
         this.$router.push("/admin");
       } catch (error) {
         console.log(error)

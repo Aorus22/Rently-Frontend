@@ -43,10 +43,8 @@
 .background-dashboard {
   background: url('/src/assets/image/bg-1.png') no-repeat center center;
   background-size: cover;
-  background-attachment: fixed; /* Optional: Keeps the background fixed while scrolling */
+  background-attachment: fixed;
   width: 100vw;
-  display: flex; /* Ensures content inside can be centered */
-  align-items: center;
 }
 </style>
 

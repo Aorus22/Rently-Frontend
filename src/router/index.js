@@ -5,6 +5,7 @@ import { useAdminAuthStore } from '@/stores/authAdmin';
 import Login from '../views/LoginView.vue';
 import Register from '../views/RegisterView.vue';
 import Dashboard from '../views/DashboardView.vue';
+import Home from '../views/HomeView.vue';
 import ListKendaraan from '../views/ListKendaraanView.vue';
 import DetailKendaraan from '../views/DetailKendaraanView.vue';
 import Pemesanan from '../views/PemesananView.vue';
@@ -21,6 +22,7 @@ import DynamicCrud from '../views/Admin/DynamicCrud.vue';
 
 const routes = [
   { path: '/', component: Dashboard },
+  { path: '/home', component: Home },
   { path: '/kendaraan', component: ListKendaraan },
   { path: '/kendaraan/:id', component: DetailKendaraan },
   { path: '/kendaraan/:id/pesan', component: Pemesanan, meta: { requiresAuth: true } },

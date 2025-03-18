@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '@/stores/auth';
+import { useAdminAuthStore } from '@/stores/authAdmin';
 
 import Login from '../views/LoginView.vue';
 import Register from '../views/RegisterView.vue';
@@ -39,11 +40,9 @@ const routes = [
     children: [
       { path: "", redirect: "/admin/dashboard" },
       { path: "dashboard", component: AdminHome },
-      {
-        path: ':table', component: DynamicCrud, props: true
-      }
+      { path: ':table', component: DynamicCrud, props: true }
     ],
-    meta: { requiresAuth: true },
+    meta: { requiresAdminAuth: true },
   },
 
   { path: "/admin/login", component: AdminLogin, meta: { hideHeader: true } },
@@ -57,16 +56,23 @@ const router = createRouter({
 // Check if logged in
 router.beforeEach(async (to, from, next) => {
   const authStore = useAuthStore();
+  const adminAuthStore = useAdminAuthStore();
   const isUserAuthenticated = !!authStore.user || !!localStorage.getItem('access_token');
-  const isAdminAuthenticated = !!localStorage.getItem('admin_access_token');
+  const isAdminAuthenticated = !!adminAuthStore.user || !!localStorage.getItem('admin_access_token');
 
   // Admin Authentication Check
   if (to.path.startsWith("/admin")) {
-    if (to.path === "/admin/login" && isAdminAuthenticated) {
-      return next("/admin");
+    if (to.path != "/admin/login") {
+      try {
+        await adminAuthStore.checkAuth(localStorage.getItem('admin_access_token'));
+      } catch (error) {
+        console.log("Something wrong: ", error);
+        return next("/admin/login");
+      }
     }
-    if (to.meta.requiresAdminAuth && !isAdminAuthenticated) {
-      return next("/admin/login");
+
+    if (to.path === "/admin/login" && isAdminAuthenticated) {
+      return next("/admin")
     }
     return next();
   }

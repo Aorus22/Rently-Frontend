@@ -1,22 +1,13 @@
 <script setup>
 import { defineProps, defineEmits } from "vue";
 
-const props = defineProps({data: Object});
+const props = defineProps({data: Object, config: Object});
 
 function snakeToTitleCase(str) {
   return str
     .split('_')
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
-}
-
-function isValidUrl(url) {
-  try {
-    new URL(url);
-    return true;
-  } catch (error) {
-    return false;
-  }
 }
 
 const emit = defineEmits(["close"]);
@@ -28,16 +19,21 @@ const emit = defineEmits(["close"]);
       <h2 class="text-lg font-bold mb-4">Detail View</h2>
       <table class="w-full border-collapse border border-gray-300">
         <tbody>
-          <tr v-for="(label, column) in data" :key="label">
+          <tr v-for="(label, column) in data" :key="column">
             <td class="border p-2 font-semibold">{{ snakeToTitleCase(column) }}</td>
             <td class="border p-2">
-            <template v-if="column === 'gambar_url'">
-              <img :src="data[column]" alt="Image" class="max-w-[100px] max-h-[100px]" />
-            </template>
-            <template v-else>
-              {{ data?.[column] }}
-            </template>
-          </td>
+              <template v-if="config.special_view[column] === 'image'">
+                <img :src="data[column]" alt="Image" class="max-w-[100px] max-h-[100px]" />
+              </template>
+              <template v-else-if="config.special_view[column] === 'url'">
+                <a :href="data[column]" target="_blank">
+                  <button class="bg-blue-500 text-white px-4 py-1 rounded">View</button>
+                </a>
+              </template>
+              <template v-else>
+                {{ data?.[column] }}
+              </template>
+            </td>
           </tr>
         </tbody>
       </table>

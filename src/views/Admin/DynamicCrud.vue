@@ -24,7 +24,17 @@
       <tbody>
         <tr v-for="row in formattedData" :key="row.id" class="border">
           <td v-for="(label, column) in tableConfig?.visible_columns" :key="column" class="border p-2">
-            {{ row?.[column] }}
+            <template v-if="tableConfig?.special_view?.[column] === 'image'">
+              <img :src="row[column]" alt="Image" class="max-w-[100px] max-h-[100px]" />
+            </template>
+            <template v-else-if="tableConfig?.special_view?.[column] === 'url'">
+              <a :href="row[column]" target="_blank">
+                <button class="bg-blue-500 text-white px-4 py-1 rounded">View</button>
+              </a>
+            </template>
+            <template v-else>
+              {{ row?.[column] }}
+            </template>
           </td>
           <td class="border p-2">
             <button v-if="tableConfig?.detail_view" @click="openDetail(row)" class="text-blue-500 mr-2">🔍 View</button>
@@ -40,6 +50,7 @@
     <DetailModal
       v-if="showDetail"
       :data="detailData"
+      :config="tableConfig"
       @close="showDetail = false"
     />
 

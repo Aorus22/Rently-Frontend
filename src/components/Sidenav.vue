@@ -27,6 +27,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
+import { useAdminAuthStore } from "@/stores/authAdmin";
 
 import api from "@/plugins/axios";
 
@@ -34,6 +35,7 @@ const tables = ref({});
 const loading = ref(true);
 const error = ref(null);
 const router = useRouter();
+const adminAuth = useAdminAuthStore();
 
 const fetchTables = async () => {
   try {
@@ -47,11 +49,9 @@ const fetchTables = async () => {
 };
 
 const logout = () => {
-  localStorage.removeItem("admin_access_token");
-  localStorage.removeItem("admin_token_type");
-  localStorage.removeItem("admin");
-
+  adminAuth.logoutAdmin();
   router.push("/admin/login");
 };
+
 onMounted(fetchTables);
 </script>

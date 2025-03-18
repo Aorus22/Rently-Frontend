@@ -26,12 +26,14 @@
 
 <script>
 import api from '../../plugins/axios'
+import { useAdminAuthStore } from "@/stores/authAdmin";
 
 export default {
   data() {
     return {
       email: "",
       password: "",
+      auth: useAdminAuthStore()
     };
   },
   methods: {
@@ -42,13 +44,11 @@ export default {
           password: this.password,
         });
 
-        localStorage.setItem("admin_access_token", response.data.access_token);
-        localStorage.setItem("admin_token_type", response.data.token_type);
         const userResponse = await api.get("/admin/akusiapa", {
           headers: { Authorization: `Bearer ${response.data.access_token}` },
         });
 
-        // auth belum wkwk
+        this.auth.setAdmin(userResponse.data, response.data.access_token);
         this.$router.push("/admin");
       } catch (error) {
         console.log(error)

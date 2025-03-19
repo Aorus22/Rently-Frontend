@@ -65,7 +65,7 @@ router.beforeEach(async (to, from, next) => {
   // Admin Authentication Check
   if (to.path.startsWith("/admin")) {
     if (to.path != "/admin/login" && !isAdminAuthenticated) {
-      return next("/admin/login);
+      return next("/admin/login");
     }
 
     if (to.path === "/admin/login" && isAdminAuthenticated) {

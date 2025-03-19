@@ -64,13 +64,8 @@ router.beforeEach(async (to, from, next) => {
 
   // Admin Authentication Check
   if (to.path.startsWith("/admin")) {
-    if (to.path != "/admin/login") {
-      try {
-        await adminAuthStore.checkAuth(localStorage.getItem('admin_access_token'));
-      } catch (error) {
-        console.log("Something wrong: ", error);
-        return next("/admin/login");
-      }
+    if (to.path != "/admin/login" && !isAdminAuthenticated) {
+      return next("/admin/login);
     }
 
     if (to.path === "/admin/login" && isAdminAuthenticated) {

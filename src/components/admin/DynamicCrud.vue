@@ -61,8 +61,8 @@
 import { ref, onMounted, watch, computed } from "vue";
 import { useRoute } from "vue-router";
 import api from "@/plugins/axios";
-import CrudModal from "../Admin/CrudModal.vue";
-import DetailModal from "../Admin/DetailModal.vue";
+import CrudModal from "./CrudModal.vue";
+import DetailModal from "./DetailModal.vue";
 
 const route = useRoute();
 const table = ref(route.params.table);

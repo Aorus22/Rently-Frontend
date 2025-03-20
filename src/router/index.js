@@ -15,10 +15,10 @@ import Pembayaran from '../views/PembayaranView.vue';
 import DetailPembayaran from '@/views/DetailPembayaranView.vue';
 
 // Import Admin Views
-import AdminLayout from '../components/AdminLayout.vue';
-import AdminHome from '../views/Admin/Dashboard.vue';
+import AdminLayout from '../layouts/AdminLayout.vue';
+import AdminHome from '../views/Admin/DashboardView.vue';
 import AdminLogin from '../views/Admin/LoginView.vue';
-import DynamicCrud from '../views/Admin/DynamicCrud.vue';
+import DynamicCrud from '../components/admin/DynamicCrud.vue';
 
 const routes = [
   { path: '/', component: Dashboard },

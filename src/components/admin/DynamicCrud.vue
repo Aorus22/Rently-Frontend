@@ -81,16 +81,19 @@ const fetchConfig = async () => {
     const response = await api.get("/admin/infotabeldong");
     tableConfig.value = response.data[table.value];
   } catch (err) {
+    console.error(err);
     error.value = "Failed to load table config";
   }
 };
 
 const fetchData = async () => {
   try {
+    loading.value = true
     const response = await api.get(`/admin/${table.value}`);
     data.value = response.data;
     await fetchForeignKeys();
   } catch (err) {
+    console.error(err);
     error.value = "Failed to load data";
   } finally {
     loading.value = false;
@@ -108,6 +111,7 @@ const fetchForeignKeys = async () => {
         return acc;
       }, {});
     } catch (err) {
+      console.error(err);
       console.error(`Failed to fetch foreign key data for ${column}`);
     }
   }
@@ -142,6 +146,7 @@ const deleteItem = async (id) => {
     await api.delete(`/admin/${table.value}/${id}`);
     fetchData();
   } catch (err) {
+    console.error(err);
     alert("Failed to delete item");
   }
 };

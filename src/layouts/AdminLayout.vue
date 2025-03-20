@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import Sidenav from './Sidenav.vue';
+import Sidenav from '../components/admin/SidebarNavigation.vue';
 
 export default {
   components: {

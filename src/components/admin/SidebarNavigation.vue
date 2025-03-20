@@ -6,7 +6,7 @@
     <div v-else-if="error" class="text-red-400">{{ error }}</div>
     <nav v-else class="flex-1">
       <router-link to="/admin/dashboard" class="block py-2 px-4 hover:bg-gray-700 rounded">
-         Dashboard
+          Dashboard
       </router-link>
       <router-link
         v-for="(config, table) in tables"
@@ -42,6 +42,7 @@ const fetchTables = async () => {
     const response = await api.get("/admin/infotabeldong");
     tables.value = response.data;
   } catch (err) {
+    console.error(err);
     error.value = "Failed to load tables";
   } finally {
     loading.value = false;
@@ -53,5 +54,16 @@ const logout = () => {
   router.push("/admin/login");
 };
 
-onMounted(fetchTables);
+onMounted(async() => {
+  fetchTables();
+  const access_token = localStorage.getItem('admin_access_token');
+  if (access_token) {
+    let loader = this.$loading.show({
+      isFullPage: true,
+    });
+    await adminAuth.checkAuth(access_token);
+    loader.hide();
+    loading.value = false;
+  }
+});
 </script>

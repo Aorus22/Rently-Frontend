@@ -11,7 +11,7 @@ import DetailKendaraan from '../views/DetailKendaraanView.vue';
 import Pemesanan from '../views/PemesananView.vue';
 import RiwayatPemesanan from '../views/RiwayatPemesananView.vue';
 import DetailPemesanan from '@/views/DetailPemesananView.vue';
-import Pembayaran from '../views/PembayaranView.vue';
+// import Pembayaran from '../views/PembayaranView.vue';
 import DetailPembayaran from '@/views/DetailPembayaranView.vue';
 
 // Import Admin Views
@@ -32,7 +32,7 @@ const routes = [
 
   { path: '/riwayat-pemesanan', component: RiwayatPemesanan, meta: { requiresAuth: true } },
   { path: '/detail-pemesanan/:id', component: DetailPemesanan, meta: { requiresAuth: true } },
-  { path: "/detail-pemesanan/:id/bayar", component: Pembayaran, props: true, meta: { requiresAuth: true } },
+  // { path: "/detail-pemesanan/:id/bayar", component: Pembayaran, props: true, meta: { requiresAuth: true } },
   { path: '/detail-pembayaran/:id', component: DetailPembayaran, props: true, meta: { requiresAuth: true } },
 
    // Admin Routes

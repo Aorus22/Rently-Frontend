@@ -123,19 +123,27 @@
         </div>
       </div>
 
-      <!-- Tombol Bayar -->
-      <div v-if="pemesanan.status_pemesanan === 'Menunggu Pembayaran'" class="pt-6">
-        <button
-          @click="bayar"
-          class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-6 rounded-xl
-                flex items-center justify-center transition-all"
-        >
-          <ArrowRightCircleIcon class="w-5 h-5 mr-2" />
-          Lanjutkan Pembayaran
-        </button>
+        <!-- Tombol Bayar -->
+        <div v-if="pemesanan.status_pemesanan === 'Menunggu Pembayaran'" class="pt-6">
+          <button
+            @click="showModalPilihPembayaran = true"
+            class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-6 rounded-xl
+                  flex items-center justify-center transition-all"
+          >
+            <ArrowRightCircleIcon class="w-5 h-5 mr-2" />
+            Lanjutkan Pembayaran
+          </button>
+        </div>
+
       </div>
     </div>
-  </div>
+
+    <ModalPilihPembayaran
+      :show="showModalPilihPembayaran"
+      :pemesanan="pemesanan"
+      @close="showModalPilihPembayaran = false"
+    />
+
 </template>
 
 <script>
@@ -152,6 +160,7 @@ import {
   UserGroupIcon,
   ArrowPathIcon
 } from '@heroicons/vue/24/outline'
+import ModalPilihPembayaran from "@/components/ModalPilihPembayaran.vue";
 
 export default {
   components: {
@@ -164,7 +173,8 @@ export default {
     MapPinIcon,
     Cog6ToothIcon,
     UserGroupIcon,
-    ArrowPathIcon
+    ArrowPathIcon,
+    ModalPilihPembayaran
   },
   data() {
     return {
@@ -176,7 +186,8 @@ export default {
         'Sedang dalam Penggunaan': 'TruckIcon',
         'Selesai': 'CheckBadgeIcon',
         'Dibatalkan': 'XCircleIcon'
-      }
+      },
+      showModalPilihPembayaran: false,
     }
   },
   methods: {

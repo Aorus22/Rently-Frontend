@@ -73,7 +73,7 @@
               :class="selectedCapacity === 4 ? 'bg-green-600 text-white' : 'bg-white text-gray-600'"
               @click="toggleCapacity(4)"
             >
-              4 kursi
+              {{ "<5 kursi" }}
             </button>
             <button
               class="px-4 py-2 rounded-full text-sm"
@@ -200,12 +200,12 @@ export default {
 
         const priceMatch = harga >= minHarga && harga <= maxHarga;
         const capacityMatch = !this.selectedCapacity ||
-                              (this.selectedCapacity === 4 && item.kapasitas === 4) ||
-                              (this.selectedCapacity === 5 && (item.kapasitas === 5 || item.kapasitas === 6)) ||
-                              (this.selectedCapacity === 7 && item.kapasitas >= 7);
+                              (this.selectedCapacity === 4 && item.kapasitas_kursi <= 4) ||
+                              (this.selectedCapacity === 5 && (item.kapasitas_kursi === 5 || item.kapasitas_kursi === 6)) ||
+                              (this.selectedCapacity === 7 && item.kapasitas_kursi >= 7);
 
         const transmissionMatch = !this.selectedTransmission ||
-                                  item.transmisi === this.selectedTransmission;
+                                  item.jenis_transmisi === this.selectedTransmission;
 
         return priceMatch && capacityMatch && transmissionMatch;
       });

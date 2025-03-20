@@ -18,7 +18,7 @@ import DetailPembayaran from '@/views/DetailPembayaranView.vue';
 import AdminLayout from '../layouts/AdminLayout.vue';
 import AdminHome from '../views/Admin/DashboardView.vue';
 import AdminLogin from '../views/Admin/LoginView.vue';
-import DynamicCrud from '../components/admin/DynamicCrud.vue';
+import DynamicCrud from '../components/admin/DynamicTable.vue';
 
 const routes = [
   { path: '/', component: Dashboard },

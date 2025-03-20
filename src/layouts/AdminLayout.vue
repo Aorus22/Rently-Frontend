@@ -1,9 +1,11 @@
 <template>
   <div class="flex h-screen w-screen">
-
     <Sidenav />
-    <div class="flex-1 h-full p-6 bg-gray-100">
-      <router-view />
+
+    <div class="flex-1 max-h-screen ml-64 bg-gray-100">
+      <div class="overflow-auto h-full">
+        <router-view />
+      </div>
     </div>
   </div>
 </template>

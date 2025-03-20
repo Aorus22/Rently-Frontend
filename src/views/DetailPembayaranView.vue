@@ -46,7 +46,7 @@
       </div>
 
       <!-- Payment Method Details -->
-      <div class="space-y-6">
+      <div v-if="pembayaran.status_pembayaran === 'Belum Lunas'" class="space-y-6">
         <!-- Bank Transfer Instructions -->
         <div v-if="pembayaran.metode_pembayaran === 'Transfer Bank'" class="bg-green-50 p-6 rounded-xl">
           <h3 class="text-lg font-medium text-gray-800 mb-4 flex items-center">

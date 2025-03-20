@@ -1,5 +1,5 @@
 <template>
-  <div class="text-2xl font-bold">
+  <div class="p-12 text-2xl font-bold">
     Hello, {{ adminName }}
   </div>
 </template>

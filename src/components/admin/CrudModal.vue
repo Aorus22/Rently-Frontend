@@ -14,6 +14,14 @@
                 :step="config.type === 'decimal' ? config.step : undefined"
                 class="w-full"
               />
+              <!-- Add this for image upload -->
+              <Input
+                v-else-if="config.type === 'image'"
+                type="file"
+                accept="image/*"
+                class="w-full"
+                @change="handleFileUpload($event, column)"
+              />
               <Select v-else-if="config.type === 'select'" v-model="form[column]" class="w-full">
                 <SelectTrigger>
                   <SelectValue :placeholder="`Select ${snakeToTitleCase(column)}`" />
@@ -48,6 +56,7 @@ import api from "@/plugins/axios";
 const props = defineProps(["table", "config", "editData"]);
 const emit = defineEmits(["close", "refresh"]);
 const form = ref({});
+const files = ref({});
 
 watch(() => props.editData, (newVal) => {
   form.value = newVal ? { ...newVal } : {};
@@ -65,18 +74,49 @@ function getChangedValues(oldObj, newObj) {
   return Object.fromEntries(Object.entries(newObj).filter(([key, value]) => oldObj[key] !== value));
 }
 
+const handleFileUpload = (event, column) => {
+  const file = event.target.files[0];
+  if (file) {
+    files.value[column] = file;
+  }
+};
+
 const handleSubmit = async () => {
   try {
+    const formData = new FormData();
+
     if (props.editData) {
-      const editFilteredData = getChangedValues(getFilteredData(props.editData, props.config.editable_columns), getFilteredData(form.value, props.config.editable_columns));
-      await api.put(`/admin/${props.table}/${props.editData.id}`, editFilteredData);
+      const editFilteredData = getChangedValues(
+        getFilteredData(props.editData, props.config.editable_columns),
+        getFilteredData(form.value, props.config.editable_columns)
+      );
+
+      Object.entries(editFilteredData).forEach(([key, value]) => {
+        formData.append(key, value);
+      });
+
+      Object.entries(files.value).forEach(([key, file]) => {
+        formData.append(key, file);
+      });
+
+      api.post(`/admin/${props.table}/${props.editData.id}`, formData);
     } else {
-      await api.post(`/admin/${props.table}`, form.value);
+      Object.entries(form.value).forEach(([key, value]) => {
+        formData.append(key, value);
+      });
+
+      Object.entries(files.value).forEach(([key, file]) => {
+        formData.append(key, file);
+      });
+
+      await api.post(`/admin/${props.table}`, formData);
     }
+
     emit("refresh");
     emit("close");
   } catch (error) {
     alert(`Error: ${error.response ? JSON.stringify(error.response.data) : error.message}`);
   }
 };
+
 </script>

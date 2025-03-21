@@ -1,7 +1,8 @@
 <script setup>
-import { defineProps, defineEmits, watch } from "vue";
+import { defineProps, defineEmits, watch, computed, onMounted, nextTick } from "vue";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import L from "leaflet";
 
 const props = defineProps({ data: Object, config: Object });
 const emit = defineEmits(["close"]);
@@ -22,6 +23,22 @@ const closeModal = () => {
 watch(() => props.data, (newData) => {
   if (!newData) {
     closeModal();
+  }
+});
+
+const lat = computed(() => props.data?.[props.config.detail_special?.map?.lat]);
+const lon = computed(() => props.data?.[props.config.detail_special?.map?.lon]);
+
+onMounted(async () => {
+  if (lat.value && lon.value) {
+    await nextTick();
+    const map = L.map("map").setView([lat.value, lon.value], 13);
+
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution: '&copy; OpenStreetMap contributors',
+    }).addTo(map);
+
+    L.marker([lat.value, lon.value]).addTo(map);
   }
 });
 </script>
@@ -54,6 +71,9 @@ watch(() => props.data, (newData) => {
               </tr>
             </tbody>
           </table>
+          <div v-if="config.detail_special?.map" class="mt-5 w-full h-64 rounded-lg overflow-hidden">
+            <div id="map"></div>
+          </div>
         </div>
         <Button @click="closeModal" class="mt-4 w-full">Close</Button>
       </CardContent>

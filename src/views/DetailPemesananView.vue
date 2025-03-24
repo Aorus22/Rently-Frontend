@@ -87,13 +87,13 @@
           Riwayat Pembayaran
         </h2>
 
-        <div v-if="pembayaranList.length === 0" class="text-center py-4 bg-gray-50 rounded-xl">
+        <div v-if="pemesanan?.pembayaran?.length === 0" class="text-center py-4 bg-gray-50 rounded-xl">
           <p class="text-gray-500">Belum ada riwayat pembayaran</p>
         </div>
 
         <div v-else class="space-y-3">
           <div
-            v-for="pembayaran in pembayaranList"
+            v-for="pembayaran in pemesanan?.pembayaran"
             :key="pembayaran.id"
             @click="goToDetailPembayaran(pembayaran.id)"
             class="group p-4 bg-white border rounded-xl shadow-sm hover:shadow-md transition cursor-pointer"
@@ -119,6 +119,35 @@
                 class="w-24 h-24 object-cover rounded-lg border"
               />
             </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Informasi Kontrak Sewa -->
+      <div class="space-y-4">
+        <h2 class="text-lg font-medium text-gray-800 flex items-center">
+          <DocumentTextIcon class="w-5 h-5 mr-2 text-green-600" />
+          Informasi Kontrak Sewa
+        </h2>
+        <div v-if="!pemesanan?.kontrak_sewa" class="text-center py-4 bg-gray-50 rounded-xl">
+          <p class="text-gray-500">Belum ada kontrak sewa</p>
+        </div>
+        <div v-else class="p-4 bg-gray-50 rounded-xl space-y-3">
+          <div class="flex justify-between items-center">
+            <p class="text-sm text-gray-600">Status Kontrak</p>
+            <span :class="getStatusColor(pemesanan.kontrak_sewa.status_kontrak)" class="text-sm">
+              {{ pemesanan.kontrak_sewa.status_kontrak }}
+            </span>
+          </div>
+          <div class="flex justify-between items-center">
+            <p class="text-sm text-gray-600">Dokumen Kontrak</p>
+            <span
+              @click="downloadKontrak(pemesanan.kontrak_sewa.link_kontrak, 'kontrak_sewa_' + pemesanan.id + '.pdf')"
+              class="text-green-600 hover:text-green-800 cursor-pointer flex items-center"
+            >
+              <ArrowDownTrayIcon class="w-4 h-4 mr-1" />
+              Download
+            </span>
           </div>
         </div>
       </div>
@@ -199,7 +228,8 @@ import {
   Cog6ToothIcon,
   UserGroupIcon,
   ArrowPathIcon,
-  TruckIcon
+  TruckIcon,
+  ArrowDownTrayIcon
 } from '@heroicons/vue/24/outline'
 import ModalPilihPembayaran from "@/components/ModalPilihPembayaran.vue";
 import GoogleMaps from '@/components/GoogleMaps.vue';
@@ -218,6 +248,7 @@ export default {
     UserGroupIcon,
     ArrowPathIcon,
     TruckIcon,
+    ArrowDownTrayIcon,
     ModalPilihPembayaran,
     GoogleMaps,
     DynamicModal
@@ -225,7 +256,6 @@ export default {
   data() {
     return {
       pemesanan: null,
-      pembayaranList: [],
       statusIcons: {
         'Menunggu Pembayaran': 'ClockIcon',
         'Dikonfirmasi': 'CheckCircleIcon',
@@ -235,7 +265,6 @@ export default {
       },
       showModalPilihPembayaran: false,
       showModalMaps: false,
-      loadingPembayaran: false,
       showCancelModal: false
     }
   },
@@ -249,21 +278,6 @@ export default {
         console.error('Gagal mengambil detail pemesanan:', error)
       }
     },
-    async fetchPembayaran() {
-      this.loadingPembayaran = true
-      try {
-
-        const response = await api.get(
-          `/pemesanan/${this.$route.params.id}/pembayaran`,
-        )
-        this.pembayaranList = response.data
-      } catch (error) {
-        console.error('Gagal mengambil pembayaran:', error)
-      } finally {
-        this.loadingPembayaran = false
-      }
-    },
-
     formatHarga(harga) {
       return new Intl.NumberFormat('id-ID').format(harga)
     },
@@ -283,8 +297,7 @@ export default {
       this.$router.push(`/detail-pembayaran/${id}`)
     },
     handleBayarSekarang() {
-      if (this.loadingPembayaran) return;
-      const belumDibayar = this.pembayaranList.find(pembayaran =>
+      const belumDibayar = this.pemesanan?.pembayaran?.find(pembayaran =>
         pembayaran.status_pembayaran === 'Belum Dibayar'
       );
       if (belumDibayar) {
@@ -306,7 +319,24 @@ export default {
         throw error
       }
     },
-
+    async downloadKontrak(url, filename) {
+      try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('Gagal mengambil file kontrak');
+        const blob = await response.blob();
+        const blobUrl = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = blobUrl;
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(blobUrl);
+      } catch (error) {
+        console.error('Error saat mengunduh kontrak:', error);
+        this.$toast.error('Gagal mengunduh kontrak sewa. Silakan coba lagi.');
+      }
+    },
     handleBatalkanPemesanan() {
       this.showCancelModal = true
     },

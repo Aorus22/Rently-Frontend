@@ -1,7 +1,8 @@
 <template>
   <div class="w-full max-w-6xl mx-auto p-6 bg-white shadow-lg rounded-lg flex flex-col lg:flex-row">
     <!-- Sidebar Tabs -->
-    <div class="w-full lg:w-80 lg:sticky lg:top-24 h-fit lg:pr-4 lg:border-r lg:self-start">
+    <div class="h-full lg:border-r">
+      <div class="w-full lg:w-80 lg:sticky lg:top-24 h-fit lg:pr-4 lg:self-start">
       <div class="lg:bg-gray-100 lg:p-4 lg:rounded-lg">
         <h2 class="text-lg font-medium mb-4 text-gray-700 flex items-center">
           <BookmarkIcon class="w-5 h-5 mr-2 text-green-600" />
@@ -28,6 +29,7 @@
           </li>
         </ul>
       </div>
+    </div>
     </div>
 
     <!-- Daftar Pemesanan -->

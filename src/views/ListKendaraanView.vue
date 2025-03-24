@@ -11,7 +11,7 @@
 
     <div class="flex flex-col lg:flex-row gap-4">
       <!-- Filter Section -->
-      <div class="w-full lg:w-80 sticky top-24 h-fit bg-gray-100 p-4 rounded-lg lg:self-start">
+      <div class="w-full lg:w-80 lg:sticky top-24 h-fit bg-gray-100 p-4 rounded-lg lg:self-start">
         <div class="flex justify-between items-center mb-4">
           <h2 class="font-bold text-gray-800">FILTER</h2>
           <button
@@ -118,7 +118,7 @@
       <div class="flex-1">
 
         <!-- Skeleton Loading -->
-        <div v-if="isLoading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div v-if="isLoading" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
           <div v-for="n in 6" :key="n" class="bg-white rounded-lg shadow overflow-hidden">
             <div class="p-4">
               <div class="w-full h-40 bg-gray-200 animate-pulse rounded-lg"></div>
@@ -136,7 +136,7 @@
             Tidak ada kendaraan tersedia.
           </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
             <div
               v-for="item in filteredKendaraan"
               :key="item.id"

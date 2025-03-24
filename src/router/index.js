@@ -19,6 +19,8 @@ import AdminLayout from '../layouts/AdminLayout.vue';
 import AdminHome from '../views/Admin/DashboardView.vue';
 import AdminLogin from '../views/Admin/LoginView.vue';
 import DynamicCrud from '../components/admin/DynamicTable.vue';
+import ListPemesanan from '@/views/Admin/ListPemesanan.vue';
+import DetailPemesananAdmin from '@/views/Admin/DetailPemesanan.vue';
 
 const routes = [
   { path: '/', component: Dashboard },
@@ -41,7 +43,9 @@ const routes = [
     component: AdminLayout,
     children: [
       { path: "", redirect: "/admin/dashboard" },
+      { path: "pemesanan/:id", name: 'AdminPemesananDetail', component: DetailPemesananAdmin },
       { path: "dashboard", component: AdminHome },
+      { path: "list-pemesanan", component: ListPemesanan },
       { path: ':table', component: DynamicCrud, props: true }
     ],
     meta: { requiresAdminAuth: true },

@@ -285,7 +285,7 @@ export default {
     handleBayarSekarang() {
       if (this.loadingPembayaran) return;
       const belumDibayar = this.pembayaranList.find(pembayaran =>
-        pembayaran.status_pembayaran === 'Belum Lunas'
+        pembayaran.status_pembayaran === 'Belum Dibayar'
       );
       if (belumDibayar) {
         this.goToDetailPembayaran(belumDibayar.id);

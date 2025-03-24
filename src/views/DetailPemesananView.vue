@@ -123,25 +123,65 @@
         </div>
       </div>
 
-        <!-- Tombol Bayar -->
-        <div v-if="pemesanan.status_pemesanan === 'Menunggu Pembayaran'" class="pt-6">
-          <button
-            @click="showModalPilihPembayaran = true"
-            class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-6 rounded-xl
-                  flex items-center justify-center transition-all"
-          >
-            <ArrowRightCircleIcon class="w-5 h-5 mr-2" />
-            Lanjutkan Pembayaran
-          </button>
-        </div>
+      <!-- Tombol Bayar -->
+      <div v-if="pemesanan.status_pemesanan === 'Menunggu Pembayaran'" class="pt-6 space-y-4">
+        <button
+          @click="handleBayarSekarang()"
+          class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-6 rounded-xl
+                flex items-center justify-center transition-all"
+        >
+          <ArrowRightCircleIcon class="w-5 h-5 mr-2" />
+          Bayar Sekarang
+        </button>
+        <button
+          @click="showCancelModal = true"
+          class="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-3 px-6 rounded-xl
+                flex items-center justify-center transition-all"
+        >
+          <XCircleIcon class="w-5 h-5 mr-2" />
+          Batalkan Pemesanan
+        </button>
+      </div>
+
+      <!-- Tombol Ambil Kendaraan -->
+      <div v-if="pemesanan.status_pemesanan === 'Dikonfirmasi'" class="pt-6">
+        <button
+          @click="showModalMaps = true"
+          class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-xl
+                flex items-center justify-center transition-all"
+        >
+          <TruckIcon class="w-5 h-5 mr-2" />
+          Ambil Kendaraan
+        </button>
+      </div>
 
       </div>
     </div>
 
+    <!-- Modal Pembatalan -->
+    <DynamicModal
+      :show="showCancelModal"
+      title="Konfirmasi Pembatalan"
+      description="Apakah Anda yakin ingin membatalkan pemesanan ini? Tindakan ini tidak dapat dibatalkan."
+      confirmText="Ya, Batalkan"
+      confirmVariant="destructive"
+      @close="showCancelModal = false"
+      @confirm="confirmCancelPemesanan"
+    />
+
+    <!-- Modal Pilih Pembayaran  -->
     <ModalPilihPembayaran
       :show="showModalPilihPembayaran"
       :pemesanan="pemesanan"
       @close="showModalPilihPembayaran = false"
+    />
+
+    <!-- Modal Google Maps -->
+    <GoogleMaps
+      :show="showModalMaps"
+      :latitude="pemesanan?.kendaraan?.lokasi_garasi?.latitude || 0"
+      :longitude="pemesanan?.kendaraan?.lokasi_garasi?.longitude || 0"
+      @close="showModalMaps = false"
     />
 
 </template>
@@ -158,9 +198,12 @@ import {
   MapPinIcon,
   Cog6ToothIcon,
   UserGroupIcon,
-  ArrowPathIcon
+  ArrowPathIcon,
+  TruckIcon
 } from '@heroicons/vue/24/outline'
 import ModalPilihPembayaran from "@/components/ModalPilihPembayaran.vue";
+import GoogleMaps from '@/components/GoogleMaps.vue';
+import DynamicModal from '@/components/DynamicModal.vue';
 
 export default {
   components: {
@@ -174,7 +217,10 @@ export default {
     Cog6ToothIcon,
     UserGroupIcon,
     ArrowPathIcon,
-    ModalPilihPembayaran
+    TruckIcon,
+    ModalPilihPembayaran,
+    GoogleMaps,
+    DynamicModal
   },
   data() {
     return {
@@ -188,15 +234,15 @@ export default {
         'Dibatalkan': 'XCircleIcon'
       },
       showModalPilihPembayaran: false,
+      showModalMaps: false,
+      loadingPembayaran: false,
+      showCancelModal: false
     }
   },
   methods: {
     async fetchDetailPemesanan() {
       try {
-        const token = localStorage.getItem('access_token')
-        const response = await api.get(`/pemesanan/${this.$route.params.id}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        })
+        const response = await api.get(`/pemesanan/${this.$route.params.id}`)
         this.pemesanan = response.data
         this.fetchPembayaran()
       } catch (error) {
@@ -204,17 +250,17 @@ export default {
       }
     },
     async fetchPembayaran() {
+      this.loadingPembayaran = true
       try {
-        const token = localStorage.getItem('access_token')
+
         const response = await api.get(
           `/pemesanan/${this.$route.params.id}/pembayaran`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          },
         )
         this.pembayaranList = response.data
       } catch (error) {
         console.error('Gagal mengambil pembayaran:', error)
+      } finally {
+        this.loadingPembayaran = false
       }
     },
 
@@ -235,6 +281,34 @@ export default {
     },
     goToDetailPembayaran(id) {
       this.$router.push(`/detail-pembayaran/${id}`)
+    },
+    handleBayarSekarang() {
+      if (this.loadingPembayaran) return;
+      const belumDibayar = this.pembayaranList.find(pembayaran =>
+        pembayaran.status_pembayaran === 'Belum Lunas'
+      );
+      if (belumDibayar) {
+        this.goToDetailPembayaran(belumDibayar.id);
+      } else {
+        this.showModalPilihPembayaran = true;
+      }
+    },
+    async confirmCancelPemesanan() {
+      try {
+        await api.post(`/pemesanan/${this.pemesanan.id}/cancel`)
+        this.showCancelModal = false
+        await this.fetchDetailPemesanan()
+        this.$toast.success('Pemesanan berhasil dibatalkan')
+        this.$router.push(`/riwayat-pemesanan/`)
+      } catch (error) {
+        console.error('Gagal membatalkan pemesanan:', error)
+        this.$toast.error('Gagal membatalkan pemesanan. Silakan coba lagi.')
+        throw error
+      }
+    },
+
+    handleBatalkanPemesanan() {
+      this.showCancelModal = true
     },
   },
   mounted() {

@@ -52,7 +52,7 @@ export default {
         this.$router.push("/admin");
       } catch (error) {
         console.log(error)
-        alert("Login gagal! Cek email dan password.");
+        this.$toast.error("Login gagal! Cek email dan password.");
       }
     },
   },

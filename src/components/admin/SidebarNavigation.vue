@@ -36,7 +36,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, getCurrentInstance } from "vue";
 import { useRouter } from "vue-router";
 import { useAdminAuthStore } from "@/stores/authAdmin";
 // import api from "@/plugins/axios";
@@ -46,6 +46,11 @@ import {
   CreditCard, FileText, Truck
 } from "lucide-vue-next";
 import { Button } from "@/components/ui/button";
+
+const { appContext } = getCurrentInstance();
+
+// Ambil akses ke $loading dari globalProperties
+const $loading = appContext.config.globalProperties.$loading;
 
 // const tables = ref({});
 const loading = ref(true);
@@ -86,7 +91,12 @@ onMounted(async () => {
   // await fetchTables();
   const access_token = localStorage.getItem("admin_access_token");
   if (access_token) {
-    loading.value = false;
-  }
+      const loader = $loading.show({
+        isFullPage: true,
+      });
+      await adminAuth.checkAuth(access_token);
+      loader.hide();
+      loading.value = false;
+    }
 });
 </script>

@@ -92,9 +92,7 @@ export default {
 
         localStorage.setItem("access_token", response.data.access_token);
 
-        const userResponse = await api.get("/me", {
-          headers: { Authorization: `Bearer ${response.data.access_token}` },
-        });
+        const userResponse = await api.get("/me");
 
         this.authStore.setUser(userResponse.data);
 
@@ -102,7 +100,7 @@ export default {
 
       } catch (error) {
         console.log(error);
-        alert("Login gagal! Cek email dan password.");
+        this.$toast.error("Login gagal! Cek email dan password.");
       } finally {
         loader.hide();
       }

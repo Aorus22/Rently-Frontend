@@ -42,10 +42,7 @@ export default {
   methods: {
     async fetchDetailPemesanan() {
       try {
-        const token = localStorage.getItem("access_token");
-        const response = await api.get(`/pemesanan/${this.id}`, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
+        const response = await api.get(`/pemesanan/${this.id}`);
         this.pemesanan = response.data;
       } catch (error) {
         console.error("Gagal mengambil detail pemesanan:", error);
@@ -53,19 +50,17 @@ export default {
     },
     async pilihMetodePembayaran() {
       if (!this.metodePembayaran) {
-        alert("Silakan pilih metode pembayaran terlebih dahulu.");
+        this.$toast.warn("Silakan pilih metode pembayaran terlebih dahulu.");
         return;
       }
 
       try {
-        const token = localStorage.getItem("access_token");
         const response = await api.post(
           `/pemesanan/${this.id}/bayar`,
           { metode_pembayaran: this.metodePembayaran },
-          { headers: { Authorization: `Bearer ${token}` } }
         );
 
-        alert("Metode pembayaran berhasil dipilih!");
+        this.$toast.success("Metode pembayaran berhasil dipilih!");
         this.$router.push(`/detail-pembayaran/${response.data.pembayaran_id}`);
       } catch (error) {
         console.error("Gagal memilih metode pembayaran:", error);

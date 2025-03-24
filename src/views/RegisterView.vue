@@ -92,7 +92,7 @@ export default {
   methods: {
     async register() {
       if (this.password !== this.confirm_password) {
-        alert("Password dan konfirmasi password tidak cocok!");
+        this.$toast.error("Password dan konfirmasi password tidak cocok!");
         return;
       }
       try {
@@ -101,11 +101,11 @@ export default {
           email: this.email,
           password: this.password,
         });
-        alert("Registrasi berhasil! Silakan login.");
+        this.$toast.success("Registrasi berhasil! Silakan login.");
         this.$router.push("/login");
       } catch (error) {
         console.log(error);
-        alert("Gagal registrasi!");
+        this.$toast.error("Gagal registrasi!");
       }
     },
   },

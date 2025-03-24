@@ -196,10 +196,7 @@ export default {
   methods: {
     async fetchPemesanan() {
       try {
-        const token = localStorage.getItem("access_token");
-        const response = await api.get("/pemesanan", {
-          headers: { Authorization: `Bearer ${token}` }
-        });
+        const response = await api.get("/pemesanan");
         this.pemesanan = response.data;
       } catch (error) {
         console.error("Gagal mengambil riwayat pemesanan:", error);

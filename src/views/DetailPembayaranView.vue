@@ -46,7 +46,7 @@
       </div>
 
       <!-- Payment Method Details -->
-      <div v-if="pembayaran.status_pembayaran === 'Belum Lunas'" class="space-y-6">
+      <div v-if="pembayaran.status_pembayaran === 'Belum Dibayar'" class="space-y-6">
         <!-- Bank Transfer Instructions -->
         <div v-if="pembayaran.metode_pembayaran === 'Transfer Bank'" class="bg-green-50 p-6 rounded-xl">
           <h3 class="text-lg font-medium text-gray-800 mb-4 flex items-center">
@@ -105,16 +105,6 @@
           </div>
         </div>
 
-        <!-- Uploaded Proof -->
-        <div v-if="pembayaran.bukti_pembayaran" class="bg-white p-6 rounded-xl border border-gray-200">
-          <h4 class="text-sm font-medium text-gray-700 mb-2">Bukti Pembayaran:</h4>
-          <img
-            :src="pembayaran.bukti_pembayaran"
-            alt="Bukti Transfer"
-            class="w-64 h-64 object-contain border-2 border-dashed border-gray-200 rounded-lg p-2"
-          />
-        </div>
-
         <!-- E-Wallet Section -->
         <div v-if="pembayaran.metode_pembayaran === 'E-Wallet'" class="bg-green-50 p-6 rounded-xl text-center">
           <h3 class="text-lg font-medium text-gray-800 mb-4 flex items-center justify-center">
@@ -129,6 +119,17 @@
           <p class="mt-4 text-sm text-gray-500">Scan QR code menggunakan aplikasi e-wallet Anda</p>
         </div>
       </div>
+
+        <!-- Uploaded Proof -->
+        <div v-if="pembayaran.bukti_pembayaran" class="bg-white p-6 rounded-xl border border-gray-200">
+          <h4 class="text-sm font-medium text-gray-700 mb-2">Bukti Pembayaran:</h4>
+          <img
+            :src="pembayaran.bukti_pembayaran"
+            alt="Bukti Transfer"
+            class="w-64 h-64 object-contain border-2 border-dashed border-gray-200 rounded-lg p-2"
+          />
+        </div>
+
     </div>
   </div>
 </template>
@@ -175,10 +176,7 @@ export default {
   methods: {
     async fetchDetailPembayaran() {
       try {
-        const token = localStorage.getItem('access_token')
-        const response = await api.get(`/pembayaran/${this.id}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        })
+        const response = await api.get(`/pembayaran/${this.id}`)
         this.pembayaran = response.data.pembayaran
         this.pemesanan = response.data.pemesanan
       } catch (error) {
@@ -192,19 +190,22 @@ export default {
       const formData = new FormData()
       formData.append('bukti_pembayaran', this.buktiPembayaran)
 
+      let loader = this.$loading.show({
+        isFullPage: true,
+      });
       try {
-        const token = localStorage.getItem('access_token')
         await api.post(`/pembayaran/${this.id}/upload-bukti`, formData, {
           headers: {
-            Authorization: `Bearer ${token}`,
             'Content-Type': 'multipart/form-data',
           },
         })
 
-        alert('Bukti pembayaran berhasil diunggah!')
+        this.$toast.success('Bukti pembayaran berhasil diunggah!')
         this.fetchDetailPembayaran()
       } catch (error) {
         console.error('Gagal mengunggah bukti pembayaran:', error)
+      } finally {
+        loader.hide();
       }
     },
     formatHarga(harga) {

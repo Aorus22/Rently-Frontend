@@ -162,10 +162,7 @@ export default {
     async fetchUserData() {
       this.loading = true;
       try {
-        const token = localStorage.getItem('access_token');
-        const response = await api.get('/me', {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const response = await api.get('/me');
         const user = response.data;
         this.nama = user.nama_lengkap || '';
         this.email = user.email || '';
@@ -182,30 +179,20 @@ export default {
       });
 
       try {
-        const token = localStorage.getItem('access_token');
-
-        await api.post(
-          '/pemesanan',
-          {
+        await api.post('/pemesanan', {
             kendaraan_id: this.kendaraan.id,
             tanggal_mulai: this.tanggal_mulai,
             durasi: this.durasi,
             nama: this.nama,
             no_handphone: this.no_handphone,
             email: this.email,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        });
 
-        alert('Pemesanan berhasil!');
+        this.$toast.success('Pemesanan berhasil!');
         this.$router.push('/riwayat-pemesanan');
       } catch (error) {
         console.error('Gagal melakukan pemesanan:', error);
-        alert('Terjadi kesalahan saat memproses pemesanan.');
+        this.$toast.error('Terjadi kesalahan saat memproses pemesanan.');
       } finally {
         loader.hide();
       }

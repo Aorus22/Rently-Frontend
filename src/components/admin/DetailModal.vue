@@ -3,6 +3,7 @@ import { defineProps, defineEmits, watch, computed, onMounted, nextTick } from "
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import L from "leaflet";
+import GoogleMapDetail from "./GoogleMapDetail.vue";
 
 const props = defineProps({ data: Object, config: Object });
 const emit = defineEmits(["close"]);
@@ -71,9 +72,7 @@ onMounted(async () => {
               </tr>
             </tbody>
           </table>
-          <div v-if="config.detail_special?.map" class="mt-5 w-full h-64 rounded-lg overflow-hidden">
-            <div id="map"></div>
-          </div>
+          <GoogleMapDetail :lat="lat" :lon="lon" class="mt-5"/>
         </div>
         <Button @click="closeModal" class="mt-4 w-full">Close</Button>
       </CardContent>

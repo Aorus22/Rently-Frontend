@@ -2,8 +2,8 @@
   <div class="bg-[#E6EAED] w-full">
     <div class="flex flex-col items-center py-36">
       <h1 class="text-4xl font-bold text-center mb-8">Jelajahi Berdasarkan Tipe</h1>
-      <div class="w-4/5 lg:w-1/2 grid grid-cols-2 sm:grid-cols-4 gap-2">
-        <a href="" class="bg-white flex flex-col items-center justify-center gap-2 py-6 rounded-xl shadow-md hover:bg-[#159763] hover:text-white duration-300">
+      <div class="w-4/5 lg:w-1/2 grid grid-cols-2 sm:grid-cols-3 gap-2">
+        <a href="/kendaraan?category=Mobil" class="bg-white flex flex-col items-center justify-center gap-2 py-6 rounded-xl shadow-md hover:bg-[#159763] hover:text-white duration-300">
           <div class="bg-[#F9FBFC] p-3 rounded-full inline-flex mb-2">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
               stroke="#000000" class="size-6">
@@ -11,9 +11,9 @@
                 d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z" />
             </svg>
           </div>
-          <p class="font-medium">Motor</p>
+          <p class="font-medium">Mobil</p>
         </a>
-        <a href="" class="bg-white flex flex-col items-center justify-center gap-2 py-6 rounded-xl shadow-md hover:bg-[#159763] hover:text-white duration-300">
+        <a href="/kendaraan?category=Minibus" class="bg-white flex flex-col items-center justify-center gap-2 py-6 rounded-xl shadow-md hover:bg-[#159763] hover:text-white duration-300">
           <div class="bg-[#F9FBFC] p-3 rounded-full inline-flex mb-2">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
               stroke="#000000" class="size-6">
@@ -21,9 +21,9 @@
                 d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z" />
             </svg>
           </div>
-          <p class="font-medium">Sedan</p>
+          <p class="font-medium">Minibus</p>
         </a>
-        <a href="" class="bg-white flex flex-col items-center justify-center gap-2 py-6 rounded-xl shadow-md hover:bg-[#159763] hover:text-white duration-300">
+        <a href="/kendaraan?category=Pickup" class="bg-white flex flex-col items-center justify-center gap-2 py-6 rounded-xl shadow-md hover:bg-[#159763] hover:text-white duration-300">
           <div class="bg-[#F9FBFC] p-3 rounded-full inline-flex mb-2">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
               stroke="#000000" class="size-6">
@@ -31,9 +31,9 @@
                 d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z" />
             </svg>
           </div>
-          <p class="font-medium">Bus</p>
+          <p class="font-medium">Pickup</p>
         </a>
-        <a href="" class="bg-white flex flex-col items-center justify-center gap-2 py-6 rounded-xl shadow-md hover:bg-[#159763] hover:text-white duration-300">
+        <!-- <a href="" class="bg-white flex flex-col items-center justify-center gap-2 py-6 rounded-xl shadow-md hover:bg-[#159763] hover:text-white duration-300">
           <div class="bg-[#F9FBFC] p-3 rounded-full inline-flex mb-2">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
               stroke="#000000" class="size-6">
@@ -42,7 +42,7 @@
             </svg>
           </div>
           <p class="font-medium">Truk</p>
-        </a>
+        </a> -->
       </div>
     </div>
 
@@ -279,7 +279,7 @@
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3955.148040599699!2d110.85002361045927!3d-7.558832742423546!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a14234667a3fd%3A0xbda63b32997616ad!2sUniversitas%20Sebelas%20Maret%20(UNS)!5e0!3m2!1sid!2sid!4v1742184558849!5m2!1sid!2sid"
               class="mb-10 sm:mb-16" width="100%" height="350" style="border:0;" allowfullscreen="true" loading="lazy"
               referrerpolicy="no-referrer-when-downgrade"></iframe>
-            
+
             <a href="" class="text-sm border border-[#159763] bg-[#159763] text-white w-fit px-3 py-2 hover:bg-[#0d6341] duration-300">Peta Kantor</a>
           </div>
         </div>

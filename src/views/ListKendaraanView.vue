@@ -112,6 +112,34 @@
             </button>
           </div>
         </div>
+
+        <!-- Category -->
+        <div class="mt-5">
+          <h3 class="font-medium text-sm mb-2">Kategori Kendaraan</h3>
+          <div class="flex gap-2">
+            <button
+              class="px-4 py-2 rounded-full text-sm"
+              :class="selectedCategory === 'Mobil' ? 'bg-green-600 text-white' : 'bg-white text-gray-600'"
+              @click="toggleCategory('Mobil')"
+            >
+              Mobil
+            </button>
+            <button
+              class="px-4 py-2 rounded-full text-sm"
+              :class="selectedCategory === 'Minibus' ? 'bg-green-600 text-white' : 'bg-white text-gray-600'"
+              @click="toggleCategory('Minibus')"
+            >
+              Minibus
+            </button>
+            <button
+              class="px-4 py-2 rounded-full text-sm"
+              :class="selectedCategory === 'Pickup' ? 'bg-green-600 text-white' : 'bg-white text-gray-600'"
+              @click="toggleCategory('Pickup')"
+            >
+              Pickup
+            </button>
+          </div>
+        </div>
       </div>
 
       <!-- Car List -->
@@ -189,7 +217,11 @@ export default {
       maxPriceRange: 1000000,
       selectedCapacity: null,
       selectedTransmission: null,
+      selectedCategory: null,
     };
+  },
+  created() {
+    this.selectedCategory = this.$route.query.category || null;
   },
   computed: {
     filteredKendaraan() {
@@ -207,7 +239,9 @@ export default {
         const transmissionMatch = !this.selectedTransmission ||
                                   item.jenis_transmisi === this.selectedTransmission;
 
-        return priceMatch && capacityMatch && transmissionMatch;
+        const categoryMatch = !this.selectedCategory || item.kategori_kendaraan === this.selectedCategory
+
+        return priceMatch && capacityMatch && transmissionMatch && categoryMatch;
       });
     }
   },
@@ -235,6 +269,7 @@ export default {
       this.maxPriceRange = 1000000;
       this.selectedCapacity = null;
       this.selectedTransmission = null;
+      this.selectedCategory = null;
     },
 
     toggleCapacity(capacity) {
@@ -243,6 +278,10 @@ export default {
 
     toggleTransmission(transmission) {
       this.selectedTransmission = this.selectedTransmission === transmission ? null : transmission;
+    },
+
+    toggleCategory(category) {
+      this.selectedCategory = this.selectedCategory === category ? null : category;
     },
 
     validatePriceRange() {

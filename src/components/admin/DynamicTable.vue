@@ -1,11 +1,17 @@
 <template>
   <div class="p-12">
-    <h1 class="text-2xl font-bold mb-4">{{ tableConfig?.title }}</h1>
+    <h1 class="text-2xl font-bold">{{ tableConfig?.title }}</h1>
 
-    <Button v-if="tableConfig?.can_create" @click="openModal(null)" class="mb-4 flex items-center gap-2">
-      <Plus class="w-5 h-5" /> Create New
-    </Button>
+    <div class="mt-5 flex items-center justify-between mb-4">
+      <Button v-if="tableConfig?.can_create" @click="openModal(null)" class="flex items-center gap-2">
+        <Plus class="w-5 h-5" /> Create New
+      </Button>
 
+      <Button v-if="tableConfig?.can_export" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center gap-2" @click="exportExcel">
+        <svg class="fill-current w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z"/></svg>
+        <span>Export</span>
+      </Button>
+    </div>
     <div v-if="loading" class="flex items-center text-gray-500">
       <LoaderCircle class="animate-spin w-5 h-5 mr-2" /> Loading...
     </div>
@@ -175,6 +181,23 @@ const deleteItem = async (id) => {
     console.error(err);
     alert("Failed to delete item");
   }
+};
+
+const exportExcel = async () => {
+  try {
+    const response = await api.get(`/admin/export/${table.value}`, { responseType: "blob" });
+    console.log("Response Data:", response.data); // Log response data
+    // Create download link
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", `${table.value}.xlsx`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    } catch (error) {
+    console.error("Export failed", error);
+    }
 };
 
 watchEffect(() => {

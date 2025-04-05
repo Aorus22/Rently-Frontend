@@ -22,6 +22,11 @@ import DynamicCrud from '../components/admin/DynamicTable.vue';
 import ListPemesanan from '@/views/Admin/ListPemesanan.vue';
 import DetailPemesananAdmin from '@/views/Admin/DetailPemesanan.vue';
 
+// Utilities
+import Service from '@/views/utilities/Service.vue';
+import Company from '@/views/utilities/Company.vue';
+import Support from '@/views/utilities/Support.vue';
+
 const routes = [
   { path: '/', component: Dashboard },
   { path: '/home', component: Home },
@@ -36,6 +41,9 @@ const routes = [
   { path: '/detail-pemesanan/:id', component: DetailPemesanan, meta: { requiresAuth: true } },
   // { path: "/detail-pemesanan/:id/bayar", component: Pembayaran, props: true, meta: { requiresAuth: true } },
   { path: '/detail-pembayaran/:id', component: DetailPembayaran, props: true, meta: { requiresAuth: true } },
+  { path: '/service', component: Service },
+  { path: '/company', component: Company },
+  { path: '/support', component: Support },
 
    // Admin Routes
   {

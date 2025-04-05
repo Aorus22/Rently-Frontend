@@ -33,16 +33,6 @@
           </div>
           <p class="font-medium">Pickup</p>
         </a>
-        <!-- <a href="" class="bg-white flex flex-col items-center justify-center gap-2 py-6 rounded-xl shadow-md hover:bg-[#159763] hover:text-white duration-300">
-          <div class="bg-[#F9FBFC] p-3 rounded-full inline-flex mb-2">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-              stroke="#000000" class="size-6">
-              <path stroke-linecap="round" stroke-linejoin="round"
-                d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z" />
-            </svg>
-          </div>
-          <p class="font-medium">Truk</p>
-        </a> -->
       </div>
     </div>
 
@@ -64,9 +54,7 @@
             <h3 class="text-2xl font-semibold mb-6">Instant Rent</h3>
             <p class="text-sm text-justify mb-12">Kami siap menyediakan layanan sewa langsung di mana pun dan kapan pun
               Anda membutuhkan, dengan petugas siap merespons dengan cepat</p>
-            <a href=""
-              class="text-black bg-white py-4 px-8 hover:text-white hover:bg-green-700 transition-all duration-300">Read
-              More</a>
+            <router-link to="/Service" class="text-black bg-white py-4 px-8 hover:text-white hover:bg-green-700 transition-all duration-300">Read More</router-link>
           </div>
           <div class="bg-card-track flex flex-col items-center p-14">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1"
@@ -78,9 +66,9 @@
             <h3 class="text-2xl font-semibold mb-6">Tracking</h3>
             <p class="text-sm text-justify mb-12">Kami menyediakan fitur pelacakan kendaraan real-time dengan pemantauan
               akurat dan respons cepat untuk keamanan serta kenyamanan Anda.</p>
-            <a href=""
+            <router-link to="/Service"
               class="text-black bg-white py-4 px-8 hover:text-white hover:bg-green-700 transition-all duration-300">Read
-              More</a>
+              More</router-link>
           </div>
           <div class="bg-card-maintenance flex flex-col items-center p-14">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1"
@@ -91,9 +79,9 @@
             <h3 class="text-2xl font-semibold mb-6">Maintenance</h3>
             <p class="text-sm text-justify mb-12">Kami menyediakan perawatan berkala untuk menjaga kendaraan tetap
               prima, dengan pemantauan akurat dan respons cepat demi keamanan serta kenyamanan Anda.</p>
-            <a href=""
+            <router-link to="/Service"
               class="text-black bg-white py-4 px-8 hover:text-white hover:bg-green-700 transition-all duration-300">Read
-              More</a>
+              More</router-link>
           </div>
         </div>
       </div>
@@ -298,83 +286,6 @@
             <input type="text" name="username" id="username" class="block min-w-0 grow py-1.5 pr-3 pl-1 text-sm/6 text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-base" placeholder="example@gmail.com" />
           </div>
           <button type="submit" class="bg-[#159763] px-4 py-3 text-sm text-white hover:bg-[#0d6341] duration-300">Subscribe</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="flex justify-center px-6 py-24 md:px-16">
-      <div class="w-5/6 grid grid-cols-1 lg:grid-cols-6 gap-20 md:gap-40">
-        <div class="space-y-10 lg:col-span-2">
-          <router-link to="/" class="text-3xl font-bold iceland-regular text-[#159763]">RENTLY</router-link>
-          <p class="text-sm text-[#A6A6A6] text-justify">Kami adalah layanan rental kendaraan terkemuka yang memiliki banyak mitra di setiap wilayah untuk terhubung dengan Anda dan membantu perjalanan Anda, baik untuk pertemuan, acara, liburan, maupun perjalanan jauh.</p>
-          <div class="flex space-x-4">
-            <div
-              class="border border-[#159763] w-fit p-1 text-[#159763] hover:bg-[#159763] hover:text-white duration-300">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                stroke="currentColor" class="size-5">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                  d="M16.5 12a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0Zm0 0c0 1.657 1.007 3 2.25 3S21 13.657 21 12a9 9 0 1 0-2.636 6.364M16.5 12V8.25" />
-              </svg>
-            </div>
-
-            <div
-              class="border border-[#159763] w-fit p-1 text-[#159763] hover:bg-[#159763] hover:text-white duration-300">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                stroke="currentColor" class="size-5">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                  d="M16.5 12a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0Zm0 0c0 1.657 1.007 3 2.25 3S21 13.657 21 12a9 9 0 1 0-2.636 6.364M16.5 12V8.25" />
-              </svg>
-            </div>
-
-            <div
-              class="border border-[#159763] w-fit p-1 text-[#159763] hover:bg-[#159763] hover:text-white duration-300">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                stroke="currentColor" class="size-5">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                  d="M16.5 12a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0Zm0 0c0 1.657 1.007 3 2.25 3S21 13.657 21 12a9 9 0 1 0-2.636 6.364M16.5 12V8.25" />
-              </svg>
-            </div>
-
-            <div
-              class="border border-[#159763] w-fit p-1 text-[#159763] hover:bg-[#159763] hover:text-white duration-300">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                stroke="currentColor" class="size-5">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                  d="M16.5 12a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0Zm0 0c0 1.657 1.007 3 2.25 3S21 13.657 21 12a9 9 0 1 0-2.636 6.364M16.5 12V8.25" />
-              </svg>
-            </div>
-          </div>
-        </div>
-        <div class="lg:col-span-4 grid grid-cols-1 sm:grid-cols-3 gap-6">
-          <div class="mb-8">
-            <h1 class="text-xl font-bold text-[#737373] mb-8">Company</h1>
-            <ul class="list-none space-y-3">
-              <li><a href="#" class="text-sm text-[#A6A6A6] hover:text-[#159763]">About Us</a></li>
-              <li><a href="#" class="text-sm text-[#A6A6A6] hover:text-[#159763]">Services</a></li>
-              <li><a href="#" class="text-sm text-[#A6A6A6] hover:text-[#159763]">Vehicle</a></li>
-              <li><a href="#" class="text-sm text-[#A6A6A6] hover:text-[#159763]">Our Partner</a></li>
-            </ul>
-          </div>
-
-          <div class="mb-8">
-            <h1 class="text-xl font-bold text-[#737373] mb-8">Services</h1>
-            <ul class="list-none space-y-3">
-              <li><a href="#" class="text-sm text-[#A6A6A6] hover:text-[#159763]">Instant Rent</a></li>
-              <li><a href="#" class="text-sm text-[#A6A6A6] hover:text-[#159763]">Private Driver</a></li>
-              <li><a href="#" class="text-sm text-[#A6A6A6] hover:text-[#159763]">Long Trip</a></li>
-            </ul>
-          </div>
-
-          <div>
-            <h1 class="text-xl font-bold text-[#737373] mb-8">Support</h1>
-            <ul class="list-none space-y-3">
-              <li><a href="#" class="text-sm text-[#A6A6A6] hover:text-[#159763]">Blog</a></li>
-              <li><a href="#" class="text-sm text-[#A6A6A6] hover:text-[#159763]">FAQ</a></li>
-              <li><a href="#" class="text-sm text-[#A6A6A6] hover:text-[#159763]">Call Center</a></li>
-              <li><a href="#" class="text-sm text-[#A6A6A6] hover:text-[#159763]">Partner With Us</a></li>
-              <li><a href="#" class="text-sm text-[#A6A6A6] hover:text-[#159763]">Terms & Condition</a></li>
-            </ul>
-          </div>
         </div>
       </div>
     </div>

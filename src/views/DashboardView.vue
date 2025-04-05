@@ -32,10 +32,6 @@
         </svg>
       </router-link>
     </div>
-
-    <footer class="absolute bottom-5 text-gray-500 text-sm">
-      &copy; 2024 Rently. All rights reserved.
-    </footer>
   </div>
 </template>
 

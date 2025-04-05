@@ -153,8 +153,8 @@ export default {
       return [
         { name: 'Home', href: '/home', current: this.$route.path === '/home' },
         { name: 'List Kendaraan', href: '/kendaraan', current: this.$route.path.startsWith('/kendaraan') },
-        { name: 'About', href: '$', current: false },
-        { name: 'Contact', href: '$', current: false }
+        { name: 'About', href: '/Company', current: false },
+        { name: 'Contact', href: '/Support', current: false }
       ]
     }
   },

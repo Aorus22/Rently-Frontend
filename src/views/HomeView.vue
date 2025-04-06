@@ -36,7 +36,7 @@
       </div>
     </div>
 
-    <div class="bg-[#F9FBFC] py-16 rounded-t-[60px] flex justify-center">
+    <div class="bg-[#F9FBFC] py-16 flex justify-center">
       <div class="bg-card-home w-5/6 px-6 py-14 md:px-16 text-center">
         <h2 class="font-semibold text-[#159763] mb-6">SERVICES</h2>
         <h1 class="text-3xl font-semibold text-[#737373] mb-8">Our Services</h1>
@@ -54,7 +54,7 @@
             <h3 class="text-2xl font-semibold mb-6">Instant Rent</h3>
             <p class="text-sm text-justify mb-12">Kami siap menyediakan layanan sewa langsung di mana pun dan kapan pun
               Anda membutuhkan, dengan petugas siap merespons dengan cepat</p>
-            <router-link to="/Service" class="text-black bg-white py-4 px-8 hover:text-white hover:bg-green-700 transition-all duration-300">Read More</router-link>
+            <router-link to="/Service" class="text-black bg-white py-4 px-8 hover:text-white hover:bg-green-700 transition-all duration-300">Baca lebih lanjut</router-link>
           </div>
           <div class="bg-card-track flex flex-col items-center p-14">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1"
@@ -67,8 +67,7 @@
             <p class="text-sm text-justify mb-12">Kami menyediakan fitur pelacakan kendaraan real-time dengan pemantauan
               akurat dan respons cepat untuk keamanan serta kenyamanan Anda.</p>
             <router-link to="/Service"
-              class="text-black bg-white py-4 px-8 hover:text-white hover:bg-green-700 transition-all duration-300">Read
-              More</router-link>
+              class="text-black bg-white py-4 px-8 hover:text-white hover:bg-green-700 transition-all duration-300">Baca lebih lanjut</router-link>
           </div>
           <div class="bg-card-maintenance flex flex-col items-center p-14">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1"
@@ -80,8 +79,7 @@
             <p class="text-sm text-justify mb-12">Kami menyediakan perawatan berkala untuk menjaga kendaraan tetap
               prima, dengan pemantauan akurat dan respons cepat demi keamanan serta kenyamanan Anda.</p>
             <router-link to="/Service"
-              class="text-black bg-white py-4 px-8 hover:text-white hover:bg-green-700 transition-all duration-300">Read
-              More</router-link>
+              class="text-black bg-white py-4 px-8 hover:text-white hover:bg-green-700 transition-all duration-300">Baca lebih lanjut</router-link>
           </div>
         </div>
       </div>
@@ -274,18 +272,12 @@
       </div>
     </div>
 
-    <div class="bg-[#F9FBFC] rounded-b-[60px] flex justify-center px-6 py-20 md:px-16">
+    <div class="bg-[#F9FBFC] flex justify-center px-6 py-20 md:px-16">
       <div class="w-5/6">
-        <h1 class="text-3xl font-semibold text-[#737373] text-center mb-4">SUBSCRIBE OUR NEWS</h1>
-        <p class="text-xs md:text-base text-[#A6A6A6] text-center mb-10">Kami dapat membantu Anda mendapatkan berita terbaru kapan pun dan di mana pun melalui email.</p>
+        <h1 class="text-3xl font-semibold text-[#737373] text-center mb-4">Tertarik untuk bekerja sama dengan kami?</h1>
+        <p class="text-xs md:text-base text-[#A6A6A6] text-center mb-10">Kami selalu terbuka untuk kolaborasi dengan individu, komunitas, atau perusahaan yang ingin menciptakan solusi bersama.</p>
         <div class="flex justify-center space-x-2">
-          <div class="flex items-center bg-white shadow-md w- ps-3">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="#D9D9D9" class="size-7 pe-2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
-            </svg>
-            <input type="text" name="username" id="username" class="block min-w-0 grow py-1.5 pr-3 pl-1 text-sm/6 text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-base" placeholder="example@gmail.com" />
-          </div>
-          <button type="submit" class="bg-[#159763] px-4 py-3 text-sm text-white hover:bg-[#0d6341] duration-300">Subscribe</button>
+          <router-link to="/support" type="submit" class="bg-[#159763] px-4 py-3 text-sm text-white hover:bg-[#0d6341] duration-300">Baca lebih lanjut</router-link>
         </div>
       </div>
     </div>

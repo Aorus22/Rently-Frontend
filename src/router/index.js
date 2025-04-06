@@ -26,6 +26,7 @@ import DetailPemesananAdmin from '@/views/Admin/DetailPemesanan.vue';
 import Service from '@/views/utilities/Service.vue';
 import Company from '@/views/utilities/Company.vue';
 import Support from '@/views/utilities/Support.vue';
+import NotFound from '@/views/utilities/NotFound.vue';
 
 const routes = [
   { path: '/', component: Dashboard },
@@ -60,6 +61,9 @@ const routes = [
   },
 
   { path: "/admin/login", component: AdminLogin, meta: { hideHeader: true } },
+
+  // Not found
+  { path: "/:pathMatch(.*)*", name: 'NotFound', component: NotFound},
 ];
 
 const router = createRouter({

@@ -1,5 +1,5 @@
 <template>
-  <section class="bg-[#F9FBFC] p-6 rounded-lg shadow-sm max-w-4xl mx-auto space-y-6">
+  <section class="bg-[#F9FBFC] p-6 sm:p-8 rounded-lg shadow-sm w-full max-w-3xl min-h-[400px] mx-auto mt-[50px] mb-[50px] space-y-6">
     <h2 class="text-3xl font-bold border-b-4 border-[#159763] pb-2 flex items-center gap-2">
       <Building class="w-6 h-6 text-[#159763]" /> Tentang Company
     </h2>
@@ -78,6 +78,20 @@ export default {
     toggle(index) {
       this.activeIndex = this.activeIndex === index ? null : index;
     },
+  },
+  mounted() {
+    const openIndex = Number(this.$route.query.open);
+    if (!isNaN(openIndex)) {
+      this.activeIndex = openIndex;
+    }
+  },
+  watch: {
+    '$route.query.open'(newVal) {
+      const index = Number(newVal)
+      if (!isNaN(index)) {
+        this.activeIndex = index
+      }
+    }
   },
 };
 </script>

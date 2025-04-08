@@ -29,7 +29,8 @@ import Support from '@/views/utilities/Support.vue';
 import NotFound from '@/views/utilities/NotFound.vue';
 
 const routes = [
-  { path: '/', component: Dashboard },
+  { path: '/', redirect: '/welcome' },
+  { path: '/welcome', component: Dashboard},
   { path: '/home', component: Home },
   { path: '/kendaraan', component: ListKendaraan },
   { path: '/kendaraan/:id', component: DetailKendaraan },
@@ -68,7 +69,10 @@ const routes = [
 
 const router = createRouter({
   history: createWebHistory(),
-  routes
+  routes,
+  scrollBehavior() {
+    return { top: 0 }
+  }
 })
 
 // Check if logged in

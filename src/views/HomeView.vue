@@ -223,41 +223,31 @@
             </div>
 
             <div class="flex space-x-4">
-              <div
-                class="border border-[#159763] w-fit p-1 text-[#159763] hover:bg-[#159763] hover:text-white duration-300">
+              <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" class="border border-[#159763] w-fit p-1 text-[#159763] hover:bg-[#159763] hover:text-white duration-300">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                   stroke="currentColor" class="size-5">
-                  <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M16.5 12a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0Zm0 0c0 1.657 1.007 3 2.25 3S21 13.657 21 12a9 9 0 1 0-2.636 6.364M16.5 12V8.25" />
+                    <Facebook/>
                 </svg>
-              </div>
+              </a>
 
-              <div
-                class="border border-[#159763] w-fit p-1 text-[#159763] hover:bg-[#159763] hover:text-white duration-300">
+              <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" class="border border-[#159763] w-fit p-1 text-[#159763] hover:bg-[#159763] hover:text-white duration-300">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                   stroke="currentColor" class="size-5">
-                  <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M16.5 12a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0Zm0 0c0 1.657 1.007 3 2.25 3S21 13.657 21 12a9 9 0 1 0-2.636 6.364M16.5 12V8.25" />
+                    <Instagram/>
                 </svg>
-              </div>
-
-              <div
-                class="border border-[#159763] w-fit p-1 text-[#159763] hover:bg-[#159763] hover:text-white duration-300">
+              </a>
+              <a href="https://x.com/" target="_blank" rel="noopener noreferrer" class="border border-[#159763] w-fit p-1 text-[#159763] hover:bg-[#159763] hover:text-white duration-300">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                   stroke="currentColor" class="size-5">
-                  <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M16.5 12a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0Zm0 0c0 1.657 1.007 3 2.25 3S21 13.657 21 12a9 9 0 1 0-2.636 6.364M16.5 12V8.25" />
+                    <Twitter/>
                 </svg>
-              </div>
-
-              <div
-                class="border border-[#159763] w-fit p-1 text-[#159763] hover:bg-[#159763] hover:text-white duration-300">
+              </a>
+              <a href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer" class="border border-[#159763] w-fit p-1 text-[#159763] hover:bg-[#159763] hover:text-white duration-300">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                   stroke="currentColor" class="size-5">
-                  <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M16.5 12a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0Zm0 0c0 1.657 1.007 3 2.25 3S21 13.657 21 12a9 9 0 1 0-2.636 6.364M16.5 12V8.25" />
+                    <Linkedin/>
                 </svg>
-              </div>
+              </a>
             </div>
           </div>
           <div>
@@ -265,8 +255,7 @@
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3955.148040599699!2d110.85002361045927!3d-7.558832742423546!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a14234667a3fd%3A0xbda63b32997616ad!2sUniversitas%20Sebelas%20Maret%20(UNS)!5e0!3m2!1sid!2sid!4v1742184558849!5m2!1sid!2sid"
               class="mb-10 sm:mb-16" width="100%" height="350" style="border:0;" allowfullscreen="true" loading="lazy"
               referrerpolicy="no-referrer-when-downgrade"></iframe>
-
-            <a href="" class="text-sm border border-[#159763] bg-[#159763] text-white w-fit px-3 py-2 hover:bg-[#0d6341] duration-300">Peta Kantor</a>
+            <a href="https://www.google.com/maps/place/Sebelas+Maret+University/@-7.5598826,110.8549321,17z/data=!4m6!3m5!1s0x2e7a14234667a3fd:0xbda63b32997616ad!8m2!3d-7.5596274!4d110.8563805!16s%2Fm%2F02p_9kw?entry=ttu&g_ep=EgoyMDI1MDQwMi4xIKXMDSoJLDEwMjExNDUzSAFQAw%3D%3D" target="_blank" class="text-sm border border-[#159763] bg-[#159763] text-white w-fit px-3 py-2 hover:bg-[#0d6341] duration-300">Peta Kantor</a>
           </div>
         </div>
       </div>
@@ -284,6 +273,24 @@
   </div>
 </template>
 
+<script>
+import {
+  Facebook,
+  Instagram,
+  Twitter,
+  Linkedin,
+} from 'lucide-vue-next';
+
+export default {
+  name: 'ServiceSection',
+  components: {
+    Facebook,
+    Instagram,
+    Twitter,
+    Linkedin,
+  }
+}
+</script>
 <style>
 /* Background untuk masing-masing kartu */
 .bg-card-home,

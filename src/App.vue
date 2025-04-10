@@ -4,7 +4,7 @@
     <main class="flex-1 flex">
       <router-view />
     </main>
-    <Footer v-if="!$route.path.startsWith('/admin') && $route.path !== '/welcome'"/>
+    <Footer v-if="!$route.path.startsWith('/admin') && !$route.meta.hideFooter "/>
   </div>
 </template>
 

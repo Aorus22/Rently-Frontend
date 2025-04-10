@@ -29,15 +29,15 @@ import Support from '@/views/utilities/Support.vue';
 import NotFound from '@/views/utilities/NotFound.vue';
 
 const routes = [
-  { path: '/', redirect: '/welcome' },
-  { path: '/welcome', component: Dashboard},
+  { path: '/', redirect: '/welcome'},
+  { path: '/welcome', component: Dashboard, meta: { hideFooter: true }},
   { path: '/home', component: Home },
   { path: '/kendaraan', component: ListKendaraan },
   { path: '/kendaraan/:id', component: DetailKendaraan },
   { path: '/kendaraan/:id/pesan', component: Pemesanan, meta: { requiresAuth: true } },
 
-  { path: '/login', component: Login, meta: { hideHeader: true },  },
-  { path: '/register', component: Register, meta: { hideHeader: true }, },
+  { path: '/login', component: Login, meta: { hideHeader: true, hideFooter: true },  },
+  { path: '/register', component: Register, meta: { hideHeader: true, hideFooter: true }, },
 
   { path: '/riwayat-pemesanan', component: RiwayatPemesanan, meta: { requiresAuth: true } },
   { path: '/detail-pemesanan/:id', component: DetailPemesanan, meta: { requiresAuth: true } },

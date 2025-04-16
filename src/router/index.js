@@ -21,6 +21,7 @@ import AdminLogin from '../views/Admin/LoginView.vue';
 import DynamicCrud from '../components/admin/DynamicTable.vue';
 import ListPemesanan from '@/views/Admin/ListPemesanan.vue';
 import DetailPemesananAdmin from '@/views/Admin/DetailPemesanan.vue';
+import DetailKendaraanAdmin from '@/views/Admin/DetailKendaraan.vue';
 
 // Utilities
 import Service from '@/views/utilities/Service.vue';
@@ -54,6 +55,7 @@ const routes = [
     children: [
       { path: "", redirect: "/admin/dashboard" },
       { path: "pemesanan/:id", name: 'AdminPemesananDetail', component: DetailPemesananAdmin },
+      { path: "kendaraan/:id", name: 'AdminKendaraanDetail', component: DetailKendaraanAdmin },
       { path: "dashboard", component: AdminHome },
       { path: "list-pemesanan", component: ListPemesanan },
       { path: ':table', component: DynamicCrud, props: true }

@@ -68,7 +68,7 @@
 
 <script setup>
 import { ref, watchEffect, computed } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import api from "@/plugins/axios";
 import CrudModal from "./CrudModal.vue";
 import DetailModal from "./DetailModal.vue";
@@ -78,6 +78,7 @@ import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@
 import { LoaderCircle, Plus, Eye, Pencil, Trash } from "lucide-vue-next";
 
 const route = useRoute();
+const router = useRouter();
 const table = ref(route.params.table);
 const tableConfig = ref(null);
 const data = ref([]);
@@ -168,8 +169,12 @@ const openModal = (row) => {
 };
 
 const openDetail = (row) => {
-  detailData.value = row;
-  showDetail.value = true;
+  if (tableConfig.value.title == "Kendaraan") {
+    router.push(`/admin/Kendaraan/${row.id}`);
+  } else {
+    detailData.value = row;
+    showDetail.value = true;
+  }
 };
 
 const deleteItem = async (id) => {

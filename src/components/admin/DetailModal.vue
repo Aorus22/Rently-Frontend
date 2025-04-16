@@ -2,7 +2,6 @@
 import { defineProps, defineEmits, watch, computed, onMounted, nextTick } from "vue";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import L from "leaflet";
 import GoogleMapDetail from "./GoogleMapDetail.vue";
 
 const props = defineProps({ data: Object, config: Object });
@@ -27,21 +26,8 @@ watch(() => props.data, (newData) => {
   }
 });
 
-const lat = computed(() => props.data?.[props.config.detail_special?.map?.lat]);
-const lon = computed(() => props.data?.[props.config.detail_special?.map?.lon]);
-
-onMounted(async () => {
-  if (lat.value && lon.value) {
-    await nextTick();
-    const map = L.map("map").setView([lat.value, lon.value], 13);
-
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      attribution: '&copy; OpenStreetMap contributors',
-    }).addTo(map);
-
-    L.marker([lat.value, lon.value]).addTo(map);
-  }
-});
+const lat = computed(() => props.data?.[props.config?.detail_special?.map?.lat]);
+const lon = computed(() => props.data?.[props.config?.detail_special?.map?.lon]);
 </script>
 
 <template>
@@ -58,7 +44,7 @@ onMounted(async () => {
                   <template v-if="config?.special_view?.[column] === 'image'">
                     <img :src="data[column]" alt="Image" class="max-w-[150px] max-h-[150px] rounded-lg" />
                   </template>
-                  <template v-else-if="config.special_view?.[column] === 'url'">
+                  <template v-else-if="config?.special_view?.[column] === 'url'">
                     <a :href="data[column]" target="_blank">
                       <Button variant="link">View</Button>
                     </a>
@@ -72,7 +58,7 @@ onMounted(async () => {
               </tr>
             </tbody>
           </table>
-          <GoogleMapDetail :lat="lat" :lon="lon" class="mt-5"/>
+          <GoogleMapDetail v-if="lat && lon" :lat="lat" :lon="lon" class="mt-5"/>
         </div>
         <Button @click="closeModal" class="mt-4 w-full">Close</Button>
       </CardContent>

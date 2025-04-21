@@ -8,7 +8,6 @@
           class="flex items-center text-primary hover:underline transition-colors duration-200"
         >
           <ArrowLeftIcon class="w-5 h-5 mr-2" />
-          Kembali ke Daftar
         </router-link>
         <h1 class="text-3xl font-bold tracking-tight text-gray-900">
           Detail Pemesanan #{{ pemesanan?.id }}

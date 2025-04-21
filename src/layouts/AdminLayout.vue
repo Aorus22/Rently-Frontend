@@ -1,12 +1,8 @@
 <template>
-  <div class="flex h-screen w-screen">
-    <Sidenav />
+  <Sidenav />
 
-    <div class="flex-1 max-h-screen ml-64 bg-gray-100">
-      <div class="overflow-auto h-full">
-        <router-view />
-      </div>
-    </div>
+  <div class="admin flex-1 md:ml-64 ml-0 overflow-auto mt-20 md:mt-0 p-4 md:p-12">
+    <router-view />
   </div>
 </template>
 

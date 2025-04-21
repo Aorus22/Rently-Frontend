@@ -1,5 +1,5 @@
 <template>
-  <div class="p-12">
+  <div class="overflow-auto">
     <h1 class="text-2xl font-bold">{{ tableConfig?.title }}</h1>
 
     <div class="mt-5 flex items-center justify-between mb-4">
@@ -12,7 +12,7 @@
         <span>Export</span>
       </Button>
     </div>
-    <div v-if="loading" class="flex items-center text-gray-500">
+    <div v-if="loading" class="h-10 flex items-center text-gray-500">
       <LoaderCircle class="animate-spin w-5 h-5 mr-2" /> Loading...
     </div>
     <div v-else-if="error" class="text-red-500">{{ error }}</div>

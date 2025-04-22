@@ -24,7 +24,7 @@
         </div>
       </div>
 
-      <router-link to="/kendaraan"
+      <router-link to="/home"
         class="flex items-center w-fit mt-28 inline-block px-6 py-3 text-lg bg-[#159763] rounded-full shadow-md hover:bg-emerald-700 transition-all duration-300 transform hover:scale-105">
         Learn More
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="size-4 ml-2">

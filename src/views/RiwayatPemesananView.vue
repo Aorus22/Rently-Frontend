@@ -91,7 +91,6 @@
                   <span class="text-green-600 font-medium text-lg">
                     {{ formatCurrency(item.total_harga_sewa) }}
                   </span>
-                  <span class="text-gray-400 text-sm ml-1">/hari</span>
                 </div>
                 <button class="text-green-600 hover:text-green-700 flex items-center text-sm">
                   Detail

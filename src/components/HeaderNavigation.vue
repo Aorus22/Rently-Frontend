@@ -32,7 +32,7 @@
               :key="item.name"
               :to="item.href"
               class="rounded-md px-3 py-2 text-sm font-medium"
-              :class="[item.current ? 'bg-gray-900 text-white' : 'hover:bg-gray-700 hover:text-white']"
+              :class="[item.current ? 'bg-[#159763] text-white' : 'hover:bg-gray-700 hover:text-white']"
               :aria-current="item.current ? 'page' : undefined"
             >
               {{ item.name }}
@@ -83,13 +83,13 @@
         <SheetHeader>
           <SheetTitle>Menu</SheetTitle>
         </SheetHeader>
-        <div class="space-y-4 py-4">
+        <div class="space-y-2 py-4">
           <router-link
             v-for="item in navigation"
             :key="item.name"
             :to="item.href"
             class="block rounded-md px-3 py-2 text-base font-medium"
-            :class="[item.current ? 'bg-gray-900 text-white' : 'hover:bg-gray-700 hover:text-white']"
+            :class="[item.current ? 'bg-[#159763] text-white' : 'hover:bg-gray-700 hover:text-white']"
             @click="isMobileMenuOpen = false"
           >
             {{ item.name }}
@@ -153,8 +153,8 @@ export default {
       return [
         { name: 'Home', href: '/home', current: this.$route.path === '/home' },
         { name: 'List Kendaraan', href: '/kendaraan', current: this.$route.path.startsWith('/kendaraan') },
-        { name: 'About', href: '/Company', current: false },
-        { name: 'Contact', href: '/Support', current: false }
+        { name: 'About', href: '/about', current: false, current: this.$route.path === '/about' },
+        { name: 'Contact', href: '/contact', current: false, current: this.$route.path === '/contact' }
       ]
     }
   },

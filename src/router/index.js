@@ -45,8 +45,8 @@ const routes = [
   // { path: "/detail-pemesanan/:id/bayar", component: Pembayaran, props: true, meta: { requiresAuth: true } },
   { path: '/detail-pembayaran/:id', component: DetailPembayaran, props: true, meta: { requiresAuth: true } },
   { path: '/service', component: Service },
-  { path: '/company', component: Company },
-  { path: '/support', component: Support },
+  { path: '/about', component: Company },
+  { path: '/contact', component: Support },
 
    // Admin Routes
   {

@@ -2,7 +2,7 @@
   <div class="w-full bg-white p-10">
     <!-- Header -->
     <div class="text-center mb-6">
-      <div class="text-green-600 font-medium text-sm">MOBIL SEDAN</div>
+      <div v-if="selectedCategory" class="text-green-600 font-medium text-sm">{{ selectedCategory }}</div>
       <h1 class="text-3xl font-medium text-gray-600 mb-2">Pilih Mobil yang Sesuai untuk Anda</h1>
       <p class="text-gray-500 text-sm">
         Kami menghadirkan mobil populer yang siap digunakan untuk memaksimalkan kenyamanan Anda dalam perjalanan jauh
@@ -140,6 +140,27 @@
             </button>
           </div>
         </div>
+
+        <!-- Location -->
+        <div class="mt-5">
+          <h3 class="font-medium text-sm mb-2">Lokasi</h3>
+          <div class="relative">
+            <select
+              v-model="selectedLocation"
+              class="w-full bg-white border border-gray-300 rounded-lg px-4 py-2 appearance-none cursor-pointer text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-600"
+              @change="handleLocationChange"
+            >
+              <option value="">Semua lokasi</option>
+              <option v-for="kota in location" :key="kota" :value="kota">{{ kota }}</option>
+            </select>
+            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </div>
+          </div>
+        </div>
+
       </div>
 
       <!-- Car List -->
@@ -214,11 +235,13 @@ export default {
     return {
       isLoading: true,
       kendaraan: [],
+      location: [],
       minPriceRange: 0,
       maxPriceRange: 1000000,
       selectedCapacity: null,
       selectedTransmission: null,
       selectedCategory: null,
+      selectedLocation: ''
     };
   },
   created() {
@@ -233,16 +256,18 @@ export default {
 
         const priceMatch = harga >= minHarga && harga <= maxHarga;
         const capacityMatch = !this.selectedCapacity ||
-                              (this.selectedCapacity === 4 && item.kapasitas_kursi <= 4) ||
-                              (this.selectedCapacity === 5 && (item.kapasitas_kursi === 5 || item.kapasitas_kursi === 6)) ||
-                              (this.selectedCapacity === 7 && item.kapasitas_kursi >= 7);
+                            (this.selectedCapacity === 4 && item.kapasitas_kursi <= 4) ||
+                            (this.selectedCapacity === 5 && (item.kapasitas_kursi === 5 || item.kapasitas_kursi === 6)) ||
+                            (this.selectedCapacity === 7 && item.kapasitas_kursi >= 7);
 
         const transmissionMatch = !this.selectedTransmission ||
-                                  item.jenis_transmisi === this.selectedTransmission;
+                                item.jenis_transmisi === this.selectedTransmission;
 
-        const categoryMatch = !this.selectedCategory || item.kategori_kendaraan === this.selectedCategory
+        const categoryMatch = !this.selectedCategory || item.kategori_kendaraan === this.selectedCategory;
 
-        return priceMatch && capacityMatch && transmissionMatch && categoryMatch;
+        const locationMatch = !this.selectedLocation || item.lokasi_garasi.kota === this.selectedLocation;
+
+        return priceMatch && capacityMatch && transmissionMatch && categoryMatch && locationMatch;
       });
     }
   },
@@ -257,6 +282,16 @@ export default {
       this.isLoading = false;
     },
 
+    async fetchLokasi() {
+      try {
+        const response = await api.get('/garasi');
+        const cities = [...new Set(response.data.map(item => item.kota))];
+        this.location = cities;
+      } catch (error) {
+        console.error("Gagal mengambil data lokasi:", error);
+      }
+    },
+
     goToDetail(id) {
       this.$router.push(`/kendaraan/${id}`);
     },
@@ -267,6 +302,7 @@ export default {
       this.selectedCapacity = null;
       this.selectedTransmission = null;
       this.selectedCategory = null;
+      this.selectedLocation = "";
     },
 
     toggleCapacity(capacity) {
@@ -279,6 +315,10 @@ export default {
 
     toggleCategory(category) {
       this.selectedCategory = this.selectedCategory === category ? null : category;
+    },
+
+    handleLocationChange(event) {
+      this.selectedLocation = event.target.value;
     },
 
     validatePriceRange() {
@@ -295,6 +335,7 @@ export default {
   },
   mounted() {
     this.fetchKendaraan();
+    this.fetchLokasi();
   }
 };
 </script>

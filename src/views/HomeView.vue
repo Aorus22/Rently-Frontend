@@ -3,36 +3,40 @@
     <div class="flex flex-col items-center py-36">
       <h1 class="text-4xl font-bold text-center mb-8">Jelajahi Berdasarkan Tipe</h1>
       <div class="w-4/5 lg:w-1/2 grid grid-cols-2 sm:grid-cols-3 gap-2">
-        <a href="/kendaraan?category=Mobil" class="bg-white flex flex-col items-center justify-center gap-2 py-6 rounded-xl shadow-md hover:bg-[#159763] hover:text-white duration-300">
-          <div class="bg-[#F9FBFC] p-3 rounded-full inline-flex mb-2">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-              stroke="#000000" class="size-6">
-              <path stroke-linecap="round" stroke-linejoin="round"
-                d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z" />
-            </svg>
+
+        <!-- Mobil -->
+        <router-link
+          :to="{ path: '/kendaraan', query: { category: 'Mobil' }}"
+          class="group bg-white flex flex-col items-center justify-center gap-2 py-6 rounded-xl shadow-md hover:bg-[#159763] hover:text-white duration-300"
+        >
+          <div class="bg-[#F9FBFC] p-3 rounded-full inline-flex mb-2 group-hover:bg-white/20 transition">
+            <Car class="size-6 text-[#159763] group-hover:text-white transition" />
           </div>
           <p class="font-medium">Mobil</p>
-        </a>
-        <a href="/kendaraan?category=Minibus" class="bg-white flex flex-col items-center justify-center gap-2 py-6 rounded-xl shadow-md hover:bg-[#159763] hover:text-white duration-300">
-          <div class="bg-[#F9FBFC] p-3 rounded-full inline-flex mb-2">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-              stroke="#000000" class="size-6">
-              <path stroke-linecap="round" stroke-linejoin="round"
-                d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z" />
-            </svg>
+        </router-link>
+
+        <!-- Minibus -->
+        <router-link
+          :to="{ path: '/kendaraan', query: { category: 'Minibus' }}"
+          class="group bg-white flex flex-col items-center justify-center gap-2 py-6 rounded-xl shadow-md hover:bg-[#159763] hover:text-white duration-300"
+        >
+          <div class="bg-[#F9FBFC] p-3 rounded-full inline-flex mb-2 group-hover:bg-white/20 transition">
+            <Bus class="size-6 text-[#159763] group-hover:text-white transition" />
           </div>
           <p class="font-medium">Minibus</p>
-        </a>
-        <a href="/kendaraan?category=Pickup" class="bg-white flex flex-col items-center justify-center gap-2 py-6 rounded-xl shadow-md hover:bg-[#159763] hover:text-white duration-300">
-          <div class="bg-[#F9FBFC] p-3 rounded-full inline-flex mb-2">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-              stroke="#000000" class="size-6">
-              <path stroke-linecap="round" stroke-linejoin="round"
-                d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z" />
-            </svg>
+        </router-link>
+
+        <!-- Pickup -->
+        <router-link
+          :to="{ path: '/kendaraan', query: { category: 'Pickup' }}"
+          class="group bg-white flex flex-col items-center justify-center gap-2 py-6 rounded-xl shadow-md hover:bg-[#159763] hover:text-white duration-300"
+        >
+          <div class="bg-[#F9FBFC] p-3 rounded-full inline-flex mb-2 group-hover:bg-white/20 transition">
+            <Truck class="size-6 text-[#159763] group-hover:text-white transition" />
           </div>
           <p class="font-medium">Pickup</p>
-        </a>
+        </router-link>
+
       </div>
     </div>
 
@@ -279,6 +283,9 @@ import {
   Instagram,
   Twitter,
   Linkedin,
+  Car,
+  Bus,
+  Truck,
 } from 'lucide-vue-next';
 
 export default {
@@ -288,6 +295,9 @@ export default {
     Instagram,
     Twitter,
     Linkedin,
+    Car,
+    Bus,
+    Truck
   }
 }
 </script>

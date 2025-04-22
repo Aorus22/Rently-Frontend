@@ -100,7 +100,7 @@
           <p><strong>Kendaraan:</strong> {{ selectedPemesanan.kendaraan.merek_model }}</p>
           <p><strong>Tanggal Mulai:</strong> {{ selectedPemesanan.tanggal_mulai }}</p>
           <p><strong>Tanggal Selesai:</strong> {{ selectedPemesanan.tanggal_selesai }}</p>
-          <p><strong>Total Harga:</strong> Rp{{ selectedPemesanan.total_harga_sewa }}</p>
+          <p><strong>Total Harga:</strong>{{ selectedPemesanan.total_harga_sewa }}</p>
           <p><strong>Status:</strong>
             <span
               class="p-2 rounded"

@@ -58,8 +58,8 @@
 
             <!-- Price Range Display -->
             <div class="flex justify-between text-xs text-gray-500 mt-4">
-              <span>Rp {{ formatHarga(minPriceRange) }}</span>
-              <span>Rp {{ formatHarga(maxPriceRange) }}</span>
+              <span>{{ formatCurrency(minPriceRange) }}</span>
+              <span>{{ formatCurrency(maxPriceRange) }}</span>
             </div>
           </div>
         </div>
@@ -178,7 +178,7 @@
                 <h3 class="font-medium text-gray-800">{{ item.merek_model }}</h3>
                 <div class="flex items-center justify-between mt-2">
                   <div class="flex items-center">
-                    <span class="text-green-600 font-medium">Rp{{ formatHarga(item.harga_sewa_per_periode) }}</span>
+                    <span class="text-green-600 font-medium">{{ formatCurrency(item.harga_sewa_per_periode) }}</span>
                     <span class="text-gray-400 text-sm">/hari</span>
                   </div>
                   <div class="flex items-center text-gray-400 text-sm">
@@ -206,6 +206,7 @@
 </template>
 
 <script>
+import { formatCurrency } from '@/custom_utility/utils';
 import api from '../plugins/axios'
 
 export default {
@@ -256,10 +257,6 @@ export default {
       this.isLoading = false;
     },
 
-    formatHarga(harga) {
-      return new Intl.NumberFormat('id-ID').format(harga);
-    },
-
     goToDetail(id) {
       this.$router.push(`/kendaraan/${id}`);
     },
@@ -292,7 +289,9 @@ export default {
       if (parseInt(this.maxPriceRange) <= parseInt(this.minPriceRange)) {
         this.maxPriceRange = this.minPriceRange;
       }
-    }
+    },
+
+    formatCurrency
   },
   mounted() {
     this.fetchKendaraan();

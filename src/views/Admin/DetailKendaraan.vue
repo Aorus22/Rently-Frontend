@@ -20,12 +20,22 @@
 
     <!-- Loading State -->
     <div v-if="isLoading" class="flex justify-center items-center h-64">
-      <Activity class="w-8 h-8 animate-spin text-primary" />
+      <ArrowPathIcon class="w-8 h-8 animate-spin" />
     </div>
 
     <!-- Main Content -->
     <Card v-else-if="kendaraan" class="shadow-md border border-gray-100">
       <CardContent class="p-6 sm:p-8 space-y-8">
+        <section>
+          <div class="flex justify-center">
+            <img
+              :src="kendaraan.gambar_url"
+              alt="Kendaraan"
+              class="h-72 w-auto object-cover rounded-lg border-2 border-gray-200"
+            >
+          </div>
+        </section>
+
         <section>
           <h3 class="text-xl font-semibold text-gray-800 flex items-center gap-2">
             <Info class="w-5 h-5 text-primary" />
@@ -46,7 +56,7 @@
             </div>
             <div class="flex justify-between">
               <span class="text-muted-foreground">Harga Sewa per Periode:</span>
-              <span class="font-medium">Rp {{ formatCurrency(kendaraan.harga_sewa_per_periode) }}</span>
+              <span class="font-medium">{{ formatCurrency(kendaraan.harga_sewa_per_periode) }}</span>
             </div>
             <div class="flex justify-between">
               <span class="text-muted-foreground">Kapasitas Kursi:</span>
@@ -106,15 +116,10 @@
               class="border p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition cursor-pointer group block"
             >
               <div class="flex items-start gap-4">
-                <img
-                  :src="kendaraan.gambar_url"
-                  alt="Kendaraan"
-                  class="w-24 h-24 object-cover rounded-lg border-2 border-gray-200"
-                >
                 <div class="flex-1">
                   <div class="flex items-center justify-between mb-2">
                     <h2 class="text-lg font-medium text-gray-800">
-                      Pemesanan #{{ pemesanan.id }} - {{ kendaraan.merek_model }}
+                      Pemesanan #{{ pemesanan.id }}
                     </h2>
                     <span :class="getStatusColor(pemesanan.status_pemesanan)" class="text-sm flex items-center">
                       <component
@@ -133,7 +138,7 @@
                   <div class="flex items-center justify-between">
                     <div class="flex items-center">
                       <span class="font-medium text-lg">
-                        Total: Rp{{ formatCurrency(pemesanan.total_harga_sewa) }}
+                        Total: {{ formatCurrency(pemesanan.total_harga_sewa) }}
                       </span>
                     </div>
                     <button class="hover:text-gray-700 flex items-center text-sm">
@@ -308,6 +313,9 @@ import TableHeader from "@/components/ui/table/TableHeader.vue";
 import TableRow from "@/components/ui/table/TableRow.vue";
 import api from "@/plugins/axios"
 import { Activity, ArrowLeftIcon, CalendarIcon, ChevronRightIcon, Eye, Info, User } from "lucide-vue-next";
+import { formatCurrency, formatDate, formatDateTime } from "@/custom_utility/utils"
+import { ArrowPathIcon } from "@heroicons/vue/24/outline";
+
 export default {
   name: "AdminKendaraanDetail",
   components: {
@@ -331,6 +339,7 @@ export default {
     AlertDescription,
     CalendarIcon,
     ChevronRightIcon,
+    ArrowPathIcon,
     User
   },
   data() {
@@ -438,16 +447,6 @@ export default {
         this.loading = false
       }
     },
-    // formats
-    formatCurrency(amount) {
-      return new Intl.NumberFormat("id-ID", { minimumFractionDigits: 2 }).format(amount)
-    },
-    formatDate(date) {
-      return date ? new Date(date).toLocaleDateString("id-ID") : "-"
-    },
-    formatDateTime(dateTime) {
-      return dateTime ? new Date(dateTime).toLocaleString("id-ID") : "-"
-    },
     getStatusColor(status) {
       return {
         "Menunggu Pembayaran": "text-yellow-600",
@@ -470,6 +469,7 @@ export default {
       this.detailData = row;
       this.showDetail = true;
     },
+    formatCurrency, formatDate, formatDateTime
   },
   mounted() {
     this.fetchKendaraanDetail(),

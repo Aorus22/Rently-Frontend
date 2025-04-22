@@ -3,6 +3,9 @@
     <!-- Header -->
     <div class="flex items-center justify-between mb-8">
       <h1 class="text-2xl font-medium text-gray-800 flex items-center">
+        <router-link :to="`/detail-pemesanan/${pembayaran?.pemesanan_id}`">
+          <ArrowLeftIcon class="w-5 h-5 mr-2" />
+        </router-link>
         <CreditCardIcon class="w-6 h-6 mr-2 text-green-600" />
         Detail Pembayaran
       </h1>
@@ -38,7 +41,7 @@
               </div>
               <div class="flex items-center">
                 <CurrencyDollarIcon class="w-4 h-4 mr-2 text-green-600" />
-                {{ formatHarga(pemesanan.total_harga_sewa) }}
+                {{ formatCurrency(pemesanan.kendaraan.harga_sewa_per_periode) }}/hari
               </div>
             </div>
           </div>
@@ -73,7 +76,7 @@
             <div class="border-l pl-4">
               <p class="text-gray-500 mb-2">Total Transfer:</p>
               <p class="text-2xl font-bold text-green-600">
-                {{ formatHarga(pembayaran.jumlah_pembayaran) }}
+                {{ formatCurrency(pemesanan.total_harga_sewa) }}
               </p>
             </div>
           </div>
@@ -90,6 +93,7 @@
               </span>
               <input
                 type="file"
+                accept="image/*"
                 @change="handleFileUpload"
                 class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200"
               />
@@ -135,6 +139,7 @@
 </template>
 
 <script>
+import { formatCurrency } from '@/custom_utility/utils'
 import api from '../plugins/axios'
 import {
   CreditCardIcon,
@@ -146,6 +151,7 @@ import {
   TagIcon,
   ArrowPathIcon
 } from '@heroicons/vue/24/outline'
+import { ArrowLeftIcon } from 'lucide-vue-next'
 
 export default {
   props: ['id'],
@@ -157,7 +163,8 @@ export default {
     QrCodeIcon,
     CurrencyDollarIcon,
     TagIcon,
-    ArrowPathIcon
+    ArrowPathIcon,
+    ArrowLeftIcon
   },
   data() {
     return {
@@ -208,12 +215,6 @@ export default {
         loader.hide();
       }
     },
-    formatHarga(harga) {
-      return new Intl.NumberFormat('id-ID', {
-        style: 'currency',
-        currency: 'IDR',
-      }).format(harga)
-    },
     getStatusColor(status) {
       return (
         {
@@ -224,6 +225,7 @@ export default {
         }[status] || 'text-gray-500'
       )
     },
+    formatCurrency
   },
   mounted() {
     this.fetchDetailPembayaran()

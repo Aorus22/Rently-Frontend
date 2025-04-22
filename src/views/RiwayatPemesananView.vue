@@ -89,7 +89,7 @@
               <div class="flex items-center justify-between">
                 <div class="flex items-center">
                   <span class="text-green-600 font-medium text-lg">
-                    Rp{{ formatHarga(item.total_harga_sewa) }}
+                    {{ formatCurrency(item.total_harga_sewa) }}
                   </span>
                   <span class="text-gray-400 text-sm ml-1">/hari</span>
                 </div>
@@ -107,6 +107,7 @@
 </template>
 
 <script>
+import { formatCurrency } from '@/custom_utility/utils';
 import api from '../plugins/axios';
 import {
   BookmarkIcon,
@@ -207,10 +208,6 @@ export default {
       }
     },
 
-    formatHarga(harga) {
-      return new Intl.NumberFormat("id-ID").format(harga);
-    },
-
     getStatusColor(status) {
       return {
         "Menunggu Pembayaran": "text-yellow-600",
@@ -228,7 +225,9 @@ export default {
 
     goToDetail(id) {
       this.$router.push(`/detail-pemesanan/${id}`);
-    }
+    },
+
+    formatCurrency
 
   },
   mounted() {

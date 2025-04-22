@@ -4,7 +4,7 @@
 
     <div v-if="pemesanan">
       <h2 class="text-lg font-semibold">{{ pemesanan.kendaraan.merek_model }}</h2>
-      <p class="text-gray-600">Total Harga: <span class="text-blue-500 font-bold">Rp {{ formatHarga(pemesanan.total_harga_sewa) }}</span></p>
+      <p class="text-gray-600">Total Harga: <span class="text-blue-500 font-bold">{{ formatCurrency(pemesanan.total_harga_sewa) }}</span></p>
 
       <h3 class="text-lg font-semibold mt-4 mb-2">Pilih Metode Pembayaran:</h3>
       <div class="mb-4">
@@ -29,6 +29,7 @@
 </template>
 
 <script>
+import { formatCurrency } from '@/custom_utility/utils';
 import api from '../plugins/axios'
 
 export default {
@@ -66,20 +67,7 @@ export default {
         console.error("Gagal memilih metode pembayaran:", error);
       }
     },
-    formatHarga(harga) {
-      return new Intl.NumberFormat("id-ID", {
-        style: "currency",
-        currency: "IDR"
-      }).format(harga);
-    },
-    formatTanggal(tanggal) {
-      if (!tanggal) return "-";
-      return new Date(tanggal).toLocaleDateString("id-ID", {
-        day: "2-digit",
-        month: "long",
-        year: "numeric"
-      });
-    }
+    formatCurrency
   },
   mounted() {
     this.fetchDetailPemesanan();

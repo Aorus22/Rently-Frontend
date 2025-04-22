@@ -62,7 +62,7 @@ Copy
                   <div>
                     <p class="text-sm text-gray-500">Harga Sewa Harian</p>
                     <p class="text-2xl font-bold text-green-600">
-                      Rp{{ formatHarga(kendaraan.harga_sewa_per_periode) }}
+                      {{ formatCurrency(kendaraan.harga_sewa_per_periode) }}
                     </p>
                   </div>
                   <CurrencyDollarIcon class="w-8 h-8 text-green-600" />
@@ -124,6 +124,7 @@ import {
   FaceFrownIcon,
   TagIcon
 } from '@heroicons/vue/24/outline'
+import { formatCurrency } from '@/custom_utility/utils'
 
 export default {
   components: {
@@ -167,12 +168,10 @@ export default {
         this.loading = false
       }
     },
-    formatHarga(harga) {
-      return new Intl.NumberFormat('id-ID').format(harga)
-    },
     goToPemesanan() {
       this.$router.push(`/kendaraan/${this.kendaraan.id}/pesan`)
     },
+    formatCurrency
   },
   mounted() {
     this.fetchDetail()

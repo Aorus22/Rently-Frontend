@@ -20,7 +20,7 @@
 
     <!-- Loading State -->
     <div v-if="isLoading" class="flex justify-center items-center h-64">
-      <Activity class="w-8 h-8 animate-spin text-primary" />
+      <ArrowPathIcon class="w-8 h-8 animate-spin" />
     </div>
 
     <!-- Main Content -->
@@ -47,7 +47,7 @@
             </div>
             <div class="flex justify-between">
               <span class="text-muted-foreground">Total Harga:</span>
-              <span class="font-medium">Rp {{ formatCurrency(pemesanan.total_harga_sewa) }}</span>
+              <span class="font-medium">{{ formatCurrency(pemesanan.total_harga_sewa) }}</span>
             </div>
             <div class="flex justify-between">
               <span class="text-muted-foreground">Dibuat:</span>
@@ -119,7 +119,7 @@
             </div>
             <div class="flex justify-between">
               <span class="text-muted-foreground">Harga Sewa per Periode:</span>
-              <span class="font-medium">Rp {{ formatCurrency(pemesanan.kendaraan.harga_sewa_per_periode) }}</span>
+              <span class="font-medium">{{ formatCurrency(pemesanan.kendaraan.harga_sewa_per_periode) }}</span>
             </div>
             <div class="flex justify-between">
               <span class="text-muted-foreground">Kondisi Fasilitas:</span>
@@ -148,7 +148,7 @@
                   </div>
                   <div class="flex justify-between">
                     <span class="text-muted-foreground">Jumlah:</span>
-                    <span class="font-medium">Rp {{ formatCurrency(payment.jumlah_pembayaran) }}</span>
+                    <span class="font-medium">{{ formatCurrency(payment.jumlah_pembayaran) }}</span>
                   </div>
                   <div class="flex justify-between">
                     <span class="text-muted-foreground">Status:</span>
@@ -162,7 +162,7 @@
                   </div>
                   <div class="flex justify-between">
                     <span class="text-muted-foreground">Deposit Keamanan:</span>
-                    <span class="font-medium">Rp {{ formatCurrency(payment.deposit_keamanan) }}</span>
+                    <span class="font-medium">{{ formatCurrency(payment.deposit_keamanan) }}</span>
                   </div>
                   <div class="flex justify-between">
                     <span class="text-muted-foreground">Dibuat:</span>
@@ -226,7 +226,7 @@
                 <div class="flex justify-between">
                   <span class="text-muted-foreground">Link Kontrak:</span>
                   <span
-                    @click="downloadKontrak(pemesanan.kontrak_sewa.link_kontrak, 'kontrak_sewa_' + pemesanan.id + '.pdf')"
+                    @click="downloadKontrak"
                     class="text-blue-600 hover:underline cursor-pointer"
                   >
                     Download Kontrak
@@ -256,7 +256,7 @@
             </Alert>
             <!-- Tombol Upload Kontrak Sewa -->
             <div v-if="pemesanan.status_pemesanan === 'Dikonfirmasi' && !pemesanan.kontrak_sewa" class="mt-6">
-              <Button @click="openUploadModal" variant="default" class="bg-blue-600 hover:bg-blue-700 text-white">
+              <Button @click="openUploadModal" variant="default">
                 Upload Kontrak Sewa
               </Button>
             </div>
@@ -362,11 +362,11 @@
           </DialogDescription>
         </DialogHeader>
         <div class="space-y-4">
-          <Label for="fileKontrak">File Kontrak (PDF/DOC/DOCX)</Label>
+          <Label for="fileKontrak">File Kontrak (PDF)</Label>
           <Input
             id="fileKontrak"
             type="file"
-            accept=".pdf,.doc,.docx"
+            accept=".pdf"
             @change="handleFileChange"
             :disabled="isUploading"
           />
@@ -397,6 +397,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, Di
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import api from "@/plugins/axios"
+import { downloadFile, formatCurrency, formatDate, formatDateTime } from "@/custom_utility/utils"
+import { ArrowPathIcon } from "@heroicons/vue/24/outline"
 
 export default {
   name: "AdminPemesananDetail",
@@ -408,6 +410,7 @@ export default {
     Info,
     CreditCard,
     FileText,
+    ArrowPathIcon,
     Card,
     CardContent,
     Badge,
@@ -561,33 +564,17 @@ export default {
         this.isConfirmingPengembalian = false
       }
     },
-    async downloadKontrak(url, filename) {
+    async downloadKontrak() {
+      const url = this.pemesanan?.kontrak_sewa?.link_kontrak
+      const filename = 'kontrak_sewa_' + this.pemesanan.id + ".pdf"
+
       try {
-        const response = await fetch(url);
-        if (!response.ok) throw new Error('Gagal mengambil file kontrak');
-        const blob = await response.blob();
-        const blobUrl = window.URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = blobUrl;
-        link.download = filename;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        window.URL.revokeObjectURL(blobUrl);
+        await downloadFile(url, filename)
       } catch (error) {
-        console.error('Error saat mengunduh kontrak:', error);
-        alert('Terjadi kesalahan saat mengunduh kontrak sewa.');
+        this.$toast.error(errMessage);
       }
     },
-    formatCurrency(amount) {
-      return new Intl.NumberFormat("id-ID", { minimumFractionDigits: 2 }).format(amount)
-    },
-    formatDate(date) {
-      return date ? new Date(date).toLocaleDateString("id-ID") : "-"
-    },
-    formatDateTime(dateTime) {
-      return dateTime ? new Date(dateTime).toLocaleString("id-ID") : "-"
-    }
+    formatCurrency, formatDate, formatDateTime
   }
 }
 </script>

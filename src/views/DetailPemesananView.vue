@@ -3,6 +3,9 @@
     <!-- Header -->
     <div class="flex items-center justify-between mb-8">
       <h1 class="text-2xl font-medium text-gray-800 flex items-center">
+        <router-link to="/riwayat-pemesanan">
+          <ArrowLeftIcon class="w-5 h-5 mr-2" />
+        </router-link>
         <DocumentTextIcon class="w-6 h-6 mr-2 text-green-600" />
         Detail Pemesanan
       </h1>
@@ -73,7 +76,7 @@
             <div class="flex justify-between items-center">
               <p class="text-lg font-medium text-gray-800">Total Pembayaran</p>
               <p class="text-2xl font-bold text-green-600">
-                Rp{{ formatHarga(pemesanan.total_harga_sewa) }}
+                {{ formatCurrency(pemesanan.total_harga_sewa) }}
               </p>
             </div>
           </div>
@@ -102,7 +105,7 @@
               <div>
                 <p class="text-sm text-gray-500">{{ pembayaran.metode_pembayaran }}</p>
                 <p class="text-lg font-medium text-gray-800">
-                  Rp{{ formatHarga(pembayaran.jumlah_pembayaran) }}
+                  {{ formatCurrency(pembayaran.jumlah_pembayaran) }}
                 </p>
               </div>
               <div class="flex items-center space-x-2">
@@ -142,7 +145,7 @@
           <div class="flex justify-between items-center">
             <p class="text-sm text-gray-600">Dokumen Kontrak</p>
             <span
-              @click="downloadKontrak(pemesanan.kontrak_sewa.link_kontrak, 'kontrak_sewa_' + pemesanan.id + '.pdf')"
+              @click="downloadKontrak"
               class="text-green-600 hover:text-green-800 cursor-pointer flex items-center"
             >
               <ArrowDownTrayIcon class="w-4 h-4 mr-1" />
@@ -234,6 +237,8 @@ import {
 import ModalPilihPembayaran from "@/components/ModalPilihPembayaran.vue";
 import GoogleMaps from '@/components/GoogleMaps.vue';
 import DynamicModal from '@/components/DynamicModal.vue';
+import { downloadFile, formatCurrency } from '@/custom_utility/utils';
+import { ArrowLeftIcon } from 'lucide-vue-next';
 
 export default {
   components: {
@@ -249,6 +254,7 @@ export default {
     ArrowPathIcon,
     TruckIcon,
     ArrowDownTrayIcon,
+    ArrowLeftIcon,
     ModalPilihPembayaran,
     GoogleMaps,
     DynamicModal
@@ -277,9 +283,6 @@ export default {
       } catch (error) {
         console.error('Gagal mengambil detail pemesanan:', error)
       }
-    },
-    formatHarga(harga) {
-      return new Intl.NumberFormat('id-ID').format(harga)
     },
     getStatusColor(status) {
       return {
@@ -319,27 +322,20 @@ export default {
         throw error
       }
     },
-    async downloadKontrak(url, filename) {
+    async downloadKontrak() {
+      const url = this.pemesanan?.kontrak_sewa?.link_kontrak
+      const filename = 'kontrak_sewa_' + this.pemesanan.id + ".pdf"
+
       try {
-        const response = await fetch(url);
-        if (!response.ok) throw new Error('Gagal mengambil file kontrak');
-        const blob = await response.blob();
-        const blobUrl = window.URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = blobUrl;
-        link.download = filename;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        window.URL.revokeObjectURL(blobUrl);
+        await downloadFile(url, filename)
       } catch (error) {
-        console.error('Error saat mengunduh kontrak:', error);
-        this.$toast.error('Gagal mengunduh kontrak sewa. Silakan coba lagi.');
+        this.$toast.error(errMessage);
       }
     },
     handleBatalkanPemesanan() {
       this.showCancelModal = true
     },
+    formatCurrency
   },
   mounted() {
     this.fetchDetailPemesanan()

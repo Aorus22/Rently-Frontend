@@ -2,7 +2,12 @@
   <div class="container mx-auto">
     <div class="flex flex-col gap-6 w-full">
       <div class="w-full max-w-6xl mx-auto">
-        <h1 class="text-3xl font-bold tracking-tight">Daftar Pemesanan</h1>
+        <span class="flex items-center gap-4">
+          <h1 class="text-3xl font-bold tracking-tight">Daftar Pemesanan</h1>
+          <button @click="fetchPemesanan">
+            <RefreshCwIcon class="w-5 h-5" />
+          </button>
+        </span>
       </div>
 
       <!-- Tabs -->
@@ -106,7 +111,7 @@
                 <div class="flex items-center justify-between">
                   <div class="flex items-center">
                     <span class="font-medium text-lg">
-                      Rp{{ formatCurrency(pemesanan.total_harga_sewa) }}
+                      {{ formatCurrency(pemesanan.total_harga_sewa) }}
                     </span>
                   </div>
                   <button class="hover:text-gray-700 flex items-center text-sm">
@@ -139,6 +144,8 @@ import {
   ShieldCheckIcon,
   ArrowPathIcon
 } from '@heroicons/vue/24/outline'
+import { formatCurrency, formatDate, formatDateTime } from "@/custom_utility/utils"
+import { RefreshCwIcon } from 'lucide-vue-next';
 
 export default {
   components: {
@@ -153,7 +160,8 @@ export default {
     TruckIcon,
     XCircleIcon,
     ShieldCheckIcon,
-    ArrowPathIcon
+    ArrowPathIcon,
+    RefreshCwIcon
   },
   data() {
     return {
@@ -245,12 +253,6 @@ export default {
     getTabLabel() {
       return this.tabs.find(tab => tab.status === this.selectedTab)?.label || "Riwayat Pemesanan";
     },
-    formatCurrency(amount) {
-      return new Intl.NumberFormat('id-ID', { minimumFractionDigits: 2 }).format(amount)
-    },
-    formatDate(date) {
-      return date ? new Date(date).toLocaleDateString('id-ID') : '-'
-    },
     scrollLeft() {
       if (this.$refs.tabsContainer) {
         this.$refs.tabsContainer.scrollLeft -= 200;
@@ -267,7 +269,8 @@ export default {
         this.isScrollLeftEnd = container.scrollLeft <= 0;
         this.isScrollRightEnd = container.scrollLeft + container.clientWidth >= container.scrollWidth - 5;
       }
-    }
+    },
+    formatCurrency, formatDate, formatDateTime
   },
   mounted() {
     this.fetchPemesanan();

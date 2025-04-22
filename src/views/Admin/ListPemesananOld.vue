@@ -42,7 +42,7 @@
                 <div class="flex justify-between">
                   <span class="text-muted-foreground">Total:</span>
                   <span class="font-medium">
-                    Rp {{ formatCurrency(pemesanan.total_harga_sewa) }}
+                    {{ formatCurrency(pemesanan.total_harga_sewa) }}
                   </span>
                 </div>
                 <div class="flex justify-between">

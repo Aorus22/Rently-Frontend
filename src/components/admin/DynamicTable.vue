@@ -1,6 +1,13 @@
 <template>
   <div class="overflow-auto">
-    <h1 class="text-2xl font-bold">{{ tableConfig?.title }}</h1>
+    <span class="flex items-center gap-4">
+      <h1 class="text-2xl font-bold">
+        {{ tableConfig?.title }}
+      </h1>
+      <button v-if="tableConfig?.title" @click="fetchData">
+        <RefreshCwIcon class="w-5 h-5" />
+      </button>
+    </span>
 
     <div class="mt-5 flex items-center justify-between mb-4">
       <Button v-if="tableConfig?.can_create" @click="openModal(null)" class="flex items-center gap-2">
@@ -75,7 +82,7 @@ import DetailModal from "./DetailModal.vue";
 
 import { Button } from "@/components/ui/button";
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
-import { LoaderCircle, Plus, Eye, Pencil, Trash } from "lucide-vue-next";
+import { LoaderCircle, Plus, Eye, Pencil, Trash, RefreshCwIcon } from "lucide-vue-next";
 
 const route = useRoute();
 const router = useRouter();

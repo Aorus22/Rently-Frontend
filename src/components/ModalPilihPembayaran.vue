@@ -10,7 +10,7 @@
           <h3 class="text-lg font-bold text-green-700 uppercase tracking-wide">Total</h3>
           <Card class="mt-2 max-w-72 mx-auto border-2 border-green-600">
             <CardContent class="py-2">
-              <p class="text-green-600 font-bold text-lg">{{ formatHarga(pemesanan.total_harga_sewa) }}</p>
+              <p class="text-green-600 font-bold text-lg">{{ formatCurrency(pemesanan.total_harga_sewa) }}</p>
             </CardContent>
           </Card>
         </div>
@@ -85,6 +85,7 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { formatCurrency } from "@/custom_utility/utils";
 
 export default {
   props: {
@@ -109,12 +110,6 @@ export default {
     };
   },
   methods: {
-    formatHarga(harga) {
-      return new Intl.NumberFormat("id-ID", {
-        style: "currency",
-        currency: "IDR",
-      }).format(harga);
-    },
     async pilihMetodePembayaran() {
       if (!this.metodePembayaran) {
         this.$toast.error("Silakan pilih metode pembayaran terlebih dahulu.");
@@ -140,6 +135,7 @@ export default {
         loader.hide();
       }
     },
+    formatCurrency
   },
 };
 </script>

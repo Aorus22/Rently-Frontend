@@ -18,8 +18,8 @@
       </router-link>
     </nav>
 
-    <Button variant="destructive" class="mt-auto w-full" @click="logout">
-      <Lock class="w-5 h-5 mr-2" /> Logout
+    <Button class="bg-gray-700 hover:bg-gray-600 mt-auto w-full" @click="logout">
+      <LogOut class="w-5 h-5 mr-2" /> Logout
     </Button>
   </aside>
 
@@ -55,8 +55,8 @@
       </div>
 
       <div class="mt-auto pt-6">
-        <Button variant="destructive" class="w-full" @click="logout">
-          <Lock class="w-5 h-5 mr-2" /> Logout
+        <Button class="w-full" @click="logout">
+          <LogOut class="w-5 h-5 mr-2" /> Logout
         </Button>
       </div>
     </SheetContent>
@@ -64,12 +64,12 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed, getCurrentInstance } from "vue";
+import { ref, onMounted, getCurrentInstance } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { useAdminAuthStore } from "@/stores/authAdmin";
 
 import {
-  Home, Lock, Table, MapPin, Car, ClipboardList,
+  Home, Table, MapPin, Car, LogOut,
   CreditCard, FileText, Truck, Menu as MenuIcon
 } from "lucide-vue-next";
 import { Button } from "@/components/ui/button";

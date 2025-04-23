@@ -279,7 +279,6 @@ export default {
       try {
         const response = await api.get(`/pemesanan/${this.$route.params.id}`)
         this.pemesanan = response.data
-        this.fetchPembayaran()
       } catch (error) {
         console.error('Gagal mengambil detail pemesanan:', error)
       }

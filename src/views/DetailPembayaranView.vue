@@ -23,9 +23,9 @@
       </div>
     </div>
 
-    <div v-else class="space-y-8">
+    <div v-else class="space-y-4">
       <!-- Vehicle Info -->
-      <div class="bg-gray-50 p-6 rounded-xl">
+      <div v-if="pemesanan.status_pembayaran === 'Belum Dibayar' || pembayaran.status_pembayaran === 'Pending'" class="bg-gray-50 p-6 rounded-xl">
         <div class="flex items-start gap-4">
           <img
             :src="pemesanan.kendaraan.gambar_url"
@@ -82,64 +82,87 @@
           </div>
         </div>
 
-        <!-- Upload Section -->
-        <div v-if="pembayaran.metode_pembayaran === 'Transfer Bank' && !pembayaran.bukti_pembayaran"
-            class="bg-white p-6 rounded-xl border border-gray-200">
-          <div class="space-y-4">
-            <label class="block text-sm font-medium text-gray-700">
-              <span class="flex items-center">
-                <ArrowUpTrayIcon class="w-4 h-4 mr-1 text-gray-600" />
-                Upload Bukti Transfer
-              </span>
-              <input
-                type="file"
-                accept="image/*"
-                @change="handleFileUpload"
-                class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200"
-              />
-            </label>
-            <button
-              @click="uploadBukti"
-              :disabled="!buktiPembayaran"
-              class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-6 rounded-lg flex items-center justify-center transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              <CheckCircleIcon class="w-5 h-5 mr-2" />
-              Konfirmasi Pembayaran
-            </button>
-          </div>
-        </div>
-
         <!-- E-Wallet Section -->
         <div v-if="pembayaran.metode_pembayaran === 'E-Wallet'" class="bg-green-50 p-6 rounded-xl text-center">
           <h3 class="text-lg font-medium text-gray-800 mb-4 flex items-center justify-center">
             <QrCodeIcon class="w-5 h-5 mr-2 text-green-600" />
             Pembayaran QRIS
           </h3>
-          <img
-            :src="qrCodeUrl"
-            alt="QR Code"
-            class="mx-auto w-48 h-48 object-contain border-2 border-gray-200 rounded-lg p-4 bg-white"
+          <QrcodeVue
+            value="INV-20250424001|150000"
+            :size="192"
+            class="mx-auto border-2 border-gray-200 rounded-lg p-4 bg-white"
           />
           <p class="mt-4 text-sm text-gray-500">Scan QR code menggunakan aplikasi e-wallet Anda</p>
         </div>
       </div>
 
-        <!-- Uploaded Proof -->
-        <div v-if="pembayaran.bukti_pembayaran" class="bg-white p-6 rounded-xl border border-gray-200">
-          <h4 class="text-sm font-medium text-gray-700 mb-2">Bukti Pembayaran:</h4>
-          <img
-            :src="pembayaran.bukti_pembayaran"
-            alt="Bukti Transfer"
-            class="w-64 h-64 object-contain border-2 border-dashed border-gray-200 rounded-lg p-2"
-          />
+      <!-- Payment Details -->
+      <div v-if="pembayaran.status_pembayaran === 'Lunas'" class="bg-green-50 p-6 rounded-xl">
+        <h3 class="text-lg font-medium text-gray-800 mb-4 flex items-center">
+          <CheckCircleIcon class="w-5 h-5 mr-2 text-green-600" />
+          Informasi Pembayaran
+        </h3>
+
+        <div class="space-y-3 text-sm">
+          <div class="flex items-center">
+            <span class="w-40 text-gray-500">Metode Pembayaran</span>
+            <span class="font-medium">{{ pembayaran.metode_pembayaran }}</span>
+          </div>
+          <div class="flex items-center">
+            <span class="w-40 text-gray-500">Jumlah Pembayaran</span>
+            <span class="font-medium">{{ formatCurrency(pembayaran.jumlah_pembayaran) }}</span>
+          </div>
+          <div class="flex items-center">
+            <span class="w-40 text-gray-500">Tanggal Pembayaran</span>
+            <span class="font-medium">{{ formatDate(pembayaran.tanggal_pembayaran) }}</span>
+          </div>
         </div>
+      </div>
+
+      <!-- Upload Section -->
+      <div v-if="!pembayaran.bukti_pembayaran"
+          class="bg-white p-6 rounded-xl border border-gray-200">
+        <div class="space-y-4">
+          <label class="block text-sm font-medium text-gray-700">
+            <span class="flex items-center">
+              <ArrowUpTrayIcon class="w-4 h-4 mr-1 text-gray-600" />
+              Upload Bukti Transfer
+            </span>
+            <input
+              type="file"
+              accept="image/*"
+              @change="handleFileUpload"
+              class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200"
+            />
+          </label>
+          <button
+            @click="uploadBukti"
+            :disabled="!buktiPembayaran"
+            class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-6 rounded-lg flex items-center justify-center transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <CheckCircleIcon class="w-5 h-5 mr-2" />
+            Konfirmasi Pembayaran
+          </button>
+        </div>
+      </div>
+
+      <!-- Uploaded Proof -->
+      <div v-if="pembayaran.bukti_pembayaran" class="bg-white p-6 rounded-xl border border-gray-200">
+        <h4 class="text-sm font-medium text-gray-700 mb-2">Bukti Pembayaran:</h4>
+        <img
+          :src="pembayaran.bukti_pembayaran"
+          alt="Bukti Transfer"
+          class="w-64 h-64 object-contain border-2 border-dashed border-gray-200 rounded-lg p-2"
+        />
+      </div>
 
     </div>
   </div>
 </template>
 
 <script>
-import { formatCurrency } from '@/custom_utility/utils'
+import { formatCurrency, formatDate } from '@/custom_utility/utils'
 import api from '../plugins/axios'
 import {
   CreditCardIcon,
@@ -152,6 +175,7 @@ import {
   ArrowPathIcon
 } from '@heroicons/vue/24/outline'
 import { ArrowLeftIcon } from 'lucide-vue-next'
+import QrcodeVue from 'qrcode.vue'
 
 export default {
   props: ['id'],
@@ -164,14 +188,14 @@ export default {
     CurrencyDollarIcon,
     TagIcon,
     ArrowPathIcon,
-    ArrowLeftIcon
+    ArrowLeftIcon,
+    QrcodeVue
   },
   data() {
     return {
       pemesanan: null,
       pembayaran: null,
       buktiPembayaran: null,
-      qrCodeUrl: 'https://www.berkabarnews.com/foto_berita/3IMG_20210228_175025.jpg',
       statusIcons: {
         'Pending': 'ClockIcon',
         'Menunggu Konfirmasi': 'ShieldCheckIcon',
@@ -225,7 +249,7 @@ export default {
         }[status] || 'text-gray-500'
       )
     },
-    formatCurrency
+    formatCurrency, formatDate
   },
   mounted() {
     this.fetchDetailPembayaran()

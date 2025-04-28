@@ -1,5 +1,5 @@
 <template>
-  <div class="flex items-center justify-items-start w-full background-dashboard p-6 md:px-16">
+  <div class="min-h-[calc(100vh-100px)] flex items-center justify-items-start w-full background-dashboard p-6 md:px-16">
     <div class="bg-white/85 rounded-xl p-6 sm:p-10 sm:w-1/2 space-y-4 md:mx-28">
       <h1 class="text-3xl">Bebas Worry</h1>
       <h1 class="text-5xl font-semibold">Sewa Cepat, Langsung Berangkat</h1>
@@ -37,10 +37,10 @@
 
 <style>
 .background-dashboard {
-  background: url('/src/assets/image/bg-1.png') no-repeat center center;
+  background: url('/src/assets/image/bg-1.webp') no-repeat center center;
   background-size: cover;
-  background-attachment: fixed;
-  width: 100vw;
+  background-attachment: scroll;
+  width: 100%;
 }
 </style>
 

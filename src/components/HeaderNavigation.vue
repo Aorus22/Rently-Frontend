@@ -51,13 +51,13 @@
                 </DropdownMenuTrigger>
                 <DropdownMenuContent class="w-48" align="end">
                   <DropdownMenuLabel>Hai, {{ user.nama_lengkap }}!</DropdownMenuLabel>
-                  <DropdownMenuItem as-child>
+                  <DropdownMenuItem as-child class="cursor-pointer">
                     <router-link to="/riwayat-pemesanan">
                       <ShoppingCart />
                       Riwayat Pemesanan
                     </router-link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem @click="logout">
+                  <DropdownMenuItem @click="logout" class="cursor-pointer">
                     <LogOutIcon />
                     Logout
                   </DropdownMenuItem>

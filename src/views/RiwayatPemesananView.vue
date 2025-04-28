@@ -72,18 +72,15 @@
                 <h2 class="text-lg font-medium text-gray-800">
                   {{ item.kendaraan.merek_model }}
                 </h2>
-                <span :class="getStatusColor(item.status_pemesanan)" class="text-sm flex items-center">
-                  <component
-                    :is="statusIcons[item.status_pemesanan]"
-                    class="w-4 h-4 mr-1"
-                  />
-                  {{ item.status_pemesanan }}
-                </span>
+                <div :class="getStatusColor(item.status_pemesanan)" class="text-sm flex items-center gap-2">
+                  <span class="text-right">{{ item.status_pemesanan }}</span>
+                  <component :is="statusIcons[item.status_pemesanan]" class="w-4 h-4 mr-1" />
+                </div>
               </div>
 
               <div class="flex items-center text-sm text-gray-500 mb-2">
                 <CalendarIcon class="w-4 h-4 mr-2 text-green-600" />
-                {{ item.tanggal_mulai }} - {{ item.tanggal_selesai }}
+                {{ formatDate(item.tanggal_mulai) }} - {{ formatDate(item.tanggal_selesai) }}
               </div>
 
               <div class="flex items-center justify-between">
@@ -106,7 +103,7 @@
 </template>
 
 <script>
-import { formatCurrency } from '@/custom_utility/utils';
+import { formatCurrency, formatDate } from '@/custom_utility/utils';
 import api from '../plugins/axios';
 import {
   BookmarkIcon,
@@ -179,7 +176,7 @@ export default {
         }
       ],
       statusIcons: {
-        "Menunggu Pembayaran": 'ClockIcon',
+        "Menunggu Pembayaran": 'WalletIcon',
         "Menunggu Konfirmasi": 'ShieldCheckIcon',
         "Dikonfirmasi": 'CheckCircleIcon',
         "Sedang dalam Penggunaan": 'TruckIcon',
@@ -226,7 +223,7 @@ export default {
       this.$router.push(`/detail-pemesanan/${id}`);
     },
 
-    formatCurrency
+    formatCurrency, formatDate
 
   },
   mounted() {

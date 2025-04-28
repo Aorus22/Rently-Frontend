@@ -10,7 +10,6 @@
         Detail Pembayaran
       </h1>
       <span :class="getStatusColor(pembayaran?.status_pembayaran)" class="flex items-center text-sm">
-        <component :is="statusIcons[pembayaran?.status_pembayaran]" class="w-4 h-4 mr-1" />
         {{ pembayaran?.status_pembayaran }}
       </span>
     </div>
@@ -106,6 +105,10 @@
 
         <div class="space-y-3 text-sm">
           <div class="flex items-center">
+            <span class="w-40 text-gray-500">ID</span>
+            <span class="font-medium">{{ pembayaran.id }}</span>
+          </div>
+          <div class="flex items-center">
             <span class="w-40 text-gray-500">Metode Pembayaran</span>
             <span class="font-medium">{{ pembayaran.metode_pembayaran }}</span>
           </div>
@@ -196,22 +199,20 @@ export default {
       pemesanan: null,
       pembayaran: null,
       buktiPembayaran: null,
-      statusIcons: {
-        'Pending': 'ClockIcon',
-        'Menunggu Konfirmasi': 'ShieldCheckIcon',
-        'Dibayar': 'CheckCircleIcon',
-        'Ditolak': 'XCircleIcon'
-      }
     }
   },
   methods: {
     async fetchDetailPembayaran() {
       try {
         const response = await api.get(`/pembayaran/${this.id}`)
+
         this.pembayaran = response.data.pembayaran
         this.pemesanan = response.data.pemesanan
       } catch (error) {
         console.error('Gagal mengambil detail pembayaran:', error)
+        if (error.response) {
+          this.$router.replace('/404')
+        }
       }
     },
     handleFileUpload(event) {
@@ -242,10 +243,10 @@ export default {
     getStatusColor(status) {
       return (
         {
-          Pending: 'text-yellow-500',
-          'Menunggu Konfirmasi': 'text-orange-500',
-          Dibayar: 'text-green-500',
-          Ditolak: 'text-red-500',
+          'Belum Dibayar': 'text-gray-600',
+          'Pending': 'text-yellow-500',
+          'Lunas': 'text-green-500',
+          'Belum Lunas': 'text-red-500',
         }[status] || 'text-gray-500'
       )
     },

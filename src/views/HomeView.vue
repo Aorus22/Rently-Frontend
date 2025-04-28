@@ -319,18 +319,18 @@ export default {
 
 
 .bg-card-home {
-  background-image: url('/src/assets/image/home-1.png');
+  background-image: url('/src/assets/image/home-1.webp');
 }
 
 .bg-card-rent {
-  background-image: url('/src/assets/image/home-rent.png');
+  background-image: url('/src/assets/image/home-rent.webp');
 }
 
 .bg-card-track {
-  background-image: url('/src/assets/image/home-track.png');
+  background-image: url('/src/assets/image/home-track.webp');
 }
 
 .bg-card-maintenance {
-  background-image: url('/src/assets/image/home-maintenance.png');
+  background-image: url('/src/assets/image/home-maintenance.webp');
 }
 </style>

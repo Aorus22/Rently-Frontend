@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen w-full flex items-center justify-center bg-cover bg-center" :style="{ backgroundImage: 'url(/bg-login.jpg)' }">
+  <div class="min-h-screen w-full flex items-center justify-center bg-cover bg-center" :style="{ backgroundImage: 'url(/src/assets/image/bg-login.webp)' }">
     <div class="font-normal bg-white bg-opacity-20 backdrop-blur-md shadow-lg rounded-lg max-w-lg p-16 w-full ">
       <h2 class="text-3xl font-bold text-center text-black mb-2">
         Sewa kendaraan,<br />jelajahi setiap sudut dengan bebas

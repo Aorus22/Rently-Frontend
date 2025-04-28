@@ -9,10 +9,10 @@
         <DocumentTextIcon class="w-6 h-6 mr-2 text-green-600" />
         Detail Pemesanan
       </h1>
-      <span :class="getStatusColor(pemesanan?.status_pemesanan)" class="flex items-center text-sm">
+      <div :class="getStatusColor(pemesanan?.status_pemesanan)" class="flex text-right items-center text-sm gap-2">
+        <span class="text-right">{{ pemesanan?.status_pemesanan }}</span>
         <component :is="statusIcons[pemesanan?.status_pemesanan]" class="w-4 h-4 mr-1" />
-        {{ pemesanan?.status_pemesanan }}
-      </span>
+      </div>
     </div>
 
     <div v-if="!pemesanan" class="text-center py-8">
@@ -30,9 +30,14 @@
           alt="Kendaraan"
           class="w-full md:w-1/3 h-56 object-cover rounded-xl shadow-sm"
         />
-        <div class="flex-1 space-y-3">
+        <div class="flex-1 p-6">
           <h2 class="text-xl font-medium text-gray-800">{{ pemesanan.kendaraan.merek_model }}</h2>
-          <div class="grid grid-cols-2 gap-3 text-sm text-gray-600">
+
+          <div class="mt-2 inline-block bg-gray-100 rounded-lg px-3 py-1">
+            <p class="font-bold text-gray-800 text-center tracking-wider">{{ pemesanan.kendaraan.nomor_polisi }}</p>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3 text-sm text-gray-600 mt-4">
             <div class="flex items-center">
               <TagIcon class="w-4 h-4 mr-2 text-green-600" />
               {{ pemesanan.kendaraan.kategori_kendaraan }}
@@ -63,13 +68,13 @@
           <div class="flex items-center">
             <div class="flex-1">
               <p class="text-sm text-gray-500">Mulai Sewa</p>
-              <p class="font-medium text-gray-700">{{ pemesanan.tanggal_mulai }}</p>
+              <p class="font-medium text-gray-700">{{ formatDate(pemesanan.tanggal_mulai) }}</p>
             </div>
           </div>
           <div class="flex items-center">
             <div class="flex-1">
               <p class="text-sm text-gray-500">Akhir Sewa</p>
-              <p class="font-medium text-gray-700">{{ pemesanan.tanggal_selesai }}</p>
+              <p class="font-medium text-gray-700">{{ formatDate(pemesanan.tanggal_selesai) }}</p>
             </div>
           </div>
           <div class="col-span-full pt-4 border-t">
@@ -232,12 +237,17 @@ import {
   UserGroupIcon,
   ArrowPathIcon,
   TruckIcon,
-  ArrowDownTrayIcon
+  ArrowDownTrayIcon,
+  ClockIcon,
+  ShieldCheckIcon,
+  CheckCircleIcon,
+  XCircleIcon,
+  WalletIcon
 } from '@heroicons/vue/24/outline'
 import ModalPilihPembayaran from "@/components/ModalPilihPembayaran.vue";
 import GoogleMaps from '@/components/GoogleMaps.vue';
 import DynamicModal from '@/components/DynamicModal.vue';
-import { downloadFile, formatCurrency } from '@/custom_utility/utils';
+import { downloadFile, formatCurrency, formatDate } from '@/custom_utility/utils';
 import { ArrowLeftIcon } from 'lucide-vue-next';
 
 export default {
@@ -255,18 +265,24 @@ export default {
     TruckIcon,
     ArrowDownTrayIcon,
     ArrowLeftIcon,
+    XCircleIcon,
+    ClockIcon,
+    ShieldCheckIcon,
+    WalletIcon,
+    CheckCircleIcon,
     ModalPilihPembayaran,
     GoogleMaps,
-    DynamicModal
+    DynamicModal,
   },
   data() {
     return {
       pemesanan: null,
       statusIcons: {
-        'Menunggu Pembayaran': 'ClockIcon',
+        'Menunggu Pembayaran': 'WalletIcon',
+        "Menunggu Konfirmasi": 'ShieldCheckIcon',
         'Dikonfirmasi': 'CheckCircleIcon',
         'Sedang dalam Penggunaan': 'TruckIcon',
-        'Selesai': 'CheckBadgeIcon',
+        'Selesai': 'CheckCircleIcon',
         'Dibatalkan': 'XCircleIcon'
       },
       showModalPilihPembayaran: false,
@@ -281,16 +297,25 @@ export default {
         this.pemesanan = response.data
       } catch (error) {
         console.error('Gagal mengambil detail pemesanan:', error)
+        if (error.response) {
+          this.$router.replace('/404')
+        }
       }
     },
     getStatusColor(status) {
       return {
-        'Menunggu Pembayaran': 'text-yellow-600',
-        'Dikonfirmasi': 'text-green-600',
-        'Sedang dalam Penggunaan': 'text-blue-600',
-        'Selesai': 'text-gray-500',
-        'Dibatalkan': 'text-red-600'
-      }[status] || 'text-gray-500'
+        "Menunggu Pembayaran": "text-yellow-600",
+        "Menunggu Konfirmasi": "text-orange-600",
+        "Dikonfirmasi": "text-green-600",
+        "Sedang dalam Penggunaan": "text-blue-600",
+        "Selesai": "text-gray-500",
+        "Dibatalkan": "text-red-600",
+
+        'Belum Dibayar': 'text-gray-600',
+        'Pending': 'text-yellow-500',
+        'Lunas': 'text-green-500',
+        'Belum Lunas': 'text-red-500',
+      }[status] || "text-gray-500"
     },
     bayar() {
       this.$router.push(`/detail-pemesanan/${this.pemesanan.id}/bayar`)
@@ -334,7 +359,7 @@ export default {
     handleBatalkanPemesanan() {
       this.showCancelModal = true
     },
-    formatCurrency
+    formatCurrency, formatDate
   },
   mounted() {
     this.fetchDetailPemesanan()

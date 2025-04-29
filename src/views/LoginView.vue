@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen w-full flex items-center justify-center bg-cover bg-center" :style="{ backgroundImage: 'url(/src/assets/image/bg-login.webp)' }">
+  <div class="min-h-screen w-full flex items-center justify-center bg-cover bg-center background-image">
     <div class="font-normal bg-white bg-opacity-20 backdrop-blur-md shadow-lg rounded-lg max-w-lg p-16 w-full ">
       <h2 class="text-3xl font-bold text-center text-black mb-2">
         Sewa kendaraan,<br />jelajahi setiap sudut dengan bebas
@@ -108,3 +108,12 @@ export default {
   },
 };
 </script>
+
+<style>
+.background-image {
+  background: url('/src/assets/image/bg-login.webp') no-repeat center center;
+  background-size: cover;
+  background-attachment: scroll;
+  width: 100%;
+}
+</style>

@@ -3,10 +3,8 @@
     <!-- Header Section -->
     <header class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-4">
       <div class="flex items-center gap-4">
-        <router-link
-          to="/admin/Kendaraan"
-          class="flex items-center text-primary hover:underline transition-colors duration-200"
-        >
+        <router-link to="/admin/Kendaraan"
+          class="flex items-center text-primary hover:underline transition-colors duration-200">
           <ArrowLeftIcon class="w-5 h-5 mr-2" />
         </router-link>
         <h1 class="text-3xl font-bold tracking-tight text-gray-900">
@@ -28,11 +26,8 @@
       <CardContent class="p-6 sm:p-8 space-y-8">
         <section>
           <div class="flex justify-center">
-            <img
-              :src="kendaraan.gambar_url"
-              alt="Kendaraan"
-              class="h-72 w-auto object-cover rounded-lg border-2 border-gray-200"
-            >
+            <img :src="kendaraan.gambar_url" alt="Kendaraan"
+              class="h-72 w-auto object-cover rounded-lg border-2 border-gray-200">
           </div>
         </section>
 
@@ -85,17 +80,47 @@
           </div>
         </section>
 
+        <!-- GPS Tracker Status Section -->
+        <section>
+          <h3 class="text-xl font-semibold text-gray-800 flex items-center gap-2">
+            <MapPin class="w-5 h-5 text-primary" />
+            Status GPS Tracker
+          </h3>
+
+          <div
+            class="mt-4 flex flex-col sm:flex-row gap-2 items-center justify-between bg-gray-50 p-4 rounded-lg border border-gray-200">
+            <div class="flex items-center gap-2">
+              <Badge v-if="trackerStatus" :variant="trackerStatus ? 'success' : 'destructive'" class="text-sm">
+                {{ trackerStatus ? 'Tracker Aktif' : 'Tracker Tidak Aktif' }}
+              </Badge>
+              <span v-if="isLoadingTrackerStatus" class="text-sm">Memeriksa status tracker...</span>
+            </div>
+
+            <div class="flex gap-2">
+              <Button v-if="!trackerStatus" :disabled="isLoadingGPS" variant="outline" @click="startGPSTracker"
+                class="flex items-center gap-1">
+                <Play class="w-4 h-4" />
+                <span>Sambungkan GPS</span>
+                <ArrowPathIcon v-if="isStartingTracker" class="w-4 h-4 animate-spin ml-1" />
+              </Button>
+
+              <Button v-if="trackerStatus" :disabled="isLoadingGPS" variant="destructive" @click="stopGPSTracker"
+                class="flex items-center gap-1">
+                <StopCircle class="w-4 h-4" />
+                <span>Putus Sambungan GPS</span>
+                <ArrowPathIcon v-if="isStoppingTracker" class="w-4 h-4 animate-spin ml-1" />
+              </Button>
+            </div>
+          </div>
+        </section>
+
         <section v-if="fasilitasList.length">
           <h3 class="text-xl font-semibold text-gray-800 flex items-center gap-2">
             <Info class="w-5 h-5 text-primary" />
             Informasi Fasilitas Kendaraan
           </h3>
           <div class="flex flex-wrap gap-2 mt-4">
-            <Badge
-              v-for="(item, index) in fasilitasList"
-              :key="index"
-              variant="outline"
-            >
+            <Badge v-for="(item, index) in fasilitasList" :key="index" variant="outline">
               {{ item }}
             </Badge>
           </div>
@@ -109,47 +134,41 @@
           </h3>
           <Card v-if="(riwayatPemesanan?.length)" class="mt-4 space-y-4 shadow-md border border-gray-100">
             <CardContent class="p-6 sm:p-4 space-y-4 overflow-y-auto max-h-[500px]">
-            <router-link
-              v-for="pemesanan in riwayatPemesanan"
-              :key="pemesanan.id"
-              :to="{ name: 'AdminPemesananDetail', params: { id: pemesanan.id } }"
-              class="border p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition cursor-pointer group block"
-            >
-              <div class="flex items-start gap-4">
-                <div class="flex-1">
-                  <div class="flex items-center justify-between mb-2">
-                    <h2 class="text-lg font-medium text-gray-800">
-                      Pemesanan #{{ pemesanan.id }}
-                    </h2>
-                    <span :class="getStatusColor(pemesanan.status_pemesanan)" class="text-sm flex items-center">
-                      <component
-                        :is="statusIcons[pemesanan.status_pemesanan]"
-                        class="w-4 h-4 mr-1"
-                      />
-                      {{ pemesanan.status_pemesanan }}
-                    </span>
-                  </div>
-
-                  <div class="flex items-center text-sm text-gray-500 mb-2">
-                    <CalendarIcon class="w-4 h-4 mr-2 text-yellow-600" />
-                    {{ formatDate(pemesanan.tanggal_mulai) }} - {{ formatDate(pemesanan.tanggal_selesai) }}
-                  </div>
-
-                  <div class="flex items-center justify-between">
-                    <div class="flex items-center">
-                      <span class="font-medium text-lg">
-                        Total: {{ formatCurrency(pemesanan.total_harga_sewa) }}
+              <router-link v-for="pemesanan in riwayatPemesanan" :key="pemesanan.id"
+                :to="{ name: 'AdminPemesananDetail', params: { id: pemesanan.id } }"
+                class="border p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition cursor-pointer group block">
+                <div class="flex items-start gap-4">
+                  <div class="flex-1">
+                    <div class="flex items-center justify-between mb-2">
+                      <h2 class="text-lg font-medium text-gray-800">
+                        Pemesanan #{{ pemesanan.id }}
+                      </h2>
+                      <span :class="getStatusColor(pemesanan.status_pemesanan)" class="text-sm flex items-center">
+                        <component :is="statusIcons[pemesanan.status_pemesanan]" class="w-4 h-4 mr-1" />
+                        {{ pemesanan.status_pemesanan }}
                       </span>
                     </div>
-                    <button class="hover:text-gray-700 flex items-center text-sm">
-                      Detail
-                      <ChevronRightIcon class="w-4 h-4 ml-1" />
-                    </button>
+
+                    <div class="flex items-center text-sm text-gray-500 mb-2">
+                      <CalendarIcon class="w-4 h-4 mr-2 text-yellow-600" />
+                      {{ formatDate(pemesanan.tanggal_mulai) }} - {{ formatDate(pemesanan.tanggal_selesai) }}
+                    </div>
+
+                    <div class="flex items-center justify-between">
+                      <div class="flex items-center">
+                        <span class="font-medium text-lg">
+                          Total: {{ formatCurrency(pemesanan.total_harga_sewa) }}
+                        </span>
+                      </div>
+                      <button class="hover:text-gray-700 flex items-center text-sm">
+                        Detail
+                        <ChevronRightIcon class="w-4 h-4 ml-1" />
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </router-link>
-          </CardContent>
+              </router-link>
+            </CardContent>
           </Card>
           <!-- Empty State -->
           <Alert v-else class="bg-background mt-4">
@@ -168,49 +187,48 @@
             Informasi Pelacakan Kendaraan
           </h3>
           <div v-if="(pelacakan?.length)" class="overflow-auto rounded-lg border shadow-sm mt-4">
-          <!-- Table Header -->
-          <Table class="w-full table-fixed">
-            <TableHeader>
-              <TableRow class="bg-slate-800 text-muted-foreground">
-                <TableHead
-                  v-for="(label, column) in tableConfigPelacakan?.visible_columns"
-                  :key="column"
-                  class="text-white px-4 py-3 text-left bg-slate-800 z-10"
-                >
-                  {{ label }}
-                </TableHead>
-                <TableHead class="px-4 py-3 text-center text-white bg-slate-800 z-10">
-                  Actions
-                </TableHead>
-              </TableRow>
-            </TableHeader>
-          </Table>
-
-          <!-- Table Body (Scrollable) -->
-          <div class="max-h-[500px] overflow-y-auto">
-            <Table class="table-fixed">
-              <TableBody>
-                <TableRow v-for="row in pelacakan" :key="row.id" class="hover:bg-accent">
-                  <TableCell v-for="(label, column) in tableConfigPelacakan?.visible_columns" :key="column" class="px-4 py-3">
-                    <template v-if="tableConfigPelacakan?.special_view?.[column] === 'image'">
-                      <img :src="row[column]" alt="Image" class="w-16 h-16 rounded-lg shadow-sm border" />
-                    </template>
-                    <template v-else-if="tableConfigPelacakan?.special_view?.[column] === 'url'">
-                      <Button variant="link" as="a" :href="row[column]" target="_blank">View</Button>
-                    </template>
-                    <template v-else>
-                      {{ row?.[column] }}
-                    </template>
-                  </TableCell>
-                  <TableCell class="px-4 py-3 flex justify-center gap-2">
-                    <Button v-if="tableConfigPelacakan?.detail_view" variant="outline" size="icon" @click="openDetail(row)">
-                      <Eye class="w-5 h-5" />
-                    </Button>
-                  </TableCell>
+            <!-- Table Header -->
+            <Table class="w-full table-fixed">
+              <TableHeader>
+                <TableRow class="bg-slate-800 text-muted-foreground">
+                  <TableHead v-for="(label, column) in tableConfigPelacakan?.visible_columns" :key="column"
+                    class="text-white px-4 py-3 text-left bg-slate-800 z-10">
+                    {{ label }}
+                  </TableHead>
+                  <TableHead class="px-4 py-3 text-center text-white bg-slate-800 z-10">
+                    Actions
+                  </TableHead>
                 </TableRow>
-              </TableBody>
+              </TableHeader>
             </Table>
-          </div>
+
+            <!-- Table Body (Scrollable) -->
+            <div class="max-h-[500px] overflow-y-auto">
+              <Table class="table-fixed">
+                <TableBody>
+                  <TableRow v-for="row in pelacakan" :key="row.id" class="hover:bg-accent">
+                    <TableCell v-for="(label, column) in tableConfigPelacakan?.visible_columns" :key="column"
+                      class="px-4 py-3">
+                      <template v-if="tableConfigPelacakan?.special_view?.[column] === 'image'">
+                        <img :src="row[column]" alt="Image" class="w-16 h-16 rounded-lg shadow-sm border" />
+                      </template>
+                      <template v-else-if="tableConfigPelacakan?.special_view?.[column] === 'url'">
+                        <Button variant="link" as="a" :href="row[column]" target="_blank">View</Button>
+                      </template>
+                      <template v-else>
+                        {{ row?.[column] }}
+                      </template>
+                    </TableCell>
+                    <TableCell class="px-4 py-3 flex justify-center gap-2">
+                      <Button v-if="tableConfigPelacakan?.detail_view" variant="outline" size="icon"
+                        @click="openDetail(row)">
+                        <Eye class="w-5 h-5" />
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </div>
           </div>
           <!-- Empty State -->
           <Alert v-else class="bg-background mt-4">
@@ -229,50 +247,49 @@
             Informasi Perawatan Kendaraan
           </h3>
           <div v-if="(perawatan?.length)" class="overflow-auto rounded-lg border shadow-sm mt-4">
-          <!-- Table Header -->
-          <Table class="w-full table-fixed">
-            <TableHeader>
-              <TableRow class="bg-slate-800 text-muted-foreground">
-                <TableHead
-                  v-for="(label, column) in tableConfigPerawatan?.visible_columns"
-                  :key="column"
-                  class="text-white px-4 py-3 text-left bg-slate-800 z-10"
-                >
-                  {{ label }}
-                </TableHead>
-                <TableHead class="px-4 py-3 text-center text-white bg-slate-800 z-10">
-                  Actions
-                </TableHead>
-              </TableRow>
-            </TableHeader>
-          </Table>
-
-          <!-- Table Body (Scrollable) -->
-          <div class="max-h-[500px] overflow-y-auto">
-            <Table class="table-fixed">
-              <TableBody>
-                <TableRow v-for="row in perawatan" :key="row.id" class="hover:bg-accent">
-                  <TableCell v-for="(label, column) in tableConfigPerawatan?.visible_columns" :key="column" class="px-4 py-3">
-                    <template v-if="tableConfigPerawatan?.special_view?.[column] === 'image'">
-                      <img :src="row[column]" alt="Image" class="w-16 h-16 rounded-lg shadow-sm border" />
-                    </template>
-                    <template v-else-if="tableConfigPerawatan?.special_view?.[column] === 'url'">
-                      <Button variant="link" as="a" :href="row[column]" target="_blank">View</Button>
-                    </template>
-                    <template v-else>
-                      {{ row?.[column] }}
-                    </template>
-                  </TableCell>
-                  <TableCell class="px-4 py-3 flex justify-center gap-2">
-                    <Button v-if="tableConfigPerawatan?.detail_view" variant="outline" size="icon" @click="openDetail(row)">
-                      <Eye class="w-5 h-5" />
-                    </Button>
-                  </TableCell>
+            <!-- Table Header -->
+            <Table class="w-full table-fixed">
+              <TableHeader>
+                <TableRow class="bg-slate-800 text-muted-foreground">
+                  <TableHead v-for="(label, column) in tableConfigPerawatan?.visible_columns" :key="column"
+                    class="text-white px-4 py-3 text-left bg-slate-800 z-10">
+                    {{ label }}
+                  </TableHead>
+                  <TableHead class="px-4 py-3 text-center text-white bg-slate-800 z-10">
+                    Actions
+                  </TableHead>
                 </TableRow>
-              </TableBody>
+              </TableHeader>
             </Table>
+
+            <!-- Table Body (Scrollable) -->
+            <div class="max-h-[500px] overflow-y-auto">
+              <Table class="table-fixed">
+                <TableBody>
+                  <TableRow v-for="row in perawatan" :key="row.id" class="hover:bg-accent">
+                    <TableCell v-for="(label, column) in tableConfigPerawatan?.visible_columns" :key="column"
+                      class="px-4 py-3">
+                      <template v-if="tableConfigPerawatan?.special_view?.[column] === 'image'">
+                        <img :src="row[column]" alt="Image" class="w-16 h-16 rounded-lg shadow-sm border" />
+                      </template>
+                      <template v-else-if="tableConfigPerawatan?.special_view?.[column] === 'url'">
+                        <Button variant="link" as="a" :href="row[column]" target="_blank">View</Button>
+                      </template>
+                      <template v-else>
+                        {{ row?.[column] }}
+                      </template>
+                    </TableCell>
+                    <TableCell class="px-4 py-3 flex justify-center gap-2">
+                      <Button v-if="tableConfigPerawatan?.detail_view" variant="outline" size="icon"
+                        @click="openDetail(row)">
+                        <Eye class="w-5 h-5" />
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </div>
           </div>
-        </div>
           <!-- Empty State -->
           <Alert v-else class="bg-background mt-4">
             <Info class="w-4 h-4" />
@@ -281,6 +298,15 @@
               Data Perawatan Kendaraan dengan ID ini tidak tersedia.
             </AlertDescription>
           </Alert>
+        </section>
+
+        <!-- Tombol Tracking Kendaraan -->
+        <section v-if="kendaraan.status_ketersediaan === 'Disewa'">
+          <button @click="showLiveTracking = true" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-xl
+                  flex items-center justify-center transition-all">
+            <TruckIcon class="w-5 h-5 mr-2" />
+            Lacak Lokasi Kendaraan
+          </button>
         </section>
       </CardContent>
     </Card>
@@ -296,6 +322,8 @@
 
     <DetailModal v-if="showDetail" :data="detailData" :config="tableConfig" @close="showDetail = false" />
   </div>
+
+  <MapsLive :show="showLiveTracking" :vehicleId="parseInt(this.$route.params.id)" @close="showLiveTracking = false" />
 </template>
 <script>
 import DetailModal from "@/components/admin/DetailModal.vue";
@@ -312,9 +340,11 @@ import TableHead from "@/components/ui/table/TableHead.vue";
 import TableHeader from "@/components/ui/table/TableHeader.vue";
 import TableRow from "@/components/ui/table/TableRow.vue";
 import api from "@/plugins/axios"
-import { Activity, ArrowLeftIcon, CalendarIcon, ChevronRightIcon, Eye, Info, User } from "lucide-vue-next";
+import { Activity, ArrowLeftIcon, CalendarIcon, ChevronRightIcon, Eye, Info, MapPin, Play, StopCircle, TruckIcon, User } from "lucide-vue-next";
 import { formatCurrency, formatDate, formatDateTime } from "@/custom_utility/utils"
 import { ArrowPathIcon } from "@heroicons/vue/24/outline";
+import MapsLive from "@/components/MapsLive.vue";
+import axios from "axios";
 
 export default {
   name: "AdminKendaraanDetail",
@@ -340,7 +370,12 @@ export default {
     CalendarIcon,
     ChevronRightIcon,
     ArrowPathIcon,
-    User
+    User,
+    MapsLive,
+    MapPin,
+    Play,
+    StopCircle,
+    TruckIcon
   },
   data() {
     return {
@@ -354,7 +389,6 @@ export default {
       tableConfigPelacakan: null,
       showDetail: false,
       detailData: null,
-      fasilitasList: null,
       statusIcons: {
         "Menunggu Pembayaran": 'ClockIcon',
         "Menunggu Konfirmasi": 'ShieldCheckIcon',
@@ -362,7 +396,13 @@ export default {
         "Sedang dalam Penggunaan": 'TruckIcon',
         "Selesai": 'CheckCircleIcon',
         "Dibatalkan": 'XCircleIcon'
-      }
+      },
+      showLiveTracking: false,
+      trackerStatus: null,
+      isLoadingTrackerStatus: false,
+      isStartingTracker: false,
+      isStoppingTracker: false,
+      isLoadingGPS: false
     }
   },
   methods: {
@@ -375,10 +415,10 @@ export default {
           },
         })
         this.kendaraan = response.data
-        this.fasilitasList = response.data.kondisi_fasilitas
         this.fetchPelacakan(response.data.id)
         this.fetchPerawatan(response.data.id)
         this.fetchRiwayatPemesanan(response.data.id)
+        this.checkGPSTrackerStatus(response.data.id)
       } catch (error) {
         console.error("Gagal mengambil detail kendaraan:", error)
         alert("Terjadi kesalahan saat mengambil detail kendaraan.")
@@ -447,6 +487,73 @@ export default {
         this.loading = false
       }
     },
+    async checkGPSTrackerStatus(vehicleId) {
+      this.isLoadingTrackerStatus = true
+      try {
+        const gpsHostname = import.meta.env.VITE_API_GPS_HOSTNAME
+        const response = await axios.get(`${gpsHostname}/list-track/${vehicleId}`)
+        this.trackerStatus = response.data.status === 'active'
+      } catch (error) {
+        console.error("Gagal mengecek status GPS tracker:", error)
+        this.trackerStatus = false
+      } finally {
+        this.isLoadingTrackerStatus = false
+      }
+    },
+    async startGPSTracker() {
+      if (!this.kendaraan?.id) return
+
+      const vehicleId = this.kendaraan.id
+      this.isStartingTracker = true
+      this.isLoadingGPS = true
+      try {
+        const gpsHostname = import.meta.env.VITE_API_GPS_HOSTNAME
+
+        if (this.trackerStatus) {
+          return
+        }
+
+        const response = await axios.get(`${gpsHostname}/start-track/${vehicleId}`)
+
+        if (response.data.status === 'active') {
+          alert("GPS tracker berhasil disambungkan!")
+        } else {
+          alert("Gagal menyambungkan GPS tracker. Silakan coba lagi.")
+        }
+      } catch (error) {
+        console.error("Gagal menyambungkan GPS tracker:", error)
+        alert("Terjadi kesalahan saat menyambungkan GPS tracker.")
+      } finally {
+        await this.checkGPSTrackerStatus(vehicleId)
+        this.isStartingTracker = false
+        this.isLoadingGPS = false
+      }
+    },
+    async stopGPSTracker() {
+      if (!this.kendaraan?.id) return
+
+      this.isStoppingTracker = true
+      this.isLoadingGPS = true
+      try {
+        const vehicleId = this.kendaraan.id
+        const gpsHostname = import.meta.env.VITE_API_GPS_HOSTNAME
+
+        const response = await axios.get(`${gpsHostname}/stop-track/${vehicleId}`)
+        await this.checkGPSTrackerStatus(vehicleId)
+
+        if (response.data.status === 'nonactive') {
+          alert("GPS tracker berhasil diputuskan!")
+        } else {
+          alert("Gagal memutuskan GPS tracker. Silakan coba lagi.")
+        }
+      } catch (error) {
+        console.error("Gagal memutuskan GPS tracker:", error)
+        alert("Terjadi kesalahan saat memutuskan GPS tracker.")
+      } finally {
+        this.isStoppingTracker = false
+        this.isLoadingGPS = false
+      }
+    },
     getStatusColor(status) {
       return {
         "Menunggu Pembayaran": "text-yellow-600",
@@ -473,7 +580,8 @@ export default {
   },
   mounted() {
     this.fetchKendaraanDetail(),
-    this.fetchConfig()
+      this.fetchConfig()
+    this.checkGPSTrackerStatus(this.$route.params.id)
   },
   computed: {
     fasilitasList() {

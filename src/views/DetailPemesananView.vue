@@ -192,6 +192,18 @@
         </button>
       </div>
 
+      <!-- Tombol Tracking Kendaraan -->
+      <div v-if="pemesanan.status_pemesanan === 'Sedang dalam Penggunaan'" class="pt-6">
+        <button
+          @click="showLiveTracking = true"
+          class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-xl
+                flex items-center justify-center transition-all"
+        >
+          <TruckIcon class="w-5 h-5 mr-2" />
+          Lacak Lokasi Kendaraan
+        </button>
+      </div>
+
       </div>
     </div>
 
@@ -219,6 +231,14 @@
       :latitude="pemesanan?.kendaraan?.lokasi_garasi?.latitude || 0"
       :longitude="pemesanan?.kendaraan?.lokasi_garasi?.longitude || 0"
       @close="showModalMaps = false"
+    />
+
+    <!-- Modal Live Tracking -->
+    <MapsLive
+      :show="showLiveTracking"
+      :vehicle-id="pemesanan?.kendaraan_id || 0"
+      :latitude="pemesanan?.id"
+      @close="showLiveTracking = false"
     />
 
 </template>
@@ -249,6 +269,7 @@ import GoogleMaps from '@/components/GoogleMaps.vue';
 import DynamicModal from '@/components/DynamicModal.vue';
 import { downloadFile, formatCurrency, formatDate } from '@/custom_utility/utils';
 import { ArrowLeftIcon } from 'lucide-vue-next';
+import MapsLive from '@/components/MapsLive.vue';
 
 export default {
   components: {
@@ -273,6 +294,7 @@ export default {
     ModalPilihPembayaran,
     GoogleMaps,
     DynamicModal,
+    MapsLive
   },
   data() {
     return {
@@ -287,7 +309,8 @@ export default {
       },
       showModalPilihPembayaran: false,
       showModalMaps: false,
-      showCancelModal: false
+      showCancelModal: false,
+      showLiveTracking: false
     }
   },
   methods: {

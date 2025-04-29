@@ -261,15 +261,22 @@
               </Button>
             </div>
             <!-- Tombol Konfirmasi Pengembalian -->
-            <div v-if="pemesanan.status_pemesanan === 'Sedang dalam Penggunaan'" class="mt-6">
+            <div v-if="pemesanan.status_pemesanan === 'Sedang dalam Penggunaan'" class="flex mt-6 gap-4">
               <Button
                 @click="confirmPengembalian"
                 :disabled="isConfirmingPengembalian"
                 variant="default"
-                class="bg-purple-600 hover:bg-purple-700 text-white transition-colors duration-200"
+                class="bg-purple-700 hover:bg-purple-900 text-white transition-colors duration-200"
               >
                 <Activity v-if="isConfirmingPengembalian" class="w-4 h-4 mr-2 animate-spin" />
                 {{ isConfirmingPengembalian ? 'Memproses...' : 'Konfirmasi Pengembalian' }}
+              </Button>
+              <Button
+                @click="showLiveTracking = true"
+                variant="default"
+                class="bg-blue-700 hover:bg-blue-900 text-white transition-colors duration-200"
+              >
+                Lokasi Live Kendaraan
               </Button>
             </div>
           </div>
@@ -385,6 +392,13 @@
       </DialogContent>
     </Dialog>
   </div>
+
+  <!-- Modal Live Tracking -->
+  <MapsLive
+    :show="showLiveTracking"
+    :vehicleId="pemesanan?.kendaraan_id || 0"
+    @close="showLiveTracking = false"
+  />
 </template>
 
 <script>
@@ -399,6 +413,7 @@ import { Label } from "@/components/ui/label"
 import api from "@/plugins/axios"
 import { downloadFile, formatCurrency, formatDate, formatDateTime } from "@/custom_utility/utils"
 import { ArrowPathIcon } from "@heroicons/vue/24/outline"
+import MapsLive from "@/components/MapsLive.vue"
 
 export default {
   name: "AdminPemesananDetail",
@@ -426,6 +441,7 @@ export default {
     DialogFooter,
     Input,
     Label,
+    MapsLive
   },
   data() {
     return {
@@ -442,6 +458,7 @@ export default {
       jumlahPembayaranLunas: '',
       jumlahPembayaranBelumLunas: '',
       fileKontrak: null,
+      showLiveTracking: false
     }
   },
   mounted() {

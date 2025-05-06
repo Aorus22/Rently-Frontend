@@ -39,7 +39,7 @@
             <TableRow v-for="row in formattedData" :key="row.id" class="hover:bg-accent">
               <TableCell v-for="(label, column) in tableConfig?.visible_columns" :key="column" class="px-4 py-3">
                 <template v-if="tableConfig?.special_view?.[column] === 'image'">
-                  <img :src="row[column]" alt="Image" class="w-16 h-16 rounded-lg shadow-sm border" />
+                  <img :src="row[column]" alt="Image" class="w-16 h-16 object-cover rounded-lg shadow-sm border" />
                 </template>
                 <template v-else-if="tableConfig?.special_view?.[column] === 'url'">
                   <Button variant="link" as="a" :href="row[column]" target="_blank">View</Button>

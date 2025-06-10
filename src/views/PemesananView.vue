@@ -19,9 +19,15 @@
 
         <!-- Konten Kendaraan -->
         <template v-else>
-          <img :src="kendaraan.gambar_url" alt="Kendaraan" class="w-full h-fit object-cover rounded-lg my-4" />
+          <img
+            :src="kendaraan.gambar_url"
+            alt="Kendaraan"
+            class="w-full h-fit object-cover rounded-lg my-4"
+          />
           <div class="mb-4 border-b-2 border-gray-400 py-2 border-opacity-65">
-            <h3 class="text-lg md:text-xl font-semibold text-gray-800">{{ kendaraan.merek_model }}</h3>
+            <h3 class="text-lg md:text-xl font-semibold text-gray-800">
+              {{ kendaraan.merek_model }}
+            </h3>
           </div>
           <div class="space-y-2 text-gray-600 text-sm md:text-base">
             <div class="flex items-center space-x-2">
@@ -42,8 +48,12 @@
             </div>
           </div>
           <div class="w-full flex justify-center mt-4">
-            <div class="w-full border-2 border-green-600 text-green-600 font-light py-2 rounded-sm flex justify-center">
-              <p class="text-green-600 font-bold text-base md:text-lg">{{ formatCurrency(kendaraan.harga_sewa_per_periode) }}/Hari</p>
+            <div
+              class="w-full border-2 border-green-600 text-green-600 font-light py-2 rounded-sm flex justify-center"
+            >
+              <p class="text-green-600 font-bold text-base md:text-lg">
+                {{ formatCurrency(kendaraan.harga_sewa_per_periode) }}/Hari
+              </p>
             </div>
           </div>
         </template>
@@ -58,17 +68,27 @@
 
         <!-- Informasi Kontak -->
         <section class="mb-4 md:mb-6">
-          <h3 class="text-base md:text-lg font-semibold text-gray-800 mb-2 bg-gray-300 p-2">Informasi Kontak</h3>
+          <h3 class="text-base md:text-lg font-semibold text-gray-800 mb-2 bg-gray-300 p-2">
+            Informasi Kontak
+          </h3>
           <div class="space-y-3 md:space-y-4">
-            <div class="flex flex-col md:flex-row md:items-center space-y-1 md:space-y-0 md:space-x-4">
+            <div
+              class="flex flex-col md:flex-row md:items-center space-y-1 md:space-y-0 md:space-x-4"
+            >
               <Label class="md:w-1/3 text-gray-600 font-medium text-sm md:text-base">Nama</Label>
               <Input v-model="nama" class="w-full md:w-2/3" placeholder="Masukkan nama" />
             </div>
-            <div class="flex flex-col md:flex-row md:items-center space-y-1 md:space-y-0 md:space-x-4">
-              <Label class="md:w-1/3 text-gray-600 font-medium text-sm md:text-base">No. Handphone</Label>
+            <div
+              class="flex flex-col md:flex-row md:items-center space-y-1 md:space-y-0 md:space-x-4"
+            >
+              <Label class="md:w-1/3 text-gray-600 font-medium text-sm md:text-base"
+                >No. Handphone</Label
+              >
               <Input v-model="no_handphone" class="w-full md:w-2/3" placeholder="Masukkan nomor" />
             </div>
-            <div class="flex flex-col md:flex-row md:items-start space-y-1 md:space-y-0 md:space-x-4">
+            <div
+              class="flex flex-col md:flex-row md:items-start space-y-1 md:space-y-0 md:space-x-4"
+            >
               <Label class="md:w-1/3 text-gray-600 font-medium text-sm md:text-base">Email</Label>
               <div class="w-full md:w-2/3 space-y-1">
                 <Input v-model="email" type="email" class="w-full" placeholder="Masukkan email" />
@@ -82,15 +102,30 @@
 
         <!-- Detail Penyewaan -->
         <section class="mb-4 md:mb-6">
-          <h3 class="text-base md:text-lg font-semibold text-gray-800 mb-2 bg-gray-300 p-2">Detail Penyewaan</h3>
+          <h3 class="text-base md:text-lg font-semibold text-gray-800 mb-2 bg-gray-300 p-2">
+            Detail Penyewaan
+          </h3>
           <div class="space-y-3 md:space-y-4">
-            <div class="flex flex-col md:flex-row md:items-center space-y-1 md:space-y-0 md:space-x-4">
-              <Label class="md:w-1/3 text-gray-600 font-medium text-sm md:text-base">Tanggal Mulai</Label>
+            <div
+              class="flex flex-col md:flex-row md:items-center space-y-1 md:space-y-0 md:space-x-4"
+            >
+              <Label class="md:w-1/3 text-gray-600 font-medium text-sm md:text-base"
+                >Tanggal Mulai</Label
+              >
               <Input v-model="tanggal_mulai" type="date" class="w-full md:w-2/3" :min="minDate" />
             </div>
-            <div class="flex flex-col md:flex-row md:items-center space-y-1 md:space-y-0 md:space-x-4">
+            <div
+              class="flex flex-col md:flex-row md:items-center space-y-1 md:space-y-0 md:space-x-4"
+            >
               <Label class="md:w-1/3 text-gray-600 font-medium text-sm md:text-base">Durasi</Label>
-              <Input v-model="durasi" type="number" min="1" class="w-full md:w-2/3" placeholder="Masukkan durasi (hari)" @input="validateInputDurasi" />
+              <Input
+                v-model="durasi"
+                type="number"
+                min="1"
+                class="w-full md:w-2/3"
+                placeholder="Masukkan durasi (hari)"
+                @input="validateInputDurasi"
+              />
             </div>
           </div>
         </section>
@@ -102,7 +137,7 @@
             class="w-full md:w-56 py-3 md:py-2 font-semibold text-base"
             :class="{
               'bg-green-600 text-white hover:bg-green-700': true,
-              'opacity-50 cursor-not-allowed': loading
+              'opacity-50 cursor-not-allowed': loading,
             }"
             :disabled="loading"
           >
@@ -134,7 +169,7 @@ export default {
     MapPinIcon,
     CarIcon,
     UsersIcon,
-    ClockIcon
+    ClockIcon,
   },
   data() {
     return {
@@ -146,7 +181,7 @@ export default {
       durasi: 1,
       authStore: useAuthStore(),
       loading: true,
-      minDate: new Date(new Date().setDate(new Date().getDate() + 1)).toISOString().split('T')[0]
+      minDate: new Date(new Date().setDate(new Date().getDate() + 1)).toISOString().split('T')[0],
     }
   },
   methods: {
@@ -173,18 +208,23 @@ export default {
       }
     },
     async submitPemesanan() {
-      if (!this.tanggal_mulai){
+      if (!this.tanggal_mulai) {
         this.$toast.warning('Tanggal mulai harus diisi')
         return
       }
 
-      if(!this.durasi){
+      if (!this.durasi) {
         this.$toast.warning('Durasi harus diisi')
         return
       }
 
+      if (this.durasi > 30) {
+        this.$toast.warning('Durasi maksimum peminjaman adalah 30 hari')
+        return
+      }
+
       let loader = this.$loading.show({
-        isFullPage: true
+        isFullPage: true,
       })
 
       try {
@@ -194,7 +234,7 @@ export default {
           durasi: this.durasi,
           nama: this.nama,
           no_handphone: this.no_handphone,
-          email: this.email
+          email: this.email,
         })
 
         this.$toast.success('Pemesanan berhasil!')
@@ -207,18 +247,21 @@ export default {
       }
     },
     validateInputDurasi(event) {
-      const value = event.target.value;
+      const value = event.target.value
       if (value === '' || value < 1) {
-        this.durasi = '';
+        this.durasi = ''
+      } else if (value > 30) {
+        this.durasi = 30
+        this.$toast.warning('Durasi maksimum peminjaman adalah 30 hari')
       } else {
-        this.durasi = parseInt(value);
+        this.durasi = parseInt(value)
       }
     },
-    formatCurrency
+    formatCurrency,
   },
   mounted() {
     this.fetchKendaraan()
     this.fetchUserData()
-  }
+  },
 }
 </script>
